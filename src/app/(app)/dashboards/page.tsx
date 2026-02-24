@@ -1,16 +1,17 @@
 import Link from "next/link";
+import { DashboardShowcase } from "@/components/dashboard/dashboard-showcase";
 import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
 
 const dashboards = [
-  { id: "owner", name: "Рабочий кабинет владельца", updatedAt: "только что", tone: "from-cyan-50 to-blue-50" },
-  { id: "finance", name: "Финансовый контроль", updatedAt: "5 минут назад", tone: "from-emerald-50 to-teal-50" },
-  { id: "marketing", name: "Маркетинг и ROMI", updatedAt: "11 минут назад", tone: "from-indigo-50 to-sky-50" },
-  { id: "sales", name: "Продажи и воронка", updatedAt: "18 минут назад", tone: "from-amber-50 to-orange-50" },
-  { id: "team", name: "Команда и KPI отделов", updatedAt: "32 минуты назад", tone: "from-lime-50 to-emerald-50" },
-  { id: "law", name: "Юридические риски", updatedAt: "1 час назад", tone: "from-rose-50 to-pink-50" },
-  { id: "watch", name: "Мониторинг и алерты", updatedAt: "1 час назад", tone: "from-red-50 to-orange-50" },
-  { id: "board", name: "Совет директоров", updatedAt: "2 часа назад", tone: "from-violet-50 to-fuchsia-50" }
+  { id: "owner", href: "/owner", name: "Рабочий кабинет владельца", updatedAt: "только что", tone: "from-cyan-50 to-blue-50" },
+  { id: "finance", href: "/finance", name: "Финансовый контроль", updatedAt: "5 минут назад", tone: "from-emerald-50 to-teal-50" },
+  { id: "marketing", href: "/marketing", name: "Маркетинг и ROMI", updatedAt: "11 минут назад", tone: "from-indigo-50 to-sky-50" },
+  { id: "sales", href: "/analytics", name: "Продажи и воронка", updatedAt: "18 минут назад", tone: "from-amber-50 to-orange-50" },
+  { id: "team", href: "/team", name: "Команда и KPI отделов", updatedAt: "32 минуты назад", tone: "from-lime-50 to-emerald-50" },
+  { id: "law", href: "/docs", name: "Юридические риски", updatedAt: "1 час назад", tone: "from-rose-50 to-pink-50" },
+  { id: "watch", href: "/watch", name: "Мониторинг и алерты", updatedAt: "1 час назад", tone: "from-red-50 to-orange-50" },
+  { id: "board", href: "/advisor/board", name: "Совет директоров", updatedAt: "2 часа назад", tone: "from-violet-50 to-fuchsia-50" }
 ];
 
 const miniTrend = [45, 52, 60, 58, 66, 71, 74];
@@ -66,6 +67,8 @@ export default function DashboardsPage() {
         </Card>
       </div>
 
+      <DashboardShowcase />
+
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {dashboards.map((dashboard, idx) => (
           <Card key={dashboard.id} className={`animate-fade-up bg-gradient-to-br ${dashboard.tone}`}>
@@ -78,8 +81,12 @@ export default function DashboardsPage() {
               ))}
             </div>
             <div className="flex flex-wrap gap-2">
-              <button className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-3 py-2 text-sm font-medium text-white">Открыть</button>
-              <button className="rounded-xl border border-border bg-white px-3 py-2 text-sm">Редактировать</button>
+              <Link href={dashboard.href} className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-3 py-2 text-sm font-medium text-white">
+                Открыть
+              </Link>
+              <Link href="/dashboards/builder" className="rounded-xl border border-border bg-white px-3 py-2 text-sm">
+                Редактировать
+              </Link>
             </div>
           </Card>
         ))}
