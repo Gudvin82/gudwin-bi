@@ -184,7 +184,11 @@ export default function AdvisorPage() {
             <h2 className="text-2xl font-extrabold tracking-tight">AI-советник</h2>
             <p className="text-sm text-muted">Бизнес-консультант, AI-бухгалтер и AI-финансист в одном рабочем пространстве.</p>
           </div>
-          <span className="rounded-full border border-violet-200 bg-white px-3 py-1 text-xs text-violet-700">Контекст + Explain + Decision Log</span>
+          <div className="hidden flex-wrap gap-2 sm:flex">
+            <span className="rounded-full border border-violet-200 bg-white px-3 py-1 text-xs text-violet-700">Контекст</span>
+            <span className="rounded-full border border-cyan-200 bg-white px-3 py-1 text-xs text-cyan-700">Explain</span>
+            <span className="rounded-full border border-emerald-200 bg-white px-3 py-1 text-xs text-emerald-700">Журнал решений</span>
+          </div>
         </div>
       </Card>
 

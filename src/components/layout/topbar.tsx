@@ -38,9 +38,12 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
 
   const firstSegment = pathname.split("/").filter(Boolean)[0] ?? "owner";
   const header = headerMap[firstSegment] ?? { title: "Рабочий кабинет", subtitle: "Управляйте финансами, командой и рисками из единого центра." };
+  const primarySourceActionLabel = ["owner", "overview", "sources", "onboarding"].includes(firstSegment)
+    ? "Подключить данные"
+    : "Управлять источниками";
 
   return (
-    <header className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200/70 bg-white/80 p-3 shadow-sm backdrop-blur-xl sm:p-4">
+    <header className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-slate-200/70 bg-white/80 p-2 shadow-sm backdrop-blur-xl sm:mb-6 sm:gap-3 sm:p-4">
       <div className="min-w-0">
         <div className="flex items-center gap-2">
           <button
@@ -51,9 +54,9 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
           >
             <Menu size={18} />
           </button>
-          <h1 className="premium-title truncate text-xl font-extrabold sm:text-2xl">{header.title}</h1>
+          <h1 className="premium-title truncate text-base font-extrabold sm:text-2xl">{header.title}</h1>
         </div>
-        <p className="premium-subtitle mt-1 line-clamp-2 text-sm">{header.subtitle}</p>
+        <p className="premium-subtitle mt-1 hidden line-clamp-2 text-sm sm:block">{header.subtitle}</p>
         <div className="premium-nav-chip mt-2 hidden items-center gap-2 rounded-full px-3 py-1 text-xs text-muted sm:inline-flex">
           <span className={`inline-flex h-2 w-2 rounded-full ${online ? "bg-emerald-500" : "bg-rose-500"}`} />
           {online ? "Сеть доступна" : "Нет подключения к сети"}
@@ -66,7 +69,7 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
         </Link>
         <Link href="/sources" className="btn-premium-primary inline-flex min-h-10 flex-1 items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-white shadow-sm sm:flex-none">
           <Sparkles size={16} />
-          Подключить данные
+          {primarySourceActionLabel}
         </Link>
         <button aria-label="Выбрать период отчета" className="hidden min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-sm text-muted shadow-sm md:inline-flex">
           <CalendarRange size={16} />

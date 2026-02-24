@@ -32,9 +32,9 @@ export default function OwnerPage() {
   }, []);
 
   const healthGradient = useMemo(() => {
-    const degree = Math.round((data.health.score / 100) * 360);
-    return `conic-gradient(#0891b2 0deg, #10b981 ${degree}deg, rgba(226,232,240,.9) ${degree}deg 360deg)`;
+    return "conic-gradient(#ef4444 0deg 144deg, #f59e0b 144deg 252deg, #10b981 252deg 360deg)";
   }, [data.health.score]);
+  const healthNeedleRotation = useMemo(() => Math.round((data.health.score / 100) * 360), [data.health.score]);
   const healthZone =
     data.health.score < 40
       ? { label: "Критическая зона", tone: "text-rose-700" }
@@ -70,6 +70,10 @@ export default function OwnerPage() {
           </div>
           <div className="mt-5 flex flex-wrap items-center gap-6">
             <div className="relative grid h-40 w-40 place-content-center rounded-full" style={{ background: healthGradient }}>
+              <span
+                className="absolute left-1/2 top-1/2 h-[72px] w-[3px] origin-bottom -translate-x-1/2 -translate-y-full rounded-full bg-white shadow"
+                style={{ transform: `translateX(-50%) translateY(-100%) rotate(${healthNeedleRotation}deg)` }}
+              />
               <div className="grid h-28 w-28 place-content-center rounded-full bg-slate-950 text-center">
                 <p className="text-4xl font-extrabold leading-none">{data.health.score}</p>
                 <p className="mt-1 text-xs text-cyan-200">из 100</p>
@@ -78,6 +82,11 @@ export default function OwnerPage() {
             <div className="min-w-[220px] flex-1 space-y-2 text-sm">
               <div className={`rounded-xl bg-white/10 px-3 py-2 text-xs font-semibold ${healthZone.tone}`}>
                 {healthZone.label}: {data.health.score}/100
+              </div>
+              <div className="grid grid-cols-3 gap-2 text-[11px]">
+                <div className="rounded-lg bg-rose-500/25 px-2 py-1 text-center text-rose-100">0-40 риск</div>
+                <div className="rounded-lg bg-amber-500/25 px-2 py-1 text-center text-amber-100">41-70 внимание</div>
+                <div className="rounded-lg bg-emerald-500/25 px-2 py-1 text-center text-emerald-100">71-100 норма</div>
               </div>
               <div className="flex items-center justify-between rounded-xl bg-white/10 px-3 py-2">
                 <span>Финансы</span>

@@ -156,7 +156,7 @@ export default function SourcesPage() {
           </form>
 
           <div className="rounded-xl border border-border p-3">
-            <p className="mb-2 text-sm font-semibold">Excel / CSV upload</p>
+            <p className="mb-2 text-sm font-semibold">Загрузка Excel / CSV</p>
             <input
               type="file"
               accept=".csv,.xlsx,.xls"

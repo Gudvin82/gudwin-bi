@@ -428,7 +428,11 @@ export function buildMarketingOverview() {
 
   const sortedByRomi = [...marketingChannels].sort((a, b) => b.romi - a.romi);
   const top = sortedByRomi.slice(0, 3).map((item) => ({ name: item.name, romi: item.romi }));
-  const worst = [...sortedByRomi].reverse().slice(0, 3).map((item) => ({ name: item.name, romi: item.romi }));
+  const clearProblemChannels = marketingChannels
+    .filter((item) => item.romi < 25)
+    .sort((a, b) => a.romi - b.romi)
+    .map((item) => ({ name: item.name, romi: item.romi }));
+  const worst = (clearProblemChannels.length ? clearProblemChannels : [...sortedByRomi].reverse().slice(0, 2));
 
   return {
     index: Math.round(index),
