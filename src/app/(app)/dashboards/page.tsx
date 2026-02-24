@@ -3,7 +3,11 @@ import { Card } from "@/components/ui/card";
 
 const dashboards = [
   { id: "sales-main", name: "Продажи и выручка", updatedAt: "сегодня" },
-  { id: "funnel", name: "Воронка лидов", updatedAt: "вчера" }
+  { id: "funnel", name: "Воронка лидов", updatedAt: "вчера" },
+  { id: "owner", name: "Owner Mode Summary", updatedAt: "сегодня" },
+  { id: "finance", name: "Cash Guard и Unit Economics", updatedAt: "сегодня" },
+  { id: "departments", name: "KPI отделов и индекс эффективности", updatedAt: "2 часа назад" },
+  { id: "marketing", name: "ROMI и рекламные каналы", updatedAt: "30 минут назад" }
 ];
 
 export default function DashboardsPage() {
@@ -27,9 +31,15 @@ export default function DashboardsPage() {
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2">
+    <div className="space-y-4">
+      <Card className="bg-gradient-to-r from-sky-50 to-cyan-50">
+        <h3 className="text-lg font-semibold">Демо-галерея дашбордов</h3>
+        <p className="text-sm text-muted">Разные ракурсы для инвесторского показа: финансы, операции, маркетинг, owner-view.</p>
+      </Card>
+
+      <div className="grid gap-4 md:grid-cols-2">
       {dashboards.map((dashboard) => (
-        <Card key={dashboard.id}>
+        <Card key={dashboard.id} className="animate-fade-up">
           <h3 className="mb-1 text-lg font-semibold">{dashboard.name}</h3>
           <p className="mb-4 text-sm text-muted">Обновлено: {dashboard.updatedAt}</p>
           <div className="flex gap-2">
@@ -41,6 +51,7 @@ export default function DashboardsPage() {
           </div>
         </Card>
       ))}
+      </div>
     </div>
   );
 }

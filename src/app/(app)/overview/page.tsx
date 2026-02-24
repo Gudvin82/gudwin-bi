@@ -25,6 +25,26 @@ export default function OverviewPage() {
       ) : null}
 
       <div className="dashboard-grid">
+        <div className="col-span-12">
+          <Card className="animate-fade-up bg-gradient-to-r from-emerald-50 via-sky-50 to-indigo-50">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="text-sm text-muted">Owner Health Score</p>
+                <p className="text-4xl font-extrabold text-accent">78 / 100</p>
+                <p className="text-sm text-muted">Главный риск: cash gap в следующем месяце при текущей дебиторке.</p>
+              </div>
+              <div className="flex gap-2">
+                <Link href="/owner" className="rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white">
+                  Открыть Owner Mode
+                </Link>
+                <Link href="/finance" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">
+                  Перейти в Smart Finance
+                </Link>
+              </div>
+            </div>
+          </Card>
+        </div>
+
         <div className="col-span-12 md:col-span-4">
           <MetricCard title="Выручка" value="3 950 000 ₽" delta="+18% к прошлому месяцу" />
         </div>
@@ -52,6 +72,30 @@ export default function OverviewPage() {
           Открыть пошаговый мастер
         </Link>
       </Card>
+
+      <div className="grid gap-4 lg:grid-cols-3">
+        <Card className="bg-gradient-to-br from-pink-50 to-rose-50">
+          <p className="text-sm font-semibold">Финансовый ракурс</p>
+          <p className="mt-2 text-sm text-muted">Cash Guard, Unit Economics, сценарии и утечки денег в одном блоке.</p>
+          <Link href="/finance" className="mt-3 inline-flex rounded-lg border border-border px-3 py-2 text-sm">
+            Смотреть
+          </Link>
+        </Card>
+        <Card className="bg-gradient-to-br from-violet-50 to-indigo-50">
+          <p className="text-sm font-semibold">Операционный ракурс</p>
+          <p className="mt-2 text-sm text-muted">Smart Agents + Action Engine для ежедневных задач и автоматизаций.</p>
+          <Link href="/agents" className="mt-3 inline-flex rounded-lg border border-border px-3 py-2 text-sm">
+            Открыть
+          </Link>
+        </Card>
+        <Card className="bg-gradient-to-br from-amber-50 to-orange-50">
+          <p className="text-sm font-semibold">Стратегический ракурс</p>
+          <p className="mt-2 text-sm text-muted">Advisor + Competitor Watch для решений собственника и инвестора.</p>
+          <Link href="/advisor" className="mt-3 inline-flex rounded-lg border border-border px-3 py-2 text-sm">
+            Перейти
+          </Link>
+        </Card>
+      </div>
     </div>
   );
 }

@@ -7,6 +7,7 @@ MVP платформы аналитики для малого/среднего �
 - Next.js 15 (App Router) + TypeScript + Tailwind, светлая premium UI-концепция.
 - Рабочий кабинет с разделами: `Обзор`, `Дашборды`, `Источники данных`, `AI-аналитика`, `Настройки`.
 - Новые модули: `Smart Advisor`, `Smart Agents`, `Smart Hire`.
+- Полный Smart OS контур: `Owner Mode`, `Smart Finance`, `Smart Docs & Law`, `Smart Connect`, `Smart Watch`, `Smart Learn`, `Competitor Watch`, `Contacts`.
 - Пошаговый `onboarding` сценарий первого запуска.
 - Явный demo-режим c CTA и безопасным fallback для AI.
 - API-слой в Next.js:
@@ -21,8 +22,18 @@ MVP платформы аналитики для малого/среднего �
   - `POST /api/advisor/query` + `GET/POST /api/advisor/sessions` - Smart Advisor.
   - `GET/POST /api/agents`, `POST /api/agents/{id}/run-task`, `GET /api/agents/{id}/logs` - Smart Agents.
   - `POST /api/hire/request`, `GET /api/hire/requests` - Smart Hire.
+  - Finance APIs: `GET /api/finance/unit-metrics`, `GET /api/finance/cash-guard`, `POST /api/finance/scenario`, `GET /api/finance/money-leaks`, `GET /api/finance/payment-calendar`.
+  - `GET /api/predict/revenue` - Smart Predict.
+  - `GET /api/watch/alerts` - Smart Watch.
+  - `GET /api/connect/integrations`, `GET /api/connect/rules` - Smart Connect.
+  - `POST /api/docs/generate`, `POST /api/docs/scan`, `POST /api/law/check-counterparty` - Smart Docs & Law.
+  - `GET /api/learn/faq` - Smart Learn.
+  - `GET /api/owner/health` - Owner Mode + Health Score.
+  - `GET /api/competitor/watch` - Competitor Watch.
+  - `POST /api/contacts/request` - заявки на доработку.
 - База данных (Supabase/Postgres): миграция с multi-tenant таблицами, индексами и RLS policy.
 - Расширенная схема БД для Smart модулей: `workspace_kpi_cache`, `advisor_*`, `agents_*`, `hire_*`.
+- Дополнительная схема Smart OS: `unit_metrics`, `payment_calendar`, `scenario_runs`, `money_leaks`, `smart_predict_cache`, `watch_alerts`, `integrations`, `integration_rules`, `generated_documents`, `scanned_documents`, `counterparty_checks`, `kpi_assignments`, `department_performance_index`, `competitor_signals`, `dev_requests`.
 - Роли `owner/member` с ограничением owner-only операций (пример: test SMS).
 - Подготовка i18n структуры (`ru`/`en`) без усложнения UI на старте.
 - Rate limiting для AI endpoint.

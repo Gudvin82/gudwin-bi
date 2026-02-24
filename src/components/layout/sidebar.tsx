@@ -2,18 +2,26 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, Bot, BriefcaseBusiness, Database, LayoutDashboard, Rocket, Settings, Sparkles } from "lucide-react";
+import { AlertTriangle, BarChart3, Bot, BriefcaseBusiness, Database, FileText, LayoutDashboard, Link2, Rocket, Settings, Sparkles, Target, UserRoundCog, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const items = [
   { href: "/onboarding", label: "Быстрый старт", icon: Rocket },
+  { href: "/owner", label: "Owner Mode", icon: UserRoundCog },
   { href: "/overview", label: "Обзор", icon: LayoutDashboard },
   { href: "/dashboards", label: "Дашборды", icon: BarChart3 },
   { href: "/sources", label: "Источники данных", icon: Database },
   { href: "/ai", label: "AI-аналитика", icon: Bot },
   { href: "/advisor", label: "Smart Advisor", icon: Sparkles },
+  { href: "/finance", label: "Smart Finance", icon: Target },
   { href: "/agents", label: "Smart Agents", icon: Bot },
   { href: "/hire", label: "Smart Hire", icon: BriefcaseBusiness },
+  { href: "/docs", label: "Docs & Law", icon: FileText },
+  { href: "/connect", label: "Smart Connect", icon: Link2 },
+  { href: "/watch", label: "Smart Watch", icon: AlertTriangle },
+  { href: "/learn", label: "Обучение / FAQ", icon: Users },
+  { href: "/competitor", label: "Competitor Watch", icon: Target },
+  { href: "/contacts", label: "Контакты", icon: Users },
   { href: "/settings", label: "Настройки", icon: Settings }
 ];
 
