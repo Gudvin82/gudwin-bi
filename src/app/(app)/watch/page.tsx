@@ -82,7 +82,16 @@ export default function WatchPage() {
         <h3 className="mb-3 text-base font-semibold">Алерты</h3>
         <div className="space-y-2 text-sm">
           {alerts.map((alert) => (
-            <div key={alert.id} className={`rounded-xl border p-3 ${alert.level === "critical" ? "border-red-300 bg-red-50" : "border-border"}`}>
+            <div
+              key={alert.id}
+              className={`rounded-xl border p-3 ${
+                alert.level === "critical"
+                  ? "border-red-300 bg-gradient-to-r from-red-50 to-rose-50"
+                  : alert.level === "warning"
+                    ? "border-amber-300 bg-gradient-to-r from-amber-50 to-orange-50"
+                    : "border-slate-200 bg-gradient-to-r from-slate-50 to-white"
+              }`}
+            >
               <p className="font-semibold">{alertTypeLabels[alert.type] ?? alert.type} • {levelLabels[alert.level] ?? alert.level}</p>
               <p>{alert.message}</p>
               <p className="text-xs text-muted">Канал: {alert.channel} • {new Date(alert.createdAt).toLocaleString("ru-RU")}</p>

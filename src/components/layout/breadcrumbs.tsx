@@ -68,9 +68,11 @@ export function Breadcrumbs() {
           <div key={href} className={`items-center gap-2 ${isLast ? "flex" : "hidden sm:flex"}`}>
             <span>/</span>
             {isLast ? (
-              <span className="rounded-md bg-slate-100 px-2 py-1 font-semibold text-text">{labels[segment] ?? segment}</span>
+              <span className="rounded-full border border-slate-200 bg-gradient-to-r from-white to-slate-50 px-2.5 py-1 font-semibold text-text shadow-sm">
+                {labels[segment] ?? segment}
+              </span>
             ) : (
-              <Link href={href} className="rounded-md px-2 py-1 hover:bg-slate-100">
+              <Link href={href} className="rounded-full px-2.5 py-1 hover:bg-slate-100">
                 {labels[segment] ?? segment}
               </Link>
             )}

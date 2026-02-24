@@ -71,6 +71,23 @@ export default function MarketingAnalyticsPage() {
         </div>
       </Card>
 
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card className="bg-gradient-to-br from-emerald-50 to-white">
+          <p className="text-xs text-muted">ROMI по рынку</p>
+          <p className="mt-1 text-3xl font-extrabold text-emerald-700">+50.8%</p>
+          <p className="text-xs text-muted">Бенчмарк отрасли: +45%</p>
+        </Card>
+        <Card className="bg-gradient-to-br from-cyan-50 to-white">
+          <p className="text-xs text-muted">Средний CAC</p>
+          <p className="mt-1 text-3xl font-extrabold text-cyan-700">{avgCac.toLocaleString("ru-RU")} ₽</p>
+          <p className="text-xs text-muted">Цель: ниже 4 500 ₽</p>
+        </Card>
+        <Card className="bg-gradient-to-br from-violet-50 to-white">
+          <p className="text-xs text-muted">Фокус недели</p>
+          <p className="mt-1 text-sm font-semibold">Снизить CAC в VK и масштабировать Яндекс.Директ.</p>
+        </Card>
+      </div>
+
       <Card>
         <h3 className="mb-3 text-base font-semibold">Сквозная таблица по каналам</h3>
         <div className="overflow-x-auto">

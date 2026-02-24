@@ -21,6 +21,14 @@ const headerMap: Record<string, { title: string; subtitle: string }> = {
   agents: { title: "AI-агенты", subtitle: "Запуск и управление задачами бизнес-агентов." }
 };
 
+const accentMap: Record<string, { title: string; chip: string; ring: string }> = {
+  owner: { title: "text-cyan-900", chip: "from-cyan-50 to-teal-50 text-cyan-700", ring: "ring-cyan-200/70" },
+  finance: { title: "text-emerald-900", chip: "from-emerald-50 to-teal-50 text-emerald-700", ring: "ring-emerald-200/70" },
+  marketing: { title: "text-indigo-900", chip: "from-indigo-50 to-sky-50 text-indigo-700", ring: "ring-indigo-200/70" },
+  advisor: { title: "text-violet-900", chip: "from-violet-50 to-fuchsia-50 text-violet-700", ring: "ring-violet-200/70" },
+  watch: { title: "text-rose-900", chip: "from-rose-50 to-orange-50 text-rose-700", ring: "ring-rose-200/70" }
+};
+
 export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
   const pathname = usePathname();
   const [online, setOnline] = useState(true);
@@ -39,6 +47,7 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
 
   const firstSegment = pathname.split("/").filter(Boolean)[0] ?? "owner";
   const header = headerMap[firstSegment] ?? { title: "Рабочий кабинет", subtitle: "Управляйте финансами, командой и рисками из единого центра." };
+  const accent = accentMap[firstSegment] ?? accentMap.owner;
   const primarySourceActionLabel = ["owner", "overview", "sources", "onboarding"].includes(firstSegment)
     ? "Подключить данные"
     : "Управлять источниками";
@@ -49,7 +58,7 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
   };
 
   return (
-    <header className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-slate-200/70 bg-white/80 p-2 shadow-sm backdrop-blur-xl sm:mb-6 sm:gap-3 sm:p-4">
+    <header className={`mb-4 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-slate-200/70 bg-white/80 p-2 shadow-sm backdrop-blur-xl ring-1 ${accent.ring} sm:mb-6 sm:gap-3 sm:p-4`}>
       <div className="min-w-0">
         <div className="flex items-center gap-2">
           <button
@@ -60,10 +69,10 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
           >
             <Menu size={18} />
           </button>
-          <h1 className="premium-title truncate text-base font-extrabold sm:text-2xl">{header.title}</h1>
+          <h1 className={`premium-title truncate text-base font-extrabold sm:text-2xl ${accent.title}`}>{header.title}</h1>
         </div>
         <p className="premium-subtitle mt-1 hidden line-clamp-2 text-sm sm:block">{header.subtitle}</p>
-        <div className="premium-nav-chip mt-2 hidden items-center gap-2 rounded-full px-3 py-1 text-xs text-muted sm:inline-flex">
+        <div className={`premium-nav-chip mt-2 hidden items-center gap-2 rounded-full bg-gradient-to-r px-3 py-1 text-xs sm:inline-flex ${accent.chip}`}>
           <span className={`inline-flex h-2 w-2 rounded-full ${online ? "bg-emerald-500" : "bg-rose-500"}`} />
           {online ? "Сеть доступна" : "Нет подключения к сети"}
         </div>

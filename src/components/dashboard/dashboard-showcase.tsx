@@ -37,8 +37,11 @@ const cashData = [
 export function DashboardShowcase() {
   return (
     <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-      <Card>
-        <p className="mb-2 text-xs text-muted">Динамика выручки</p>
+      <Card className="bg-gradient-to-b from-white to-cyan-50/40">
+        <div className="mb-2 flex items-center justify-between">
+          <p className="text-xs text-muted">Динамика выручки</p>
+          <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">+8.5%</span>
+        </div>
         <div className="h-44">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={revenueData}>
@@ -58,8 +61,11 @@ export function DashboardShowcase() {
         </div>
       </Card>
 
-      <Card>
-        <p className="mb-2 text-xs text-muted">Каналы продаж</p>
+      <Card className="bg-gradient-to-b from-white to-emerald-50/40">
+        <div className="mb-2 flex items-center justify-between">
+          <p className="text-xs text-muted">Каналы продаж</p>
+          <span className="rounded-full bg-cyan-100 px-2 py-0.5 text-[10px] font-semibold text-cyan-700">TOP 4</span>
+        </div>
         <div className="h-44">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={channels}>
@@ -73,8 +79,11 @@ export function DashboardShowcase() {
         </div>
       </Card>
 
-      <Card>
-        <p className="mb-2 text-xs text-muted">Риск-профиль бизнеса</p>
+      <Card className="bg-gradient-to-b from-white to-orange-50/40">
+        <div className="mb-2 flex items-center justify-between">
+          <p className="text-xs text-muted">Риск-профиль бизнеса</p>
+          <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-700">Внимание</span>
+        </div>
         <div className="h-44">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
@@ -85,8 +94,11 @@ export function DashboardShowcase() {
         </div>
       </Card>
 
-      <Card>
-        <p className="mb-2 text-xs text-muted">Cash In / Cash Out</p>
+      <Card className="bg-gradient-to-b from-white to-rose-50/30">
+        <div className="mb-2 flex items-center justify-between">
+          <p className="text-xs text-muted">Cash In / Cash Out</p>
+          <span className="rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-semibold text-violet-700">7 дней</span>
+        </div>
         <div className="h-44">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={cashData}>
@@ -103,4 +115,3 @@ export function DashboardShowcase() {
     </div>
   );
 }
-
