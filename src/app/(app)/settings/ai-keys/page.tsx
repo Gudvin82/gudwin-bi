@@ -12,7 +12,7 @@ const providers = [
 ];
 
 export default function AiKeysSettingsPage() {
-  const [health, setHealth] = useState<{ connected: boolean; provider: string; model: string } | null>(null);
+  const [health, setHealth] = useState<{ enabled: boolean; connected: boolean; provider: string; model: string } | null>(null);
 
   useEffect(() => {
     const load = async () => {
@@ -34,7 +34,13 @@ export default function AiKeysSettingsPage() {
         <div className="mt-3 rounded-xl border border-border bg-white p-3 text-sm">
           <p className="font-semibold">Статус подключения API</p>
           <p className="text-muted">
-            {health ? (health.connected ? `Подключено: ${health.provider} (${health.model})` : "Не подключено: ключ не найден в .env") : "Проверяем..."}
+            {!health
+              ? "Проверяем..."
+              : !health.enabled
+                ? "AI вызовы отключены политикой безопасности (AI_RUNTIME_ENABLED=false)."
+                : health.connected
+                  ? `Подключено: ${health.provider} (${health.model})`
+                  : "Не подключено: ключ не найден в .env"}
           </p>
         </div>
       </Card>

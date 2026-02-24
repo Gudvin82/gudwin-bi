@@ -1,17 +1,18 @@
 import { NextResponse } from "next/server";
+import { resolveAiRuntime } from "@/lib/ai/runtime";
 
 export async function GET() {
-  const aiConnected = Boolean(process.env.AITUNNEL_API_KEY || process.env.OPENAI_API_KEY);
-  const provider = process.env.AITUNNEL_API_KEY ? "aitunnel" : process.env.OPENAI_API_KEY ? "openai" : "none";
+  const ai = resolveAiRuntime();
 
   return NextResponse.json({
     ok: true,
     service: "gudwin-bi",
     timestamp: new Date().toISOString(),
     ai: {
-      connected: aiConnected,
-      provider,
-      model: process.env.AI_MODEL || "gpt-4.1-mini"
+      enabled: ai.enabled,
+      connected: ai.enabled && ai.hasKey,
+      provider: ai.provider,
+      model: ai.model
     }
   });
 }

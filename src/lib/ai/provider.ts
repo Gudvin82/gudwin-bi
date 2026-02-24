@@ -1,10 +1,12 @@
 import OpenAI from "openai";
+import { resolveAiRuntime } from "@/lib/ai/runtime";
 
-const aiApiKey = process.env.AITUNNEL_API_KEY || process.env.OPENAI_API_KEY;
+const runtime = resolveAiRuntime();
+const aiApiKey = runtime.enabled ? process.env.AITUNNEL_API_KEY || process.env.OPENAI_API_KEY : undefined;
 const baseURL =
   process.env.OPENAI_BASE_URL ||
-  (process.env.AITUNNEL_API_KEY ? "https://api.aitunnel.ru/v1" : undefined);
-const aiModel = process.env.AI_MODEL || "gpt-4.1-mini";
+  (runtime.provider === "aitunnel" ? "https://api.aitunnel.ru/v1" : undefined);
+const aiModel = runtime.model;
 const client = aiApiKey ? new OpenAI({ apiKey: aiApiKey, baseURL }) : null;
 
 type AiPlan = {
@@ -17,7 +19,9 @@ type AiPlan = {
 export async function buildAnalyticPlan(question: string, datasetSchemas: string): Promise<AiPlan> {
   if (!client) {
     return {
-      summary: "AI-провайдер не подключен. Добавьте ключ в переменные окружения для реальной генерации.",
+      summary: runtime.enabled
+        ? "AI-провайдер не подключен. Добавьте ключ в переменные окружения для реальной генерации."
+        : "AI-режим отключен в настройках окружения (AI_RUNTIME_ENABLED=false). Используется безопасный демо-режим.",
       sql: "select month, sum(revenue) as revenue, avg(check) as avg_check from sales group by month order by month;",
       visualization: "line",
       isFallback: true

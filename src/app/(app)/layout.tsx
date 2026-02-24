@@ -10,7 +10,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   return (
-    <div className="min-h-dvh md:flex">
+    <div className="min-h-dvh md:flex premium-shell">
       <Sidebar className="hidden md:block" />
 
       {mobileNavOpen ? (
@@ -21,10 +21,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         </div>
       ) : null}
 
-      <main className="page-enter min-w-0 flex-1 overflow-x-hidden px-3 pb-20 pt-4 sm:px-4 md:pb-4 lg:p-8">
+      <main className="page-enter relative min-w-0 flex-1 overflow-x-hidden px-3 pb-20 pt-4 sm:px-4 md:pb-4 lg:p-8">
+        <div className="premium-orb premium-orb-a" />
+        <div className="premium-orb premium-orb-b" />
         <Breadcrumbs />
         <Topbar onMenuClick={() => setMobileNavOpen(true)} />
-        {children}
+        <div className="premium-stage">{children}</div>
       </main>
       <MobileNav />
     </div>
