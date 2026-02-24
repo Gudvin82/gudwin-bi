@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { X } from "lucide-react";
+import { CircleHelp, X } from "lucide-react";
 
 type HelpPopoverProps = {
   title: string;
@@ -15,10 +15,10 @@ export function HelpPopover({ title, items }: HelpPopoverProps) {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-border bg-white text-xs font-bold text-muted hover:text-text"
+        className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-border bg-white text-muted transition hover:border-cyan-300 hover:text-cyan-700"
         aria-label="Открыть подсказку"
       >
-        ?
+        <CircleHelp size={14} />
       </button>
 
       {open ? (

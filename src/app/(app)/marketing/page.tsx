@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { ContextHelpLinks } from "@/components/learn/context-help-links";
 import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
 
@@ -41,7 +42,7 @@ export default function MarketingOverviewPage() {
       <Card className="animate-fade-up bg-gradient-to-br from-indigo-50 via-cyan-50/70 to-white">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-700">Marketing Hub</p>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-700">Маркетинговый кабинет</p>
             <h2 className="text-2xl font-extrabold tracking-tight">Маркетинговый кабинет</h2>
             <p className="mt-1 text-sm text-muted">Как маркетинг влияет на деньги и прибыль: что усиливать, а что немедленно останавливать.</p>
           </div>
@@ -70,7 +71,7 @@ export default function MarketingOverviewPage() {
         <Card>
           <p className="text-xs text-muted">Выручка от маркетинга</p>
           <p className="mt-2 text-2xl font-extrabold">{(overview?.revenue ?? 0).toLocaleString("ru-RU")} ₽</p>
-          <p className="text-xs text-muted">Влияние paid-каналов</p>
+          <p className="text-xs text-muted">Влияние платных каналов</p>
         </Card>
         <Card>
           <p className="text-xs text-muted">ROMI / CAC</p>
@@ -119,6 +120,8 @@ export default function MarketingOverviewPage() {
           <Link href="/marketing/experiments" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Запустить A/B тест</Link>
         </div>
       </Card>
+
+      <ContextHelpLinks section="marketing" />
     </div>
   );
 }

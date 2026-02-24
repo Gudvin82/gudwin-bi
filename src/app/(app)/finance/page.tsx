@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { ContextHelpLinks } from "@/components/learn/context-help-links";
 import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
 
@@ -85,6 +86,8 @@ export default function FinancePage() {
           </Link>
         </Card>
       ) : null}
+
+      <ContextHelpLinks section="finance" />
 
       <div className="grid gap-4 lg:grid-cols-4">
         <Card>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { KpiTable } from "@/components/dashboard/kpi-table";
 import { MetricCard } from "@/components/dashboard/metric-card";
 import { RevenueChart } from "@/components/dashboard/revenue-chart";
+import { ContextHelpLinks } from "@/components/learn/context-help-links";
 import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
 import { appConfig } from "@/lib/config";
@@ -82,6 +83,8 @@ export default function OverviewPage() {
           Открыть пошаговый мастер
         </Link>
       </Card>
+
+      <ContextHelpLinks section="owner" />
 
       <div className="grid gap-4 lg:grid-cols-3">
         <Link href="/finance" className="block">

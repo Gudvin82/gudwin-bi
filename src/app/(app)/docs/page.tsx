@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ContextHelpLinks } from "@/components/learn/context-help-links";
 import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
 
@@ -134,9 +135,11 @@ export default function DocsPage() {
       <Card className="border-amber-200 bg-amber-50">
         <p className="text-sm font-semibold">Дисклеймер</p>
         <p className="text-sm text-amber-900">
-          AI-юрист формирует risk summary и не заменяет профессиональную юридическую экспертизу. Проверка персональных данных возможна только при наличии согласия.
+          AI-юрист формирует краткую оценку рисков и не заменяет профессиональную юридическую экспертизу. Проверка персональных данных возможна только при наличии согласия.
         </p>
       </Card>
+
+      <ContextHelpLinks section="legal" />
     </div>
   );
 }

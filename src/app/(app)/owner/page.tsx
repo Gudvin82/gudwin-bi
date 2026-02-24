@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { ContextHelpLinks } from "@/components/learn/context-help-links";
 import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
 
@@ -39,7 +40,7 @@ export default function OwnerPage() {
       <Card className="animate-fade-up bg-gradient-to-br from-white via-cyan-50/60 to-emerald-50/60">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="max-w-2xl">
-            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-700">Owner Mode</p>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-700">Режим владельца (Owner Mode)</p>
             <h2 className="text-2xl font-extrabold tracking-tight">Режим владельца</h2>
             <p className="mt-1 text-sm text-muted">Главная витрина бизнеса: здоровье компании, главная проблема недели и фокус дня.</p>
           </div>
@@ -57,7 +58,7 @@ export default function OwnerPage() {
       <div className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
         <Card className="bg-gradient-to-br from-slate-950 via-cyan-950 to-slate-900 text-white">
           <div className="flex items-center justify-between">
-            <p className="text-xs uppercase tracking-[0.16em] text-cyan-200">Health Score</p>
+            <p className="text-xs uppercase tracking-[0.16em] text-cyan-200">Индекс здоровья</p>
             <span className="rounded-full bg-white/10 px-3 py-1 text-xs">{loading ? "Обновляем" : "Актуально"}</span>
           </div>
           <div className="mt-5 flex flex-wrap items-center gap-6">
@@ -115,6 +116,8 @@ export default function OwnerPage() {
           <Link href="/watch" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Мониторинг</Link>
         </div>
       </Card>
+
+      <ContextHelpLinks section="owner" />
     </div>
   );
 }

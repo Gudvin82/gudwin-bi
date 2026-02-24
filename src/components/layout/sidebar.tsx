@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AlertTriangle, Building2, ChevronDown, ChevronRight, FileText, LayoutDashboard, LineChart, Link2, Settings, Sparkles, Target, UserRoundCog, Users } from "lucide-react";
+import { AlertTriangle, BookOpen, Building2, ChevronDown, ChevronRight, FileText, LayoutDashboard, LineChart, Link2, Settings, Sparkles, Target, UserRoundCog, Users } from "lucide-react";
 import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -124,6 +124,19 @@ const sections: NavSection[] = [
     ]
   },
   {
+    key: "learn",
+    href: "/learn",
+    label: "Помощь и обучение",
+    icon: BookOpen,
+    children: [
+      { href: "/learn", label: "Обзор обучения" },
+      { href: "/learn/faq", label: "FAQ" },
+      { href: "/learn/quick-start", label: "Быстрый старт" },
+      { href: "/learn/guides", label: "Гайды и статьи" },
+      { href: "/learn/videos", label: "Видео-обучение" }
+    ]
+  },
+  {
     key: "settings",
     href: "/settings",
     label: "Настройки",
@@ -131,7 +144,6 @@ const sections: NavSection[] = [
     children: [
       { href: "/settings", label: "Рабочее пространство" },
       { href: "/settings/simple", label: "Режим «Объяснить просто»" },
-      { href: "/learn", label: "Обучение / FAQ" },
       { href: "/contacts", label: "Контакты разработки" }
     ]
   }

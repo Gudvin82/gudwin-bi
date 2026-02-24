@@ -1,54 +1,41 @@
-"use client";
-
-import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Card } from "@/components/ui/card";
 
-type FaqItem = { q: string; a: string };
-
 export default function LearnPage() {
-  const [faq, setFaq] = useState<FaqItem[]>([]);
-  const [question, setQuestion] = useState("Как быстро показать инвестору ценность GudWin BI?");
-  const [answer, setAnswer] = useState("");
-
-  useEffect(() => {
-    const load = async () => {
-      const res = await fetch("/api/learn/faq");
-      const json = await res.json();
-      setFaq(json.faq ?? []);
-    };
-    void load();
-  }, []);
-
-  const ask = () => {
-    setAnswer("Включите демо-режим, откройте Режим владельца, затем Консультант и Финансы. Покажите индекс здоровья бизнеса, утечки денег и правила действий.");
-  };
-
   return (
-    <div className="space-y-4">
-      <Card className="animate-fade-up bg-gradient-to-r from-blue-50 to-indigo-50">
-        <h2 className="text-xl font-bold">Обучение / FAQ</h2>
-        <p className="text-sm text-muted">Обучение пользователей, FAQ и AI-помощник по продукту.</p>
+    <div className="space-y-5">
+      <Card className="animate-fade-up bg-gradient-to-r from-cyan-50 via-white to-indigo-50">
+        <h2 className="text-2xl font-extrabold tracking-tight">Помощь и обучение</h2>
+        <p className="mt-1 text-sm text-muted">
+          Материалы для быстрого старта, ответы на частые вопросы и обучение по ключевым разделам GudWin BI.
+        </p>
       </Card>
 
-      <div className="grid gap-4 xl:grid-cols-2">
-        <Card>
-          <h3 className="mb-3 text-base font-semibold">FAQ</h3>
-          <div className="space-y-2 text-sm">
-            {faq.map((item) => (
-              <div key={item.q} className="rounded-xl border border-border p-3">
-                <p className="font-semibold">{item.q}</p>
-                <p className="text-muted">{item.a}</p>
-              </div>
-            ))}
-          </div>
-        </Card>
-
-        <Card>
-          <h3 className="mb-3 text-base font-semibold">AI-FAQ чат</h3>
-          <textarea value={question} onChange={(e) => setQuestion(e.target.value)} className="min-h-24 w-full rounded-xl border border-border p-3 text-sm" />
-          <button onClick={ask} className="mt-3 rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white">Спросить</button>
-          {answer ? <p className="mt-3 rounded-xl border border-border p-3 text-sm">{answer}</p> : null}
-        </Card>
+      <div className="grid gap-4 md:grid-cols-2">
+        <Link href="/learn/faq" className="block">
+          <Card className="h-full bg-gradient-to-br from-sky-50 to-cyan-50 transition hover:-translate-y-0.5">
+            <h3 className="text-base font-semibold">FAQ</h3>
+            <p className="mt-2 text-sm text-muted">Короткие ответы на типовые вопросы по данным, финансам, маркетингу и юридическому блоку.</p>
+          </Card>
+        </Link>
+        <Link href="/learn/quick-start" className="block">
+          <Card className="h-full bg-gradient-to-br from-emerald-50 to-teal-50 transition hover:-translate-y-0.5">
+            <h3 className="text-base font-semibold">Быстрый старт</h3>
+            <p className="mt-2 text-sm text-muted">Пошаговый сценарий «5 минут до ценности» с примерами AI-запросов и нужными переходами.</p>
+          </Card>
+        </Link>
+        <Link href="/learn/guides" className="block">
+          <Card className="h-full bg-gradient-to-br from-amber-50 to-orange-50 transition hover:-translate-y-0.5">
+            <h3 className="text-base font-semibold">Гайды и статьи</h3>
+            <p className="mt-2 text-sm text-muted">Практические материалы по Cash Guard, юнит-экономике, маркетингу и правовым проверкам.</p>
+          </Card>
+        </Link>
+        <Link href="/learn/videos" className="block">
+          <Card className="h-full bg-gradient-to-br from-violet-50 to-indigo-50 transition hover:-translate-y-0.5">
+            <h3 className="text-base font-semibold">Видео-обучение</h3>
+            <p className="mt-2 text-sm text-muted">Короткие ролики, чтобы быстро повторить ключевые сценарии и показать продукт команде.</p>
+          </Card>
+        </Link>
       </div>
     </div>
   );

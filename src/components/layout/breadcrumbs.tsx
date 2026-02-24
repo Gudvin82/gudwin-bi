@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const labels: Record<string, string> = {
-  overview: "Главная",
+  overview: "Рабочий кабинет",
   main: "Главная",
   dashboards: "Дашборды",
   builder: "Конструктор",
@@ -39,6 +39,10 @@ const labels: Record<string, string> = {
   analytics: "Аналитика",
   templates: "Шаблоны отраслей",
   learn: "Обучение / FAQ",
+  faq: "FAQ",
+  "quick-start": "Быстрый старт",
+  guides: "Гайды и статьи",
+  videos: "Видео-обучение",
   contacts: "Контакты",
   competitor: "Конкурентный мониторинг",
   "desktop-agent": "Десктоп AI-агент",
