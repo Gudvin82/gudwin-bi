@@ -57,7 +57,7 @@ export function Breadcrumbs() {
   const segments = pathname.split("/").filter(Boolean);
 
   return (
-    <div className="mb-3 flex flex-wrap items-center gap-2 text-xs text-muted">
+    <div className="mb-3 flex items-center gap-2 overflow-x-auto whitespace-nowrap pb-1 text-xs text-muted">
       <Link href="/owner" className="rounded-md px-2 py-1 hover:bg-slate-100">
         GudWin BI
       </Link>
@@ -65,7 +65,7 @@ export function Breadcrumbs() {
         const href = `/${segments.slice(0, idx + 1).join("/")}`;
         const isLast = idx === segments.length - 1;
         return (
-          <div key={href} className="flex items-center gap-2">
+          <div key={href} className={`items-center gap-2 ${isLast ? "flex" : "hidden sm:flex"}`}>
             <span>/</span>
             {isLast ? (
               <span className="rounded-md bg-slate-100 px-2 py-1 font-semibold text-text">{labels[segment] ?? segment}</span>

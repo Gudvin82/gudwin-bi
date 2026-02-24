@@ -12,7 +12,7 @@ export default function OverviewPage() {
       <Card className="border-cyan-200 bg-gradient-to-r from-cyan-50 to-emerald-50">
         <p className="text-sm font-semibold">Подключите свои данные и запустите боевой контур аналитики.</p>
         <p className="text-sm text-muted">Google Sheets/CSV/CRM webhook: после подключения система сформирует стартовый дашборд и AI-рекомендации.</p>
-        <div className="mt-3 flex gap-2">
+        <div className="mt-3 flex flex-wrap gap-2">
           <Link href="/sources" className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-3 py-2 text-sm font-semibold text-white">
             Подключить источник
           </Link>
@@ -31,7 +31,7 @@ export default function OverviewPage() {
                 <p className="text-4xl font-extrabold">78 / 100</p>
                 <p className="text-sm text-slate-200">Главный риск: кассовый разрыв в следующем месяце при текущей дебиторке.</p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 <Link href="/owner" className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-900">
                   Открыть Режим владельца
                 </Link>

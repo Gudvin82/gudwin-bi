@@ -35,6 +35,12 @@ body {
   gap: 16px;
 }
 
+@media (max-width: 1023px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
 .animate-fade-up {
   animation: fadeUp 0.45s ease-out both;
 }

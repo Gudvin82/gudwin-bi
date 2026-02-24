@@ -150,7 +150,13 @@ const sections: NavSection[] = [
   }
 ];
 
-export function Sidebar() {
+export function Sidebar({
+  className,
+  onNavigate
+}: {
+  className?: string;
+  onNavigate?: () => void;
+}) {
   const pathname = usePathname();
 
   const defaultOpen = useMemo(() => {
@@ -161,7 +167,7 @@ export function Sidebar() {
   const [opened, setOpened] = useState<string>(defaultOpen);
 
   return (
-    <aside className="sticky top-0 h-dvh w-72 shrink-0 border-r border-slate-200/70 bg-white/70 p-4 backdrop-blur-xl">
+    <aside className={cn("sticky top-0 h-dvh w-72 shrink-0 border-r border-slate-200/70 bg-white/70 p-4 backdrop-blur-xl", className)}>
       <div className="mb-5 flex items-center gap-3 rounded-2xl border border-slate-200/80 bg-white/90 p-3 shadow-sm">
         <div className="grid h-10 w-10 place-content-center rounded-xl bg-gradient-to-br from-cyan-600 to-teal-600 text-sm font-bold text-white">GW</div>
         <div>
@@ -200,6 +206,7 @@ export function Sidebar() {
                       <Link
                         key={child.href}
                         href={child.href}
+                        onClick={onNavigate}
                         className={cn(
                           "flex items-center gap-2 rounded-lg px-3 py-2 text-xs",
                           childActive ? "bg-slate-100 font-semibold text-text" : "text-muted hover:bg-slate-100"

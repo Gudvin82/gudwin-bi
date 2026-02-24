@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Bell, CalendarRange, Sparkles, UserCircle2 } from "lucide-react";
+import { Bell, CalendarRange, Menu, Sparkles, UserCircle2 } from "lucide-react";
 
 const headerMap: Record<string, { title: string; subtitle: string }> = {
   owner: { title: "Режим владельца", subtitle: "Ключевые метрики, риски и фокус дня для собственника." },
@@ -21,7 +21,7 @@ const headerMap: Record<string, { title: string; subtitle: string }> = {
   agents: { title: "AI-агенты", subtitle: "Запуск и управление задачами бизнес-агентов." }
 };
 
-export function Topbar() {
+export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
   const pathname = usePathname();
   const [online, setOnline] = useState(true);
 
@@ -41,31 +41,41 @@ export function Topbar() {
 
   return (
     <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
-      <div>
-        <h1 className="text-2xl font-bold">{header.title}</h1>
-        <p className="text-sm text-muted">{header.subtitle}</p>
-        <div className="mt-2 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-1 text-xs text-muted">
+      <div className="min-w-0">
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={onMenuClick}
+            aria-label="Открыть меню"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white/90 text-slate-700 shadow-sm lg:hidden"
+          >
+            <Menu size={18} />
+          </button>
+          <h1 className="truncate text-xl font-bold sm:text-2xl">{header.title}</h1>
+        </div>
+        <p className="mt-1 line-clamp-2 text-sm text-muted">{header.subtitle}</p>
+        <div className="mt-2 hidden items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-1 text-xs text-muted sm:inline-flex">
           <span className={`inline-flex h-2 w-2 rounded-full ${online ? "bg-emerald-500" : "bg-rose-500"}`} />
           {online ? "Сеть доступна" : "Нет подключения к сети"}
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
-        <Link href="/overview" className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-sm font-semibold shadow-sm">
+      <div className="flex w-full flex-wrap items-center gap-2 lg:w-auto">
+        <Link href="/overview" className="hidden min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-sm font-semibold shadow-sm md:inline-flex">
           Открыть обзор
         </Link>
-        <Link href="/sources" className="inline-flex min-h-10 items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm">
+        <Link href="/sources" className="inline-flex min-h-10 flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm sm:flex-none">
           <Sparkles size={16} />
           Подключить данные
         </Link>
-        <button aria-label="Выбрать период отчета" className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-sm text-muted shadow-sm">
+        <button aria-label="Выбрать период отчета" className="hidden min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-sm text-muted shadow-sm md:inline-flex">
           <CalendarRange size={16} />
           Последние 30 дней
         </button>
         <button aria-label="Открыть уведомления" className="rounded-xl border border-slate-200 bg-white/90 p-2.5 text-muted shadow-sm">
           <Bell size={16} />
         </button>
-        <button aria-label="Открыть профиль владельца" className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-sm font-medium shadow-sm">
+        <button aria-label="Открыть профиль владельца" className="hidden min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-sm font-medium shadow-sm sm:inline-flex">
           <UserCircle2 size={16} />
           Владелец
         </button>
