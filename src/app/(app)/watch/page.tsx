@@ -16,6 +16,12 @@ const alertTypeLabels: Record<string, string> = {
   creative_burnout: "Выгорание креатива"
 };
 
+const levelLabels: Record<string, string> = {
+  critical: "Критический",
+  warning: "Предупреждение",
+  info: "Инфо"
+};
+
 export default function WatchPage() {
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [mode, setMode] = useState("critical_only");
@@ -66,7 +72,7 @@ export default function WatchPage() {
         <div className="space-y-2 text-sm">
           {alerts.map((alert) => (
             <div key={alert.id} className={`rounded-xl border p-3 ${alert.level === "critical" ? "border-red-300 bg-red-50" : "border-border"}`}>
-              <p className="font-semibold">{alertTypeLabels[alert.type] ?? alert.type} • {alert.level}</p>
+              <p className="font-semibold">{alertTypeLabels[alert.type] ?? alert.type} • {levelLabels[alert.level] ?? alert.level}</p>
               <p>{alert.message}</p>
               <p className="text-xs text-muted">Канал: {alert.channel} • {new Date(alert.createdAt).toLocaleString("ru-RU")}</p>
             </div>

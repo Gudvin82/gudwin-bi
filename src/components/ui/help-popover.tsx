@@ -26,7 +26,7 @@ export function HelpPopover({ title, items }: HelpPopoverProps) {
           <div className="w-full max-w-md rounded-2xl border border-border bg-white p-4 shadow-soft animate-fade-up">
             <div className="mb-2 flex items-center justify-between">
               <p className="text-sm font-bold">{title}</p>
-              <button onClick={() => setOpen(false)} className="rounded-md p-1 text-muted hover:bg-slate-100">
+              <button onClick={() => setOpen(false)} aria-label="Закрыть подсказку" className="rounded-md p-1 text-muted hover:bg-slate-100">
                 <X size={14} />
               </button>
             </div>

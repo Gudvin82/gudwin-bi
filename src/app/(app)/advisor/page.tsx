@@ -55,6 +55,9 @@ export default function AdvisorPage() {
   const [loading, setLoading] = useState(false);
   const [decisionStatus, setDecisionStatus] = useState<string>("");
   const [decisions, setDecisions] = useState<Array<{ id: string; recommendation: string; status: string }>>([]);
+  const appendMessages = (incoming: ChatMessage[]) => {
+    setMessages((prev) => [...prev, ...incoming].slice(-30));
+  };
 
   const activeSession = useMemo(() => sessions.find((item) => item.id === activeSessionId) ?? null, [sessions, activeSessionId]);
 
@@ -100,7 +103,7 @@ export default function AdvisorPage() {
 
     setLoading(true);
     const userMessage: ChatMessage = { id: crypto.randomUUID(), role: "user", text: input };
-    setMessages((prev) => [...prev, userMessage]);
+    appendMessages([userMessage]);
 
     const res = await fetch("/api/advisor/query", {
       method: "POST",
@@ -109,7 +112,7 @@ export default function AdvisorPage() {
     });
 
     if (!res.ok) {
-      setMessages((prev) => [...prev, { id: crypto.randomUUID(), role: "assistant", text: "Ошибка запроса к консультанту. Попробуйте снова." }]);
+      appendMessages([{ id: crypto.randomUUID(), role: "assistant", text: "Ошибка запроса к консультанту. Попробуйте снова." }]);
       setLoading(false);
       return;
     }
@@ -118,8 +121,7 @@ export default function AdvisorPage() {
       explain?: ExplainBlock;
       context?: { kpi?: Record<string, number>; dataSources?: string[]; warnings?: string[] };
     };
-    setMessages((prev) => [
-      ...prev,
+    appendMessages([
       {
         id: crypto.randomUUID(),
         role: "assistant",

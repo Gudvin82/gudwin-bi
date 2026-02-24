@@ -12,13 +12,19 @@ type OwnerPayload = {
 };
 
 export default function OwnerPage() {
-  const [data, setData] = useState<OwnerPayload | null>(null);
+  const [data, setData] = useState<OwnerPayload>({
+    health: { score: 78, components: { financial: 74, cash: 62, operations: 81, riskPenalty: 8 } },
+    focusOfDay: "Проверить 3 просроченные дебиторки и снизить кассовый риск.",
+    problemOfWeek: "ROMI в 2 маркетинговых каналах ниже целевого порога."
+  });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const load = async () => {
       const res = await fetch("/api/owner/health");
       const json = (await res.json()) as OwnerPayload;
       setData(json);
+      setLoading(false);
     };
     void load();
   }, []);
@@ -55,27 +61,28 @@ export default function OwnerPage() {
               ]}
             />
           </div>
-          <p className="text-5xl font-extrabold text-accent">{data?.health.score ?? "--"}</p>
+          <p className="text-5xl font-extrabold text-accent">{data.health.score}</p>
           <p className="text-xs text-muted">0-100, чем выше, тем устойчивее бизнес</p>
         </Card>
         <Card className="col-span-12 md:col-span-8">
           <p className="mb-2 text-sm font-semibold">Компоненты</p>
           <div className="grid grid-cols-3 gap-2 text-sm">
-            <div className="rounded-xl border border-border p-3">Финансы: {data?.health.components.financial ?? "--"}</div>
-            <div className="rounded-xl border border-border p-3">Деньги: {data?.health.components.cash ?? "--"}</div>
-            <div className="rounded-xl border border-border p-3">Операции: {data?.health.components.operations ?? "--"}</div>
+            <div className="rounded-xl border border-border p-3">Финансы: {data.health.components.financial}</div>
+            <div className="rounded-xl border border-border p-3">Деньги: {data.health.components.cash}</div>
+            <div className="rounded-xl border border-border p-3">Операции: {data.health.components.operations}</div>
           </div>
+          {loading ? <p className="mt-2 text-xs text-muted">Обновляем показатели...</p> : null}
         </Card>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
         <Card>
           <p className="mb-2 text-sm font-semibold">Главная проблема недели</p>
-          <p className="text-sm">{data?.problemOfWeek ?? "Загрузка..."}</p>
+          <p className="text-sm">{data.problemOfWeek}</p>
         </Card>
         <Card>
           <p className="mb-2 text-sm font-semibold">Главный фокус дня</p>
-          <p className="text-sm">{data?.focusOfDay ?? "Загрузка..."}</p>
+          <p className="text-sm">{data.focusOfDay}</p>
         </Card>
       </div>
 

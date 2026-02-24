@@ -10,21 +10,21 @@ export function Topbar() {
       </div>
 
       <div className="flex items-center gap-2">
-        <Link href="/overview" className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-sm font-semibold">
+        <Link href="/overview" className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-sm font-semibold">
           Показать демо
         </Link>
-        <Link href="/sources" className="inline-flex items-center gap-2 rounded-xl bg-accent px-3 py-2 text-sm font-semibold text-white">
+        <Link href="/sources" className="inline-flex min-h-10 items-center gap-2 rounded-xl bg-accent px-3 py-2 text-sm font-semibold text-white">
           <Sparkles size={16} />
           Подключить данные
         </Link>
-        <button className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-sm text-muted">
+        <button aria-label="Выбрать период отчета" className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-sm text-muted">
           <CalendarRange size={16} />
           Последние 30 дней
         </button>
-        <button className="rounded-xl border border-border bg-card p-2 text-muted">
+        <button aria-label="Открыть уведомления" className="rounded-xl border border-border bg-card p-2.5 text-muted">
           <Bell size={16} />
         </button>
-        <button className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-sm font-medium">
+        <button aria-label="Открыть профиль владельца" className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-sm font-medium">
           <UserCircle2 size={16} />
           Владелец
         </button>

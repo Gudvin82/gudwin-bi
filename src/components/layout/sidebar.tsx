@@ -27,7 +27,7 @@ const sections: NavSection[] = [
     icon: UserRoundCog,
     children: [
       { href: "/owner", label: "Рабочий кабинет" },
-      { href: "/overview", label: "Детальный обзор" }
+      { href: "/overview", label: "Главная панель" }
     ]
   },
   {

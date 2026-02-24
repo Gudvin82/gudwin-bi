@@ -11,9 +11,8 @@ export default function OverviewPage() {
     <div className="space-y-4">
       {appConfig.demoMode ? (
         <Card className="border-accent/30 bg-accentSoft">
-          <p className="text-sm">
-            Демо-данные активны. Чтобы получить реальный дашборд, подключите Google Sheets/CSV или CRM webhook.
-          </p>
+          <p className="text-sm font-semibold">Вы смотрите демо-режим.</p>
+          <p className="text-sm text-muted">Подключите Google Sheets/CSV или CRM webhook, и мы построим ваш первый реальный дашборд за несколько минут.</p>
           <div className="mt-3 flex gap-2">
             <Link href="/sources" className="rounded-xl bg-accent px-3 py-2 text-sm font-semibold text-white">
               Подключить источник
@@ -85,27 +84,27 @@ export default function OverviewPage() {
       </Card>
 
       <div className="grid gap-4 lg:grid-cols-3">
+        <Link href="/finance" className="block">
         <Card className="bg-gradient-to-br from-pink-50 to-rose-50">
           <p className="text-sm font-semibold">Финансовый ракурс</p>
-          <p className="mt-2 text-sm text-muted">Кассовый прогноз, юнит-экономика, сценарии и утечки денег в одном блоке.</p>
-          <Link href="/finance" className="mt-3 inline-flex rounded-lg border border-border px-3 py-2 text-sm">
-            Смотреть
-          </Link>
+          <p className="mt-2 text-sm text-muted">Кассовый прогноз, юнит-экономика, сценарии и утечки денег. Видно, когда заканчиваются деньги и где уходит маржа.</p>
+          <span className="mt-3 inline-flex rounded-lg border border-border px-3 py-2 text-sm">Смотреть</span>
         </Card>
+        </Link>
+        <Link href="/agents" className="block">
         <Card className="bg-gradient-to-br from-violet-50 to-indigo-50">
           <p className="text-sm font-semibold">Операционный ракурс</p>
-          <p className="mt-2 text-sm text-muted">Агенты и правила действий для ежедневных задач и автоматизаций.</p>
-          <Link href="/agents" className="mt-3 inline-flex rounded-lg border border-border px-3 py-2 text-sm">
-            Открыть
-          </Link>
+          <p className="mt-2 text-sm text-muted">Агенты и правила, которые берут на себя рутину и часть задач команды.</p>
+          <span className="mt-3 inline-flex rounded-lg border border-border px-3 py-2 text-sm">Открыть</span>
         </Card>
+        </Link>
+        <Link href="/advisor" className="block">
         <Card className="bg-gradient-to-br from-amber-50 to-orange-50">
           <p className="text-sm font-semibold">Стратегический ракурс</p>
-          <p className="mt-2 text-sm text-muted">Консультант и конкурентный мониторинг для решений собственника и инвестора.</p>
-          <Link href="/advisor" className="mt-3 inline-flex rounded-lg border border-border px-3 py-2 text-sm">
-            Перейти
-          </Link>
+          <p className="mt-2 text-sm text-muted">AI-консультант и мониторинг подсказывают, где усилить рост и что лучше остановить.</p>
+          <span className="mt-3 inline-flex rounded-lg border border-border px-3 py-2 text-sm">Перейти</span>
         </Card>
+        </Link>
       </div>
     </div>
   );
