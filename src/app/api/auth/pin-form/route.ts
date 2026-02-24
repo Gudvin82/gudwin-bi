@@ -8,13 +8,19 @@ export async function POST(req: NextRequest) {
 
   const nextParam = req.nextUrl.searchParams.get("next");
   const nextPath = nextParam && nextParam.startsWith("/") ? nextParam : "/owner";
+  const forwardedHost = req.headers.get("x-forwarded-host") ?? req.headers.get("host");
+  const forwardedProto = req.headers.get("x-forwarded-proto") ?? "http";
+  const origin = forwardedHost ? `${forwardedProto}://${forwardedHost}` : req.nextUrl.origin;
 
   if (pin !== expectedPin) {
-    const location = `/pin?next=${encodeURIComponent(nextPath)}&error=invalid`;
-    return NextResponse.redirect(location, { status: 303 });
+    const errorUrl = new URL("/pin", origin);
+    errorUrl.searchParams.set("next", nextPath);
+    errorUrl.searchParams.set("error", "invalid");
+    return NextResponse.redirect(errorUrl, { status: 303 });
   }
 
-  const res = NextResponse.redirect(nextPath, { status: 303 });
+  const successUrl = new URL(nextPath, origin);
+  const res = NextResponse.redirect(successUrl, { status: 303 });
   res.cookies.set(PIN_COOKIE_NAME, PIN_COOKIE_VALUE, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
