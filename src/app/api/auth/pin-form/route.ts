@@ -10,13 +10,11 @@ export async function POST(req: NextRequest) {
   const nextPath = nextParam && nextParam.startsWith("/") ? nextParam : "/owner";
 
   if (pin !== expectedPin) {
-    const url = new URL("/pin", req.url);
-    url.searchParams.set("next", nextPath);
-    url.searchParams.set("error", "invalid");
-    return NextResponse.redirect(url);
+    const location = `/pin?next=${encodeURIComponent(nextPath)}&error=invalid`;
+    return NextResponse.redirect(location, { status: 303 });
   }
 
-  const res = NextResponse.redirect(new URL(nextPath, req.url));
+  const res = NextResponse.redirect(nextPath, { status: 303 });
   res.cookies.set(PIN_COOKIE_NAME, PIN_COOKIE_VALUE, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
