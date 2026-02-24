@@ -138,8 +138,8 @@ export const integrations: IntegrationItem[] = [
 ];
 
 export const integrationRules: IntegrationRule[] = [
-  { id: "r1", when: "IF conversion < 8%", then: "THEN create CRM task for sales lead review", enabled: true },
-  { id: "r2", when: "IF payment overdue > 3 days", then: "THEN send Telegram reminder + SMS", enabled: true }
+  { id: "r1", when: "Если конверсия < 8%", then: "То создать задачу в CRM на разбор воронки продаж", enabled: true },
+  { id: "r2", when: "Если просрочка платежа > 3 дней", then: "То отправить напоминание в Telegram и SMS", enabled: true }
 ];
 
 export const learnFaq = [
@@ -148,12 +148,12 @@ export const learnFaq = [
     a: "Откройте «Источники данных», вставьте ссылку Google Sheets или загрузите CSV/Excel."
   },
   {
-    q: "Как работает Smart Advisor?",
-    a: "Advisor использует KPI, unit economics, cash guard и историю сессий для структурированных рекомендаций."
+    q: "Как работает AI-советник?",
+    a: "AI-советник использует KPI, юнит-экономику, прогноз денег и историю сессий для структурированных рекомендаций."
   },
   {
-    q: "Что такое Owner Mode?",
-    a: "Это экран собственника: Health Score, главная проблема недели и фокус дня."
+    q: "Что такое Режим владельца?",
+    a: "Это экран собственника: индекс здоровья бизнеса, главная проблема недели и фокус дня."
   }
 ];
 

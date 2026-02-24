@@ -56,7 +56,7 @@ export default function FinancePage() {
       <Card className="animate-fade-up bg-gradient-to-r from-sky-50 to-teal-50">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h2 className="text-xl font-bold">Финансы (Smart Finance)</h2>
+            <h2 className="text-xl font-bold">Финансы</h2>
             <p className="text-sm text-muted">Здесь вы видите прогноз денег, юнит-экономику и зоны потери прибыли.</p>
           </div>
           <HelpPopover
@@ -100,9 +100,9 @@ export default function FinancePage() {
         </Card>
         <Card>
           <div className="mb-1 flex items-center gap-2">
-            <p className="text-sm text-muted">Cash Guard (мин. остаток 30 дней)</p>
+            <p className="text-sm text-muted">Прогноз денег (мин. остаток 30 дней)</p>
             <HelpPopover
-              title="Cash Guard"
+              title="Прогноз денег"
               items={[
                 "Показывает минимальный прогноз остатка денег за ближайшие 30 дней.",
                 "Если значение красное, есть риск кассового разрыва.",
@@ -157,7 +157,7 @@ export default function FinancePage() {
 
       <div className="grid gap-4 xl:grid-cols-2">
         <Card>
-          <h3 className="mb-3 text-base font-semibold">Cash Guard (30 дней)</h3>
+          <h3 className="mb-3 text-base font-semibold">Прогноз денег (30 дней)</h3>
           <div className="space-y-1 text-sm">
             {cash.slice(0, 10).map((row) => (
               <div key={row.date} className="flex items-center justify-between rounded-lg border border-border px-3 py-2">

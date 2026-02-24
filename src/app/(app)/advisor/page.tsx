@@ -280,20 +280,20 @@ export default function AdvisorPage() {
             <p>{(context.dataSources ?? ["google_sheets", "bitrix24", "excel_upload"]).join(", ")}</p>
           </div>
           <div className="rounded-xl border border-border p-3">
-            <p className="text-xs text-muted">Unit Economics</p>
+            <p className="text-xs text-muted">Юнит-экономика</p>
             <p>LTV/CAC: 2.84 (цель {'>'} 3)</p>
             <p>ROMI: 132%</p>
           </div>
           <div className="rounded-xl border border-border p-3">
-            <p className="text-xs text-muted">Cash Guard</p>
-            <p>Прогноз min balance 30д: -120 000 ₽</p>
+            <p className="text-xs text-muted">Прогноз денег</p>
+            <p>Прогноз мин. остатка на 30 дней: -120 000 ₽</p>
           </div>
           <div className="rounded-xl border border-border p-3">
-            <p className="text-xs text-muted">Money Leaks</p>
+            <p className="text-xs text-muted">Утечки денег</p>
             <p>3 критичных зоны утечки</p>
           </div>
           <div className="rounded-xl border border-border p-3">
-            <p className="text-xs text-muted">Smart Predict</p>
+            <p className="text-xs text-muted">Прогноз</p>
             <p>Прогноз выручки на 3 мес: +8.5%</p>
           </div>
           <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-amber-800 animate-soft-pulse">

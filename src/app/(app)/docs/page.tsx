@@ -76,7 +76,7 @@ export default function DocsPage() {
       <Card className="animate-fade-up bg-gradient-to-r from-orange-50 to-amber-50">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h2 className="text-xl font-bold">Документы и право (Smart Docs & Law)</h2>
+            <h2 className="text-xl font-bold">Документы и право</h2>
             <p className="text-sm text-muted">Здесь вы проверяете контрагентов и кандидатов на риски и работаете с документами.</p>
           </div>
           <HelpPopover
@@ -117,7 +117,7 @@ export default function DocsPage() {
       </div>
 
       <Card>
-        <h3 className="mb-3 text-base font-semibold">Проверка кандидата (Smart Hire + Law)</h3>
+        <h3 className="mb-3 text-base font-semibold">Проверка кандидата</h3>
         <div className="grid gap-2 md:grid-cols-2">
           <input value={candidateName} onChange={(e) => setCandidateName(e.target.value)} className="rounded-xl border border-border p-2 text-sm" placeholder="ФИО" />
           <input value={candidatePassport} onChange={(e) => setCandidatePassport(e.target.value)} className="rounded-xl border border-border p-2 text-sm" placeholder="Паспорт" />

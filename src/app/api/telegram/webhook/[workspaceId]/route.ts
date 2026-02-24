@@ -6,7 +6,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ wor
   const webhookSecret = request.headers.get("x-telegram-secret");
 
   if (process.env.TELEGRAM_WEBHOOK_SECRET && process.env.TELEGRAM_WEBHOOK_SECRET !== webhookSecret) {
-    return NextResponse.json({ ok: false, error: "Invalid webhook secret" }, { status: 401 });
+    return NextResponse.json({ ok: false, error: "Некорректный секрет вебхука Telegram." }, { status: 401 });
   }
 
   const { workspaceId } = await params;

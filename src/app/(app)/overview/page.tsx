@@ -36,10 +36,10 @@ export default function OverviewPage() {
               </div>
               <div className="flex gap-2">
                 <Link href="/owner" className="rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white">
-                  Открыть Режим владельца (Owner Mode)
+                  Открыть Режим владельца
                 </Link>
                 <Link href="/finance" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">
-                  Перейти в Финансы (Smart Finance)
+                  Перейти в Финансы
                 </Link>
               </div>
             </div>

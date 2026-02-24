@@ -26,7 +26,7 @@ export default function ConnectPage() {
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up bg-gradient-to-r from-violet-50 to-sky-50">
-        <h2 className="text-xl font-bold">Интеграции (Smart Connect)</h2>
+        <h2 className="text-xl font-bold">Интеграции</h2>
         <p className="text-sm text-muted">Единая интеграционная шина: CRM, банки, реклама, маркетплейсы, вебхуки и правила действий.</p>
       </Card>
 
@@ -44,7 +44,7 @@ export default function ConnectPage() {
         </Card>
 
         <Card>
-          <h3 className="mb-3 text-base font-semibold">Webhook-конструктор (IF → THEN)</h3>
+          <h3 className="mb-3 text-base font-semibold">Webhook-конструктор (если → то)</h3>
           <div className="space-y-2 text-sm">
             {rules.map((rule) => (
               <div key={rule.id} className="rounded-xl border border-border p-3">

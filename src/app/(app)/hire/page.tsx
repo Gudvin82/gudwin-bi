@@ -78,7 +78,7 @@ export default function HirePage() {
       <Card className="animate-fade-up">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h2 className="mb-2 text-xl font-bold">Найм (Smart Hire)</h2>
+            <h2 className="mb-2 text-xl font-bold">Найм</h2>
             <p className="text-sm text-muted">Здесь можно быстро сформировать понятную заявку на поиск специалиста.</p>
           </div>
           <HelpPopover

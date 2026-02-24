@@ -26,7 +26,7 @@ export default function LearnPage() {
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up bg-gradient-to-r from-blue-50 to-indigo-50">
-        <h2 className="text-xl font-bold">Обучение (Smart Learn) / FAQ</h2>
+        <h2 className="text-xl font-bold">Обучение / FAQ</h2>
         <p className="text-sm text-muted">Обучение пользователей, FAQ и AI-помощник по продукту.</p>
       </Card>
 

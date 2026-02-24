@@ -6,8 +6,8 @@ export const dictionaries = {
   },
   en: {
     appName: "GudWin BI",
-    overview: "Overview",
-    dashboards: "Dashboards"
+    overview: "Обзор",
+    dashboards: "Дашборды"
   }
 };
 

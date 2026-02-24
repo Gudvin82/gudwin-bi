@@ -8,7 +8,7 @@ export function Topbar() {
       <div>
         <h1 className="text-2xl font-bold">Рабочий кабинет</h1>
         <p className="text-sm text-muted">
-          {appConfig.demoMode ? "Сейчас включен demo-режим. Подключите свои данные для реальной аналитики." : "Загрузите данные и формулируйте отчеты обычным текстом."}
+          {appConfig.demoMode ? "Сейчас включен демо-режим. Подключите свои данные для реальной аналитики." : "Загрузите данные и формулируйте отчеты обычным текстом."}
         </p>
       </div>
 
@@ -29,7 +29,7 @@ export function Topbar() {
         </button>
         <button className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-sm font-medium">
           <UserCircle2 size={16} />
-          Owner
+          Владелец
         </button>
       </div>
     </header>

@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "GudWin BI",
-  description: "GudWin BI - AI dashboard for SME owners"
+  description: "GudWin BI — AI-операционная система для малого и среднего бизнеса"
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

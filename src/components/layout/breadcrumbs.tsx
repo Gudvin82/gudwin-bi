@@ -13,16 +13,29 @@ const labels: Record<string, string> = {
   onboarding: "Быстрый старт",
   owner: "Режим владельца",
   advisor: "Консультант",
+  board: "Совет директоров",
+  growth: "Идеи роста",
+  journal: "Дневник бизнеса",
   finance: "Финансы",
+  bank: "Смарт Банк",
+  accounting: "Смарт Бухгалтерия",
   agents: "Агенты",
   hire: "Найм",
+  team: "Команда",
+  insights: "Эффективность команды",
   docs: "Документы и право",
+  "contracts-audit": "Аудит договоров",
   connect: "Интеграции",
+  integrations: "Интеграции",
   watch: "Мониторинг",
+  "auto-actions": "Авто-реакции",
+  analytics: "Аналитика",
+  templates: "Шаблоны отраслей",
   learn: "Обучение / FAQ",
   contacts: "Контакты",
   competitor: "Конкурентный мониторинг",
-  "desktop-agent": "Desktop AI агент"
+  "desktop-agent": "Десктоп AI-агент",
+  simple: "Объяснить просто"
 };
 
 export function Breadcrumbs() {

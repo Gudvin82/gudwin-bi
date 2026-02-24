@@ -25,7 +25,7 @@ export default function WatchPage() {
       <Card className="animate-fade-up bg-gradient-to-r from-rose-50 to-orange-50">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h2 className="text-xl font-bold">Мониторинг (Smart Watch)</h2>
+            <h2 className="text-xl font-bold">Мониторинг</h2>
             <p className="text-sm text-muted">Здесь настраиваются уведомления и утренние отчеты о важных событиях в бизнесе.</p>
           </div>
           <HelpPopover

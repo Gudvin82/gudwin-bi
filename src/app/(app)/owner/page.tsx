@@ -28,7 +28,7 @@ export default function OwnerPage() {
       <Card className="animate-fade-up bg-gradient-to-r from-emerald-50 to-cyan-50">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h2 className="text-xl font-bold">Режим владельца (Owner Mode)</h2>
+            <h2 className="text-xl font-bold">Режим владельца</h2>
             <p className="text-sm text-muted">Здесь вы видите общее здоровье бизнеса, главную проблему недели и фокус дня.</p>
           </div>
           <HelpPopover
@@ -45,7 +45,7 @@ export default function OwnerPage() {
       <div className="dashboard-grid">
         <Card className="col-span-12 md:col-span-4">
           <div className="mb-1 flex items-center gap-2">
-            <p className="text-sm text-muted">Индекс здоровья бизнеса (Health Score)</p>
+            <p className="text-sm text-muted">Индекс здоровья бизнеса</p>
             <HelpPopover
               title="Что означает индекс"
               items={[
@@ -62,7 +62,7 @@ export default function OwnerPage() {
           <p className="mb-2 text-sm font-semibold">Компоненты</p>
           <div className="grid grid-cols-3 gap-2 text-sm">
             <div className="rounded-xl border border-border p-3">Финансы: {data?.health.components.financial ?? "--"}</div>
-            <div className="rounded-xl border border-border p-3">Cash: {data?.health.components.cash ?? "--"}</div>
+            <div className="rounded-xl border border-border p-3">Деньги: {data?.health.components.cash ?? "--"}</div>
             <div className="rounded-xl border border-border p-3">Операции: {data?.health.components.operations ?? "--"}</div>
           </div>
         </Card>
@@ -82,10 +82,10 @@ export default function OwnerPage() {
       <Card>
         <div className="flex flex-wrap gap-2">
           <Link href="/finance" className="rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white">
-            Перейти в Финансы (Smart Finance)
+            Перейти в Финансы
           </Link>
           <Link href="/advisor" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">
-            Открыть Консультант (Smart Advisor)
+            Открыть AI-советника
           </Link>
           <Link href="/watch" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">
             Смотреть алерты

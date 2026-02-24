@@ -26,7 +26,7 @@ export default function DesktopAgentPage() {
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up bg-gradient-to-r from-zinc-50 to-slate-100">
-        <h2 className="text-xl font-bold">Desktop AI Агент (v2+)</h2>
+        <h2 className="text-xl font-bold">Десктоп AI-агент (v2+)</h2>
         <p className="text-sm text-muted">Архитектура и дорожная карта локального агента мониторинга на рабочем ПК сотрудника.</p>
       </Card>
 

@@ -11,7 +11,7 @@ const schema = z.object({
 export async function POST(request: Request) {
   const session = await getSessionContext();
   if (session.role !== "owner") {
-    return NextResponse.json({ error: "Only owner can send test SMS" }, { status: 403 });
+    return NextResponse.json({ error: "Только владелец рабочего пространства может отправлять тестовые SMS." }, { status: 403 });
   }
 
   const input = schema.parse(await request.json());
