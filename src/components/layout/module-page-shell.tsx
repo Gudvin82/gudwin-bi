@@ -6,7 +6,6 @@ type ModulePageShellProps = {
   title: string;
   subtitle: string;
   whatItDoes: string[];
-  status?: "mvp" | "v2";
   blocks: Array<{
     title: string;
     description: string;
@@ -15,7 +14,7 @@ type ModulePageShellProps = {
   }>;
 };
 
-export function ModulePageShell({ title, subtitle, whatItDoes, status = "mvp", blocks }: ModulePageShellProps) {
+export function ModulePageShell({ title, subtitle, whatItDoes, blocks }: ModulePageShellProps) {
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up bg-gradient-to-r from-slate-50 to-zinc-100">
@@ -29,12 +28,6 @@ export function ModulePageShell({ title, subtitle, whatItDoes, status = "mvp", b
             items={whatItDoes}
           />
         </div>
-      </Card>
-
-      <Card>
-        <p className="text-sm text-muted">
-          Статус модуля: {status === "mvp" ? "MVP" : "Дорожная карта v2+"}. Раздел уже встроен в архитектуру и готов к расширению без переделки меню.
-        </p>
       </Card>
 
       <div className="grid gap-4 md:grid-cols-2">

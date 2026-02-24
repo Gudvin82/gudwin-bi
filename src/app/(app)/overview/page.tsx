@@ -43,13 +43,13 @@ export default function OverviewPage() {
           </Card>
         </div>
 
-        <div className="col-span-12 md:col-span-4">
+        <div className="col-span-12 md:col-span-6 xl:col-span-4">
           <MetricCard title="Выручка" value="3 950 000 ₽" delta="+18% к прошлому месяцу" />
         </div>
-        <div className="col-span-12 md:col-span-4">
+        <div className="col-span-12 md:col-span-6 xl:col-span-4">
           <MetricCard title="Сделки" value="1 482" delta="+7.3%" />
         </div>
-        <div className="col-span-12 md:col-span-4">
+        <div className="col-span-12 md:col-span-6 xl:col-span-4">
           <MetricCard title="Средний чек" value="3 215 ₽" delta="+2.1%" />
         </div>
       </div>

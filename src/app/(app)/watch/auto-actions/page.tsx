@@ -10,7 +10,6 @@ export default function WatchAutoActionsPage() {
         "Запускает уведомления, задачи и внешние webhook-сценарии.",
         "Сохраняет логи выполнения для аудита и отката правил."
       ]}
-      status="v2"
       blocks={[
         {
           title: "Примеры правил",

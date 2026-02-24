@@ -143,6 +143,7 @@ const sections: NavSection[] = [
     icon: Settings,
     children: [
       { href: "/settings", label: "Рабочее пространство" },
+      { href: "/settings/ai-keys", label: "AI-провайдеры и ключи" },
       { href: "/settings/simple", label: "Режим «Объяснить просто»" },
       { href: "/contacts", label: "Контакты разработки" }
     ]

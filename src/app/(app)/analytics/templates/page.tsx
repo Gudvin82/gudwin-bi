@@ -10,7 +10,6 @@ export default function AnalyticsTemplatesPage() {
         "Создает стартовые дашборды и базовые шаблоны отчетов.",
         "Дает основу для кастомизации под ваш процесс."
       ]}
-      status="v2"
       blocks={[
         {
           title: "Интернет-магазин",

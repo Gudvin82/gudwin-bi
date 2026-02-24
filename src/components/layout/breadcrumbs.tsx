@@ -13,6 +13,8 @@ const labels: Record<string, string> = {
   ai: "AI-аналитика",
   services: "Сервисы и модули",
   settings: "Настройки",
+  monitoring: "Мониторинг",
+  legal: "Юридический",
   onboarding: "Быстрый старт",
   owner: "Режим владельца",
   advisor: "Консультант",
@@ -46,6 +48,7 @@ const labels: Record<string, string> = {
   contacts: "Контакты",
   competitor: "Конкурентный мониторинг",
   "desktop-agent": "Десктоп AI-агент",
+  "ai-keys": "AI-провайдеры и ключи",
   simple: "Объяснить просто"
 };
 

@@ -10,7 +10,6 @@ export default function FinanceAccountingPage() {
         "Выявляет несоответствия между источниками данных.",
         "Формирует чек-лист по рискам учета."
       ]}
-      status="v2"
       blocks={[
         {
           title: "Календарь отчетности",
