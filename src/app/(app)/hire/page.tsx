@@ -75,7 +75,7 @@ export default function HirePage() {
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up">
-        <h2 className="mb-2 text-xl font-bold">Smart Hire</h2>
+        <h2 className="mb-2 text-xl font-bold">Найм (Smart Hire)</h2>
         <p className="text-sm text-muted">Поиск специалистов и генерация готовой заявки для маркетплейсов услуг.</p>
       </Card>
 

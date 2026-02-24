@@ -35,10 +35,10 @@ export default function OverviewPage() {
               </div>
               <div className="flex gap-2">
                 <Link href="/owner" className="rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white">
-                  Открыть Owner Mode
+                  Открыть Режим владельца (Owner Mode)
                 </Link>
                 <Link href="/finance" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">
-                  Перейти в Smart Finance
+                  Перейти в Финансы (Smart Finance)
                 </Link>
               </div>
             </div>
@@ -83,14 +83,14 @@ export default function OverviewPage() {
         </Card>
         <Card className="bg-gradient-to-br from-violet-50 to-indigo-50">
           <p className="text-sm font-semibold">Операционный ракурс</p>
-          <p className="mt-2 text-sm text-muted">Smart Agents + Action Engine для ежедневных задач и автоматизаций.</p>
+          <p className="mt-2 text-sm text-muted">Агенты (Smart Agents) + Action Engine для ежедневных задач и автоматизаций.</p>
           <Link href="/agents" className="mt-3 inline-flex rounded-lg border border-border px-3 py-2 text-sm">
             Открыть
           </Link>
         </Card>
         <Card className="bg-gradient-to-br from-amber-50 to-orange-50">
           <p className="text-sm font-semibold">Стратегический ракурс</p>
-          <p className="mt-2 text-sm text-muted">Advisor + Competitor Watch для решений собственника и инвестора.</p>
+          <p className="mt-2 text-sm text-muted">Advisor + Конкурентный мониторинг для решений собственника и инвестора.</p>
           <Link href="/advisor" className="mt-3 inline-flex rounded-lg border border-border px-3 py-2 text-sm">
             Перейти
           </Link>

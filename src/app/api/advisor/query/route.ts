@@ -79,6 +79,19 @@ export async function POST(request: Request) {
   return NextResponse.json({
     ...structured,
     sql: plan.sql,
+    explain: {
+      data_basis: [
+        { source: "workspace_kpi_cache", metric: "revenue_30d", value: kpiContext.revenue_30d },
+        { source: "workspace_kpi_cache", metric: "margin_pct", value: kpiContext.margin_pct },
+        { source: "smart_finance", metric: "receivables", value: kpiContext.receivables },
+        { source: "smart_finance", metric: "payables", value: kpiContext.payables }
+      ],
+      reasoning_steps: [
+        "Сравнены выручка, расходы и маржа за 30 дней.",
+        "Оценен риск кассового разрыва по дебиторке/кредиторке.",
+        "Сформированы приоритеты по влиянию на прибыль и ликвидность."
+      ]
+    },
     context: {
       kpi: kpiContext,
       dataSources: ["google_sheets", "bitrix24", "excel_upload"],

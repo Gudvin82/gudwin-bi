@@ -25,7 +25,7 @@ export default function OwnerPage() {
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up bg-gradient-to-r from-emerald-50 to-cyan-50">
-        <h2 className="text-xl font-bold">Owner Mode</h2>
+        <h2 className="text-xl font-bold">Режим владельца (Owner Mode)</h2>
         <p className="text-sm text-muted">Экран собственника: Health Score, риски и главный фокус дня.</p>
       </Card>
 
@@ -59,10 +59,10 @@ export default function OwnerPage() {
       <Card>
         <div className="flex flex-wrap gap-2">
           <Link href="/finance" className="rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white">
-            Перейти в Smart Finance
+            Перейти в Финансы (Smart Finance)
           </Link>
           <Link href="/advisor" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">
-            Открыть Smart Advisor
+            Открыть Консультант (Smart Advisor)
           </Link>
           <Link href="/watch" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">
             Смотреть алерты

@@ -103,7 +103,7 @@ export default function AgentsPage() {
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up">
-        <h2 className="mb-2 text-xl font-bold">Smart Agents</h2>
+        <h2 className="mb-2 text-xl font-bold">Агенты (Smart Agents)</h2>
         <p className="text-sm text-muted">Платформа для OpenClaw-агентов: поддержка, HR, продажи, маркетинг и кастомные сценарии.</p>
       </Card>
 

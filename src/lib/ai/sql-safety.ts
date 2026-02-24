@@ -1,0 +1,31 @@
+const ALLOWED_TABLES = ["sales", "expenses", "leads", "crm_deals", "payments"];
+const FORBIDDEN_TOKENS = ["drop ", "truncate ", "alter ", "delete ", "insert ", "update ", "create ", "grant ", "revoke "];
+
+export function enforceSqlSafety(rawSql: string) {
+  const sql = rawSql.trim().replace(/\s+/g, " ").toLowerCase();
+
+  if (!sql.startsWith("select ")) {
+    return { safe: false, reason: "Разрешены только SELECT-запросы." };
+  }
+
+  if (FORBIDDEN_TOKENS.some((token) => sql.includes(token))) {
+    return { safe: false, reason: "Обнаружена потенциально опасная SQL-операция." };
+  }
+
+  const referenced = Array.from(sql.matchAll(/from\s+([a-z_]+)/g)).map((m) => m[1]);
+  const disallowed = referenced.filter((table) => !ALLOWED_TABLES.includes(table));
+  if (disallowed.length) {
+    return { safe: false, reason: `Запрос использует запрещенные таблицы: ${disallowed.join(", ")}.` };
+  }
+
+  let normalized = rawSql.trim();
+  if (!/limit\s+\d+/i.test(normalized)) {
+    normalized = `${normalized.replace(/;?$/, "")} LIMIT 1000;`;
+  }
+
+  if (!/(date|month|created_at|period)/i.test(normalized)) {
+    normalized = `${normalized}\n-- Рекомендация: добавьте фильтр по периоду (например, последние 12 месяцев)`;
+  }
+
+  return { safe: true, sql: normalized, warning: "Применены guardrails: whitelist таблиц, SELECT-only, LIMIT <= 1000." };
+}

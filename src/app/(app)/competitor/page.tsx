@@ -21,7 +21,7 @@ export default function CompetitorPage() {
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up bg-gradient-to-r from-fuchsia-50 to-pink-50">
-        <h2 className="text-xl font-bold">Competitor Watch</h2>
+        <h2 className="text-xl font-bold">Конкурентный мониторинг</h2>
         <p className="text-sm text-muted">Мониторинг цен, акций и сигналов конкурентов с рекомендациями действий.</p>
       </Card>
 

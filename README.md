@@ -34,6 +34,20 @@ MVP платформы аналитики для малого/среднего �
 - База данных (Supabase/Postgres): миграция с multi-tenant таблицами, индексами и RLS policy.
 - Расширенная схема БД для Smart модулей: `workspace_kpi_cache`, `advisor_*`, `agents_*`, `hire_*`.
 - Дополнительная схема Smart OS: `unit_metrics`, `payment_calendar`, `scenario_runs`, `money_leaks`, `smart_predict_cache`, `watch_alerts`, `integrations`, `integration_rules`, `generated_documents`, `scanned_documents`, `counterparty_checks`, `kpi_assignments`, `department_performance_index`, `competitor_signals`, `dev_requests`.
+- Trust/Law/Desktop Agent schema: `decision_log`, `counterparty_monitoring`, `candidate_checks`, `legal_risk_summaries`, `desktop_agents`, `desktop_monitoring_policies`, `desktop_employee_consents`, `desktop_activity_logs`.
+
+## Приоритеты без дублей
+
+- v1 Must-Have:
+  - Русский UI по умолчанию (ru-RU), demo-workspace, ясные empty states и CTA.
+  - Ядро: Owner Mode + Health Score, Smart Finance (Cash Guard, Unit Economics, Money Leak), Smart Watch.
+  - Trust-layer: Explain-режим и Decision Log в Smart Advisor.
+  - AI Query Safety: schema-aware guardrails, whitelist таблиц, LIMIT, централизованная обработка ошибок.
+  - Smart Law v1: проверка контрагента и кандидата + AI risk summary с дисклеймером.
+- v2+:
+  - Углубленный AI-юрист и прод-интеграции с внешними правовыми сервисами.
+  - Desktop AI Agent runtime (клиент), после отдельной юридической экспертизы.
+  - Расширенный Smart Hire/HR, marketplace-автоматизации и прод-OpenClaw bridge.
 - Роли `owner/member` с ограничением owner-only операций (пример: test SMS).
 - Подготовка i18n структуры (`ru`/`en`) без усложнения UI на старте.
 - Rate limiting для AI endpoint.

@@ -20,13 +20,13 @@ export default function LearnPage() {
   }, []);
 
   const ask = () => {
-    setAnswer("Запустите Demo Mode, откройте Owner Mode, затем Smart Advisor и Smart Finance. Покажите Health Score, Money Leaks и Action rules.");
+    setAnswer("Запустите Demo Mode, откройте Режим владельца (Owner Mode), затем Консультант (Smart Advisor) и Финансы (Smart Finance). Покажите Health Score, Money Leaks и Action rules.");
   };
 
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up bg-gradient-to-r from-blue-50 to-indigo-50">
-        <h2 className="text-xl font-bold">Smart Learn / FAQ</h2>
+        <h2 className="text-xl font-bold">Обучение (Smart Learn) / FAQ</h2>
         <p className="text-sm text-muted">Обучение пользователей, FAQ и AI-помощник по продукту.</p>
       </Card>
 

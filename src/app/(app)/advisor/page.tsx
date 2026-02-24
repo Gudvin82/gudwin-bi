@@ -14,11 +14,17 @@ type AssistantBlock = {
   risk_flags: string[];
 };
 
+type ExplainBlock = {
+  data_basis: Array<{ source: string; metric: string; value: string | number }>;
+  reasoning_steps: string[];
+};
+
 type ChatMessage = {
   id: string;
   role: "user" | "assistant";
   text: string;
   structured?: AssistantBlock;
+  explain?: ExplainBlock;
 };
 
 const roleMeta: Record<AdvisorRole, { label: string; avatar: string; placeholder: string }> = {
@@ -47,6 +53,8 @@ export default function AdvisorPage() {
   const [context, setContext] = useState<{ kpi?: Record<string, number>; dataSources?: string[]; warnings?: string[] }>({});
   const [input, setInput] = useState(roleMeta.business.placeholder);
   const [loading, setLoading] = useState(false);
+  const [decisionStatus, setDecisionStatus] = useState<string>("");
+  const [decisions, setDecisions] = useState<Array<{ id: string; recommendation: string; status: string }>>([]);
 
   const activeSession = useMemo(() => sessions.find((item) => item.id === activeSessionId) ?? null, [sessions, activeSessionId]);
 
@@ -58,6 +66,10 @@ export default function AdvisorPage() {
       if (json.sessions[0]) {
         setActiveSessionId(json.sessions[0].id);
       }
+
+      const dRes = await fetch("/api/advisor/decision-log");
+      const dJson = (await dRes.json()) as { items: Array<{ id: string; recommendation: string; status: string }> };
+      setDecisions(dJson.items ?? []);
     };
 
     void load();
@@ -102,7 +114,10 @@ export default function AdvisorPage() {
       return;
     }
 
-    const json = (await res.json()) as AssistantBlock & { context?: { kpi?: Record<string, number>; dataSources?: string[]; warnings?: string[] } };
+    const json = (await res.json()) as AssistantBlock & {
+      explain?: ExplainBlock;
+      context?: { kpi?: Record<string, number>; dataSources?: string[]; warnings?: string[] };
+    };
     setMessages((prev) => [
       ...prev,
       {
@@ -114,12 +129,27 @@ export default function AdvisorPage() {
           insights: json.insights,
           recommendations: json.recommendations,
           risk_flags: json.risk_flags
-        }
+        },
+        explain: json.explain
       }
     ]);
     setContext(json.context ?? {});
     setInput("");
     setLoading(false);
+  };
+
+  const saveDecision = async (sessionId: string, recommendation: string, status: "accepted" | "rejected" | "in_progress") => {
+    const res = await fetch("/api/advisor/decision-log", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionId, recommendation, status })
+    });
+    setDecisionStatus(res.ok ? "Решение сохранено в журнал решений." : "Не удалось сохранить решение.");
+    if (res.ok) {
+      const dRes = await fetch("/api/advisor/decision-log");
+      const dJson = (await dRes.json()) as { items: Array<{ id: string; recommendation: string; status: string }> };
+      setDecisions(dJson.items ?? []);
+    }
   };
 
   return (
@@ -179,9 +209,32 @@ export default function AdvisorPage() {
                   <p className="text-xs font-bold">Что сделать</p>
                   <ul className="list-disc pl-5">
                     {message.structured.recommendations.map((item) => (
-                      <li key={item}>{item}</li>
+                      <li key={item} className="space-y-2">
+                        <p>{item}</p>
+                        <div className="flex flex-wrap gap-1">
+                          <button onClick={() => saveDecision(activeSessionId ?? "demo", item, "accepted")} className="rounded border border-border px-2 py-1 text-xs">Принято</button>
+                          <button onClick={() => saveDecision(activeSessionId ?? "demo", item, "in_progress")} className="rounded border border-border px-2 py-1 text-xs">В работе</button>
+                          <button onClick={() => saveDecision(activeSessionId ?? "demo", item, "rejected")} className="rounded border border-border px-2 py-1 text-xs">Отклонено</button>
+                        </div>
+                      </li>
                     ))}
                   </ul>
+                  {message.explain ? (
+                    <div className="rounded-xl border border-border bg-white p-2 text-xs">
+                      <p className="font-bold">Explain: на чем основаны выводы</p>
+                      <ul className="list-disc pl-4">
+                        {message.explain.data_basis.map((item, idx) => (
+                          <li key={`${item.metric}-${idx}`}>{item.source}: {item.metric} = {String(item.value)}</li>
+                        ))}
+                      </ul>
+                      <p className="mt-1 font-bold">Логика</p>
+                      <ul className="list-disc pl-4">
+                        {message.explain.reasoning_steps.map((step) => (
+                          <li key={step}>{step}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
                   <p className="text-xs font-bold text-amber-700">Флаги риска</p>
                   <ul className="list-disc pl-5 text-amber-700">
                     {message.structured.risk_flags.map((item) => (
@@ -209,6 +262,7 @@ export default function AdvisorPage() {
             {loading ? "Анализируем..." : "Отправить консультанту"}
           </button>
         </div>
+        {decisionStatus ? <p className="mt-2 text-xs text-muted">{decisionStatus}</p> : null}
       </Card>
 
       <Card className="animate-fade-up">
@@ -247,6 +301,17 @@ export default function AdvisorPage() {
             {(context.warnings ?? ["2 источника данных требуют синхронизацию"]).map((warning) => (
               <p key={warning}>{warning}</p>
             ))}
+          </div>
+          <div className="rounded-xl border border-border p-3">
+            <p className="text-xs font-bold">Журнал решений</p>
+            <div className="mt-2 space-y-1 text-xs">
+              {decisions.slice(0, 5).map((item) => (
+                <p key={item.id}>
+                  [{item.status}] {item.recommendation}
+                </p>
+              ))}
+              {!decisions.length ? <p className="text-muted">Пока пусто</p> : null}
+            </div>
           </div>
         </div>
       </Card>

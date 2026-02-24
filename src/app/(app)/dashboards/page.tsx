@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 const dashboards = [
   { id: "sales-main", name: "Продажи и выручка", updatedAt: "сегодня" },
   { id: "funnel", name: "Воронка лидов", updatedAt: "вчера" },
-  { id: "owner", name: "Owner Mode Summary", updatedAt: "сегодня" },
+  { id: "owner", name: "Режим владельца (Owner Mode) Summary", updatedAt: "сегодня" },
   { id: "finance", name: "Cash Guard и Unit Economics", updatedAt: "сегодня" },
   { id: "departments", name: "KPI отделов и индекс эффективности", updatedAt: "2 часа назад" },
   { id: "marketing", name: "ROMI и рекламные каналы", updatedAt: "30 минут назад" }

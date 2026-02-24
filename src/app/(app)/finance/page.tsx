@@ -52,7 +52,7 @@ export default function FinancePage() {
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up bg-gradient-to-r from-sky-50 to-teal-50">
-        <h2 className="text-xl font-bold">Smart Finance</h2>
+        <h2 className="text-xl font-bold">Финансы (Smart Finance)</h2>
         <p className="text-sm text-muted">Unit Economics, Cash Guard, Scenario Simulator, Money Leak Scanner и платежный календарь.</p>
       </Card>
 

@@ -22,7 +22,7 @@ export default function WatchPage() {
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up bg-gradient-to-r from-rose-50 to-orange-50">
-        <h2 className="text-xl font-bold">Smart Watch</h2>
+        <h2 className="text-xl font-bold">Мониторинг (Smart Watch)</h2>
         <p className="text-sm text-muted">Мониторинг аномалий, кассовых рисков и KPI-отклонений. Каналы: Telegram/SMS/дашборд.</p>
       </Card>
 

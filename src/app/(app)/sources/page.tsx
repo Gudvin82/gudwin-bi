@@ -55,16 +55,17 @@ export default function SourcesPage() {
         throw new Error("Не удалось подключить Google Sheets. Проверьте ссылку.");
       }
 
+      const json = (await res.json()) as { syncJob?: { note?: string } };
       setSources((prev) => [
         {
           type: "google_sheets",
           name: sheetUrl,
-          status: "connected",
+          status: "queued_sync",
           lastSync: "только что"
         },
         ...prev
       ]);
-      setSheetMessage("Google Sheets подключен. Автодашборд создан.");
+      setSheetMessage(json.syncJob?.note ?? "Google Sheets подключен и отправлен в очередь синхронизации.");
       setSheetUrl("");
     } catch (error) {
       setSheetMessage(error instanceof Error ? error.message : "Ошибка подключения.");
@@ -116,16 +117,17 @@ export default function SourcesPage() {
         throw new Error("Не удалось обработать файл.");
       }
 
+      const json = (await res.json()) as { syncJob?: { note?: string } };
       setSources((prev) => [
         {
           type: "excel_upload",
           name: uploadFileName,
-          status: "parsed",
+          status: "queued_sync",
           lastSync: "только что"
         },
         ...prev
       ]);
-      setUploadMessage("Файл обработан. Стартовый дашборд обновлен.");
+      setUploadMessage(json.syncJob?.note ?? "Файл принят и поставлен в очередь фоновой обработки.");
     } catch (error) {
       setUploadMessage(error instanceof Error ? error.message : "Ошибка загрузки.");
     } finally {

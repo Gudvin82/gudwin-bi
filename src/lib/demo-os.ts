@@ -62,6 +62,16 @@ export type DevRequest = {
   createdAt: string;
 };
 
+export type DecisionLogItem = {
+  id: string;
+  workspaceId: string;
+  sessionId: string;
+  recommendation: string;
+  status: "accepted" | "rejected" | "in_progress";
+  effect_note?: string;
+  createdAt: string;
+};
+
 const now = new Date();
 
 export const unitMetrics: UnitMetric[] = [
@@ -154,6 +164,8 @@ export const competitorSignals = [
 ];
 
 export const devRequests: DevRequest[] = [];
+
+export const decisionLog: DecisionLogItem[] = [];
 
 export function buildCashForecast(days = 30, openingBalance = 420000) {
   const rows: CashDay[] = [];

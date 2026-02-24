@@ -10,17 +10,18 @@ const labels: Record<string, string> = {
   ai: "AI-аналитика",
   settings: "Настройки",
   onboarding: "Быстрый старт",
-  owner: "Owner Mode",
-  advisor: "Smart Advisor",
-  finance: "Smart Finance",
-  agents: "Smart Agents",
-  hire: "Smart Hire",
-  docs: "Docs & Law",
-  connect: "Smart Connect",
-  watch: "Smart Watch",
+  owner: "Режим владельца",
+  advisor: "Консультант",
+  finance: "Финансы",
+  agents: "Агенты",
+  hire: "Найм",
+  docs: "Документы и право",
+  connect: "Интеграции",
+  watch: "Мониторинг",
   learn: "Обучение / FAQ",
   contacts: "Контакты",
-  competitor: "Competitor Watch"
+  competitor: "Конкурентный мониторинг",
+  "desktop-agent": "Desktop AI агент"
 };
 
 export function Breadcrumbs() {

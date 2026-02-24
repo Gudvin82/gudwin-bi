@@ -21,6 +21,11 @@ export async function POST(request: Request) {
 
   return NextResponse.json({
     workspaceId: session.workspaceId,
+    syncJob: {
+      jobId: crypto.randomUUID(),
+      status: "queued",
+      note: "Источник поставлен в очередь фоновой синхронизации."
+    },
     dataset: {
       name: `${input.type}_dataset`,
       rowCount: synced.rows,

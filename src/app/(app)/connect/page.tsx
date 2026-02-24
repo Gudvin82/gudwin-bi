@@ -26,7 +26,7 @@ export default function ConnectPage() {
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up bg-gradient-to-r from-violet-50 to-sky-50">
-        <h2 className="text-xl font-bold">Smart Connect</h2>
+        <h2 className="text-xl font-bold">Интеграции (Smart Connect)</h2>
         <p className="text-sm text-muted">Единая интеграционная шина: CRM, банки, реклама, маркетплейсы, вебхуки и правила действий.</p>
       </Card>
 
