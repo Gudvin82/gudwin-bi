@@ -40,7 +40,7 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
   const header = headerMap[firstSegment] ?? { title: "Рабочий кабинет", subtitle: "Управляйте финансами, командой и рисками из единого центра." };
 
   return (
-    <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
+    <header className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200/70 bg-white/80 p-3 shadow-sm backdrop-blur-xl sm:p-4">
       <div className="min-w-0">
         <div className="flex items-center gap-2">
           <button
@@ -51,10 +51,10 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
           >
             <Menu size={18} />
           </button>
-          <h1 className="truncate text-xl font-bold sm:text-2xl">{header.title}</h1>
+          <h1 className="premium-title truncate text-xl font-extrabold sm:text-2xl">{header.title}</h1>
         </div>
-        <p className="mt-1 line-clamp-2 text-sm text-muted">{header.subtitle}</p>
-        <div className="mt-2 hidden items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-1 text-xs text-muted sm:inline-flex">
+        <p className="premium-subtitle mt-1 line-clamp-2 text-sm">{header.subtitle}</p>
+        <div className="premium-nav-chip mt-2 hidden items-center gap-2 rounded-full px-3 py-1 text-xs text-muted sm:inline-flex">
           <span className={`inline-flex h-2 w-2 rounded-full ${online ? "bg-emerald-500" : "bg-rose-500"}`} />
           {online ? "Сеть доступна" : "Нет подключения к сети"}
         </div>
@@ -64,7 +64,7 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
         <Link href="/overview" className="hidden min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-sm font-semibold shadow-sm md:inline-flex">
           Открыть обзор
         </Link>
-        <Link href="/sources" className="inline-flex min-h-10 flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm sm:flex-none">
+        <Link href="/sources" className="btn-premium-primary inline-flex min-h-10 flex-1 items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-white shadow-sm sm:flex-none">
           <Sparkles size={16} />
           Подключить данные
         </Link>

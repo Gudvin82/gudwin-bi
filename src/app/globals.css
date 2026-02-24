@@ -8,6 +8,11 @@
   color-scheme: light;
   --surface-card: rgba(255, 255, 255, 0.92);
   --surface-border: rgba(148, 163, 184, 0.25);
+  --gw-brand: #0f766e;
+  --gw-brand-strong: #0b5f59;
+  --gw-brand-soft: #ccfbf1;
+  --gw-ink: #0f172a;
+  --gw-muted: #64748b;
 }
 
 * {
@@ -22,6 +27,8 @@ body {
     linear-gradient(160deg, #f8fbff 0%, #f5f8fc 52%, #f3f7fb 100%);
   color: #0f172a;
   font-feature-settings: "tnum" 1;
+  letter-spacing: -0.01em;
+  text-rendering: optimizeLegibility;
 }
 
 html,
@@ -45,6 +52,10 @@ body {
   animation: fadeUp 0.45s ease-out both;
 }
 
+.page-enter {
+  animation: fadeUp 0.38s ease-out both;
+}
+
 .animate-soft-pulse {
   animation: softPulse 2.2s ease-in-out infinite;
 }
@@ -54,6 +65,62 @@ body {
   background-size: 200% 100%;
   animation: shimmer 1.4s linear infinite;
   border-radius: 0.75rem;
+}
+
+.card-premium {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.94));
+  box-shadow:
+    0 8px 28px rgba(15, 23, 42, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.card-premium::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.25), transparent 30%);
+}
+
+.premium-title {
+  letter-spacing: -0.022em;
+}
+
+.premium-subtitle {
+  color: var(--gw-muted);
+}
+
+.premium-nav-chip {
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+}
+
+.btn-premium-primary {
+  background-image: linear-gradient(120deg, #0891b2, #0f766e);
+  box-shadow: 0 8px 20px rgba(8, 145, 178, 0.28);
+}
+
+.btn-premium-primary:hover {
+  filter: brightness(1.03);
+}
+
+.mini-bars {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 4px;
+  align-items: end;
+  height: 32px;
+}
+
+.mini-bars span {
+  display: block;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(45, 212, 191, 0.85), rgba(15, 118, 110, 0.85));
 }
 
 @keyframes fadeUp {
@@ -81,4 +148,19 @@ body {
   to {
     background-position-x: -200%;
   }
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.55);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba(226, 232, 240, 0.55);
+  border-radius: 999px;
 }
