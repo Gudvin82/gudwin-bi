@@ -156,9 +156,14 @@ export default function OwnerPage() {
           <Card className="bg-gradient-to-r from-sky-50 to-indigo-50">
             <p className="text-xs text-muted">Маркетинг</p>
             <p className="mt-1 text-sm font-semibold">Расходы: 1 790 000 ₽ • ROMI: 50.8%</p>
-            <Link href="/marketing" className="mt-3 inline-flex rounded-xl border border-border bg-white px-3 py-2 text-sm font-semibold">
-              Перейти в маркетинг
-            </Link>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <Link href="/marketing" className="inline-flex rounded-xl border border-border bg-white px-3 py-2 text-sm font-semibold">
+                Перейти в маркетинг
+              </Link>
+              <Link href="/goals" className="inline-flex rounded-xl border border-border bg-white px-3 py-2 text-sm font-semibold">
+                Открыть цели
+              </Link>
+            </div>
           </Card>
         </div>
       </div>
@@ -185,6 +190,8 @@ export default function OwnerPage() {
           <Link href="/finance" className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-4 py-2 text-sm font-semibold text-white">Финансы</Link>
           <Link href="/marketing" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Маркетинг</Link>
           <Link href="/advisor" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">AI-советник</Link>
+          <Link href="/goals" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Цели</Link>
+          <Link href="/automation" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Сценарии и агенты</Link>
           <Link href="/watch" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Мониторинг</Link>
         </div>
       </Card>

@@ -76,6 +76,9 @@ export default function FinancePage() {
           <div>
             <h2 className="text-xl font-bold">Финансы</h2>
             <p className="text-sm text-muted">Здесь вы видите прогноз денег, юнит-экономику и зоны потери прибыли.</p>
+            <Link href="/automation" className="mt-2 inline-flex rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700">
+              Создать правило из финансовой метрики
+            </Link>
           </div>
           <HelpPopover
             title="Что можно сделать в разделе"

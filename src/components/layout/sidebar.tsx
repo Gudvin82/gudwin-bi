@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AlertTriangle, BookOpen, Building2, ChevronDown, ChevronRight, FileText, LayoutDashboard, LineChart, Link2, Settings, Sparkles, Target, UserRoundCog, Users } from "lucide-react";
+import { AlertTriangle, BookOpen, Boxes, Building2, ChevronDown, ChevronRight, FileText, LayoutDashboard, LineChart, Link2, Settings, Sparkles, Target, UserRoundCog, Users } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -81,6 +81,27 @@ const sections: NavSection[] = [
     ]
   },
   {
+    key: "goals",
+    href: "/goals",
+    label: "Цели",
+    icon: Target,
+    children: [
+      { href: "/goals", label: "Цели и план" },
+      { href: "/owner", label: "Фокус дня владельца" }
+    ]
+  },
+  {
+    key: "automation",
+    href: "/automation",
+    label: "Сценарии и агенты",
+    icon: Boxes,
+    children: [
+      { href: "/automation", label: "Конструктор сценариев" },
+      { href: "/agents", label: "Каталог AI-агентов" },
+      { href: "/connect", label: "Интеграционные действия" }
+    ]
+  },
+  {
     key: "team",
     href: "/team",
     label: "Команда",
@@ -119,7 +140,7 @@ const sections: NavSection[] = [
     icon: Link2,
     children: [
       { href: "/integrations", label: "Подключенные системы" },
-      { href: "/connect", label: "Сценарии if/then" },
+      { href: "/connect", label: "Сценарии если/то" },
       { href: "/agents", label: "AI-агенты" },
       { href: "/competitor", label: "Конкурентный мониторинг" },
       { href: "/contacts", label: "Заказать доп. интеграцию" }

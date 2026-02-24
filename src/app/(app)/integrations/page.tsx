@@ -92,7 +92,7 @@ export default function IntegrationsHubPage() {
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
             <Link href="/connect" className="rounded-xl border border-border px-3 py-2 text-sm font-semibold">
-              Открыть сценарии if/then
+              Открыть сценарии «если → то»
             </Link>
             <Link href="/contacts" className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-3 py-2 text-sm font-semibold text-white">
               Заказать доп. интеграцию

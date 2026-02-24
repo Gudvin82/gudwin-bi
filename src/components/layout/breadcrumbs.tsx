@@ -49,7 +49,9 @@ const labels: Record<string, string> = {
   competitor: "Конкурентный мониторинг",
   "desktop-agent": "Десктоп AI-агент",
   "ai-keys": "AI-провайдеры и ключи",
-  simple: "Объяснить просто"
+  simple: "Объяснить просто",
+  goals: "Цели",
+  automation: "Сценарии и агенты"
 };
 
 export function Breadcrumbs() {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
 
@@ -43,6 +44,9 @@ export default function WatchPage() {
           <div>
             <h2 className="text-xl font-bold">Мониторинг</h2>
             <p className="text-sm text-muted">Здесь настраиваются уведомления и утренние отчеты о важных событиях в бизнесе.</p>
+            <Link href="/automation" className="mt-2 inline-flex rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700">
+              Создать авто-реакцию из алерта
+            </Link>
           </div>
           <HelpPopover
             title="Как использовать мониторинг"

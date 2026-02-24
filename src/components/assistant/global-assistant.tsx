@@ -20,12 +20,20 @@ const sectionMap: Record<string, { name: string; href: string }> = {
   dashboards: { name: "Дашборды", href: "/dashboards" },
   advisor: { name: "AI-советник", href: "/advisor" },
   watch: { name: "Мониторинг", href: "/watch" },
+  goals: { name: "Цели", href: "/goals" },
+  automation: { name: "Сценарии и агенты", href: "/automation" },
   sources: { name: "Источники данных", href: "/sources" },
   settings: { name: "Настройки", href: "/settings" },
   integrations: { name: "Интеграции", href: "/integrations" },
   docs: { name: "Юридический", href: "/docs" },
   team: { name: "Команда", href: "/team" }
 };
+
+function createId() {
+  const maybeCrypto = globalThis.crypto as { randomUUID?: () => string } | undefined;
+  if (maybeCrypto?.randomUUID) return maybeCrypto.randomUUID();
+  return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+}
 
 export function GlobalAssistant() {
   const router = useRouter();
@@ -37,7 +45,7 @@ export function GlobalAssistant() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([
     {
-      id: crypto.randomUUID(),
+      id: createId(),
       role: "assistant",
       text: `Я AI-помощник по разделу «${section.name}». Могу помочь с навигацией, запуском действий и быстрым сбором отчёта.`
     }
@@ -46,6 +54,8 @@ export function GlobalAssistant() {
   const hintCommands = useMemo(
     () => [
       "Открой финансы",
+      "Открой цели",
+      "Открой сценарии",
       "Перейди в маркетинг",
       "Собери тройной отчет",
       "Помоги по текущему разделу"
@@ -74,6 +84,16 @@ export function GlobalAssistant() {
       return "Открываю конструктор отчётов. Рекомендую набор: финансы + маркетинг + мониторинг, период 30 дней.";
     }
 
+    if (normalized.includes("цель") || normalized.includes("цели")) {
+      router.push("/goals");
+      return "Открываю раздел «Цели». Там можно задать целевые метрики и получить AI-план достижения.";
+    }
+
+    if (normalized.includes("сценар") || normalized.includes("автоматизац")) {
+      router.push("/automation");
+      return "Открываю раздел «Сценарии и агенты». Соберём правило из кубиков: когда → если → сделать.";
+    }
+
     if (normalized.includes("дашборд")) {
       router.push("/dashboards/builder");
       return "Открываю конструктор дашбордов. Можно собрать сводный экран по финансам, маркетингу и рискам.";
@@ -92,9 +112,9 @@ export function GlobalAssistant() {
   const send = () => {
     const trimmed = input.trim();
     if (!trimmed) return;
-    pushMessage({ id: crypto.randomUUID(), role: "user", text: trimmed });
+    pushMessage({ id: createId(), role: "user", text: trimmed });
     const answer = runCommand(trimmed);
-    pushMessage({ id: crypto.randomUUID(), role: "assistant", text: answer });
+    pushMessage({ id: createId(), role: "assistant", text: answer });
     setInput("");
   };
 
@@ -105,7 +125,7 @@ export function GlobalAssistant() {
       || (window as unknown as { webkitSpeechRecognition?: new () => { [key: string]: unknown } }).webkitSpeechRecognition;
     if (!SpeechRecognition) {
       pushMessage({
-        id: crypto.randomUUID(),
+        id: createId(),
         role: "assistant",
         text: "Голосовой ввод не поддерживается в этом браузере. Используйте текстовый ввод."
       });
@@ -126,9 +146,9 @@ export function GlobalAssistant() {
       const transcript = event.results?.[0]?.[0]?.transcript ?? "";
       if (!transcript.trim()) return;
       setInput(transcript);
-      pushMessage({ id: crypto.randomUUID(), role: "user", text: transcript });
+      pushMessage({ id: createId(), role: "user", text: transcript });
       const answer = runCommand(transcript);
-      pushMessage({ id: crypto.randomUUID(), role: "assistant", text: answer });
+      pushMessage({ id: createId(), role: "assistant", text: answer });
       setInput("");
     };
     recognition.start();
