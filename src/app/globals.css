@@ -14,8 +14,12 @@
 
 body {
   margin: 0;
-  background: radial-gradient(circle at top right, #dff7f3 0, #f6f8fc 36%, #f6f8fc 100%);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(125, 211, 252, 0.28) 0, rgba(125, 211, 252, 0) 38%),
+    radial-gradient(circle at 88% 0%, rgba(52, 211, 153, 0.2) 0, rgba(52, 211, 153, 0) 30%),
+    linear-gradient(160deg, #f8fbff 0%, #f5f8fc 52%, #f3f7fb 100%);
   color: #0f172a;
+  font-feature-settings: "tnum" 1;
 }
 
 .dashboard-grid {

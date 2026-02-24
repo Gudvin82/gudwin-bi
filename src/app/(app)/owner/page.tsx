@@ -79,10 +79,25 @@ export default function OwnerPage() {
         </Card>
       </div>
 
+      <Card className="bg-gradient-to-r from-sky-50 to-indigo-50">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className="text-sm font-semibold">Маркетинг</p>
+            <p className="text-sm text-muted">Расходы: 1 790 000 ₽ • ROMI: 50.8% по всем каналам за 30 дней.</p>
+          </div>
+          <Link href="/marketing" className="rounded-xl border border-border bg-white px-4 py-2 text-sm font-semibold">
+            Перейти в Маркетинг
+          </Link>
+        </div>
+      </Card>
+
       <Card>
         <div className="flex flex-wrap gap-2">
           <Link href="/finance" className="rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white">
             Перейти в Финансы
+          </Link>
+          <Link href="/marketing" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">
+            Открыть Маркетинг
           </Link>
           <Link href="/advisor" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">
             Открыть AI-советника

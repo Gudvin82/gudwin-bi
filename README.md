@@ -35,6 +35,7 @@ GudWin BI — AI-операционная система для малого и 
 ## Реализованные модули
 
 - Smart Dashboard (MVP)
+- Smart Marketing (обзор, аналитика, кампании, эксперименты, креативы, источники)
 - Конструктор дашбордов (новый экран `/dashboards/builder`)
 - Конструктор отчетов (новый экран `/analytics/report-builder`)
 - Smart Advisor (чат, роли, explain-формат, decision log)

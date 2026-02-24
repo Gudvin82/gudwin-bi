@@ -258,6 +258,17 @@ export default function AdvisorPage() {
             placeholder={roleMeta[role].placeholder}
             className="min-h-24 w-full rounded-xl border border-border p-3 text-sm"
           />
+          <div className="flex flex-wrap gap-2">
+            {[
+              "Какие каналы сейчас сжигают бюджет?",
+              "Где стоит увеличить бюджет в первую очередь?",
+              "Что протестировать в маркетинге на этой неделе?"
+            ].map((question) => (
+              <button key={question} onClick={() => setInput(question)} className="rounded-xl border border-border px-3 py-1.5 text-xs text-muted hover:bg-slate-50">
+                {question}
+              </button>
+            ))}
+          </div>
           <button onClick={askAdvisor} disabled={loading} className="rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">
             {loading ? "Анализируем..." : "Отправить консультанту"}
           </button>
@@ -291,6 +302,11 @@ export default function AdvisorPage() {
           <div className="rounded-xl border border-border p-3">
             <p className="text-xs text-muted">Утечки денег</p>
             <p>3 критичных зоны утечки</p>
+          </div>
+          <div className="rounded-xl border border-border p-3">
+            <p className="text-xs text-muted">Маркетинг</p>
+            <p>ROMI: 50.8% • CAC: 4 373 ₽</p>
+            <p>Проблема: VK Реклама и myTarget убыточны</p>
           </div>
           <div className="rounded-xl border border-border p-3">
             <p className="text-xs text-muted">Прогноз</p>

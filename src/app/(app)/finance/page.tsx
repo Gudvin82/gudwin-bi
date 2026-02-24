@@ -9,28 +9,32 @@ type UnitMetric = { dimension: string; cac: number; ltv: number; contribution_ma
 type CashRow = { date: string; inflow: number; outflow: number; balance: number };
 type Leak = { id: string; title: string; severity: "high" | "medium" | "low"; impact: string; recommendation: string };
 type Payment = { id: string; date: string; type: "incoming" | "outgoing"; counterparty: string; amount: number; status: string };
+type MarketingOverview = { romi: number; cac: number };
 
 export default function FinancePage() {
   const [metrics, setMetrics] = useState<UnitMetric[]>([]);
   const [cash, setCash] = useState<CashRow[]>([]);
   const [leaks, setLeaks] = useState<Leak[]>([]);
   const [payments, setPayments] = useState<Payment[]>([]);
+  const [marketing, setMarketing] = useState<MarketingOverview | null>(null);
   const [scenario, setScenario] = useState({ priceDeltaPct: 3, adBudgetDeltaPct: 10, managerDelta: 1, discountDeltaPct: 0 });
   const [scenarioResult, setScenarioResult] = useState<{ projectedProfit: number; deltaPct: number; romiProjected: number; cashflowProjected: number; explanation: string } | null>(null);
 
   useEffect(() => {
     const load = async () => {
-      const [m, c, l, p] = await Promise.all([
+      const [m, c, l, p, mo] = await Promise.all([
         fetch("/api/finance/unit-metrics").then((r) => r.json()),
         fetch("/api/finance/cash-guard").then((r) => r.json()),
         fetch("/api/finance/money-leaks").then((r) => r.json()),
-        fetch("/api/finance/payment-calendar").then((r) => r.json())
+        fetch("/api/finance/payment-calendar").then((r) => r.json()),
+        fetch("/api/marketing/overview").then((r) => r.json())
       ]);
 
       setMetrics(m.metrics ?? []);
       setCash(c.forecast30 ?? []);
       setLeaks(l.leaks ?? []);
       setPayments(p.items ?? []);
+      setMarketing(mo.overview ?? null);
     };
 
     void load();
@@ -82,7 +86,7 @@ export default function FinancePage() {
         </Card>
       ) : null}
 
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid gap-4 lg:grid-cols-4">
         <Card>
           <div className="mb-1 flex items-center gap-2">
             <p className="text-sm text-muted">Средний LTV/CAC</p>
@@ -127,6 +131,22 @@ export default function FinancePage() {
             />
           </div>
           <p className="text-3xl font-extrabold">{leaks.length}</p>
+        </Card>
+        <Card>
+          <div className="mb-1 flex items-center gap-2">
+            <p className="text-sm text-muted">Маркетинг в финансах</p>
+            <HelpPopover
+              title="Связка с маркетингом"
+              items={[
+                "Здесь учитываются средние CAC и ROMI по каналам.",
+                "Показатели влияют на расчет рисков по марже и cash flow.",
+                "Подробная детализация доступна в разделе «Маркетинг»."
+              ]}
+            />
+          </div>
+          <p className="text-sm">ROMI: <span className="font-bold">{marketing?.romi ?? "--"}%</span></p>
+          <p className="text-sm">CAC: <span className="font-bold">{(marketing?.cac ?? 0).toLocaleString("ru-RU")} ₽</span></p>
+          <Link href="/marketing" className="mt-2 inline-flex rounded-lg border border-border px-2 py-1 text-xs">Открыть маркетинг</Link>
         </Card>
       </div>
 

@@ -24,7 +24,7 @@ export type Leak = {
 
 export type WatchAlert = {
   id: string;
-  type: "anomaly" | "cash_risk" | "kpi_drop" | "client_risk";
+  type: "anomaly" | "cash_risk" | "kpi_drop" | "client_risk" | "marketing_romi_drop" | "marketing_cac_spike" | "creative_burnout";
   level: "critical" | "warning" | "info";
   message: string;
   channel: "telegram" | "sms" | "dashboard";
@@ -70,6 +70,65 @@ export type DecisionLogItem = {
   status: "accepted" | "rejected" | "in_progress";
   effect_note?: string;
   createdAt: string;
+};
+
+export type MarketingChannel = {
+  name: string;
+  impressions: number;
+  clicks: number;
+  ctr: number;
+  leads: number;
+  deals: number;
+  spend: number;
+  revenue: number;
+  margin: number;
+  cpl: number;
+  cac: number;
+  romi: number;
+  roas: number;
+};
+
+export type MarketingCampaign = {
+  id: string;
+  channel: string;
+  name: string;
+  status: "active" | "paused" | "archived";
+  spend: number;
+  leads: number;
+  deals: number;
+  revenue: number;
+  romi: number;
+  cac: number;
+  aiDecision: "Отключить" | "Оптимизировать" | "Масштабировать";
+};
+
+export type MarketingExperiment = {
+  id: string;
+  name: string;
+  hypothesis: string;
+  metric: string;
+  status: "Идет" | "Завершен" | "Победитель выбран";
+  winner: "A" | "B" | "Нет";
+  a: { ctr: number; conversion: number; romi: number };
+  b: { ctr: number; conversion: number; romi: number };
+};
+
+export type MarketingCreative = {
+  id: string;
+  title: string;
+  channel: string;
+  format: string;
+  ctr: number;
+  conversion: number;
+  romi: number;
+  best: boolean;
+};
+
+export type MarketingSource = {
+  id: string;
+  name: string;
+  status: "connected" | "needs_refresh" | "error";
+  lastSync: string;
 };
 
 const now = new Date();
@@ -128,7 +187,138 @@ export const watchAlerts: WatchAlert[] = [
     message: "Конверсия отдела продаж снизилась на 14% неделя к неделе.",
     channel: "dashboard",
     createdAt: new Date().toISOString()
+  },
+  {
+    id: "w3",
+    type: "marketing_romi_drop",
+    level: "critical",
+    message: "ROMI канала VK Реклама упал ниже 0% за последние 7 дней.",
+    channel: "telegram",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "w4",
+    type: "marketing_cac_spike",
+    level: "warning",
+    message: "CAC кампании «Весенний оффер» вырос на 28% неделя к неделе.",
+    channel: "dashboard",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "w5",
+    type: "creative_burnout",
+    level: "warning",
+    message: "Креатив «Скидка 15%» выгорел: CTR снизился на 41%.",
+    channel: "dashboard",
+    createdAt: new Date().toISOString()
   }
+];
+
+export const marketingChannels: MarketingChannel[] = [
+  {
+    name: "Яндекс.Директ",
+    impressions: 420000,
+    clicks: 16800,
+    ctr: 4.0,
+    leads: 740,
+    deals: 186,
+    spend: 680000,
+    revenue: 2320000,
+    margin: 39.5,
+    cpl: 919,
+    cac: 3656,
+    romi: 142,
+    roas: 3.41
+  },
+  {
+    name: "VK Реклама",
+    impressions: 510000,
+    clicks: 15300,
+    ctr: 3.0,
+    leads: 510,
+    deals: 92,
+    spend: 590000,
+    revenue: 470000,
+    margin: 24.2,
+    cpl: 1157,
+    cac: 6413,
+    romi: -21,
+    roas: 0.8
+  },
+  {
+    name: "Telegram Ads",
+    impressions: 300000,
+    clicks: 12300,
+    ctr: 4.1,
+    leads: 430,
+    deals: 117,
+    spend: 310000,
+    revenue: 980000,
+    margin: 33.8,
+    cpl: 721,
+    cac: 2649,
+    romi: 94,
+    roas: 3.16
+  },
+  {
+    name: "myTarget",
+    impressions: 220000,
+    clicks: 6600,
+    ctr: 3.0,
+    leads: 230,
+    deals: 44,
+    spend: 210000,
+    revenue: 160000,
+    margin: 18.9,
+    cpl: 913,
+    cac: 4773,
+    romi: -12,
+    roas: 0.76
+  }
+];
+
+export const marketingCampaigns: MarketingCampaign[] = [
+  { id: "mc1", channel: "Яндекс.Директ", name: "Поиск бренд + конкуренты", status: "active", spend: 240000, leads: 312, deals: 79, revenue: 920000, romi: 131, cac: 3038, aiDecision: "Масштабировать" },
+  { id: "mc2", channel: "VK Реклама", name: "Весенний оффер", status: "active", spend: 210000, leads: 146, deals: 21, revenue: 120000, romi: -44, cac: 10000, aiDecision: "Отключить" },
+  { id: "mc3", channel: "Telegram Ads", name: "Лид-магнит B2B", status: "paused", spend: 98000, leads: 132, deals: 31, revenue: 360000, romi: 108, cac: 3161, aiDecision: "Оптимизировать" },
+  { id: "mc4", channel: "myTarget", name: "Ретаргетинг каталог", status: "archived", spend: 64000, leads: 45, deals: 7, revenue: 42000, romi: -34, cac: 9142, aiDecision: "Отключить" }
+];
+
+export const marketingExperiments: MarketingExperiment[] = [
+  {
+    id: "ex1",
+    name: "Новый оффер для сегмента SMB",
+    hypothesis: "Сокращенный оффер повысит конверсию в заявку",
+    metric: "Конверсия в лид",
+    status: "Победитель выбран",
+    winner: "B",
+    a: { ctr: 2.9, conversion: 4.8, romi: 56 },
+    b: { ctr: 3.8, conversion: 6.1, romi: 88 }
+  },
+  {
+    id: "ex2",
+    name: "Креативы с кейсами",
+    hypothesis: "Кейсы клиентов дадут выше CTR в Telegram",
+    metric: "CTR",
+    status: "Идет",
+    winner: "Нет",
+    a: { ctr: 3.3, conversion: 5.1, romi: 72 },
+    b: { ctr: 3.5, conversion: 4.9, romi: 69 }
+  }
+];
+
+export const marketingCreatives: MarketingCreative[] = [
+  { id: "cr1", title: "Сократили расходы на 18% за 30 дней", channel: "Яндекс.Директ", format: "Баннер", ctr: 4.5, conversion: 6.2, romi: 132, best: true },
+  { id: "cr2", title: "Кассовый контроль без Excel", channel: "Telegram Ads", format: "Текст", ctr: 4.1, conversion: 5.5, romi: 104, best: true },
+  { id: "cr3", title: "Сводка собственника каждое утро", channel: "VK Реклама", format: "Сторис", ctr: 2.2, conversion: 2.7, romi: -9, best: false },
+  { id: "cr4", title: "AI-советник для бизнеса", channel: "myTarget", format: "Баннер", ctr: 2.0, conversion: 2.1, romi: -15, best: false }
+];
+
+export const marketingSources: MarketingSource[] = [
+  { id: "ms1", name: "Яндекс.Директ", status: "connected", lastSync: "3 мин назад" },
+  { id: "ms2", name: "VK Реклама", status: "connected", lastSync: "6 мин назад" },
+  { id: "ms3", name: "Telegram Ads", status: "needs_refresh", lastSync: "вчера 22:17" },
+  { id: "ms4", name: "myTarget", status: "error", lastSync: "ошибка синка" }
 ];
 
 export const integrations: IntegrationItem[] = [
@@ -226,6 +416,34 @@ export function simulateScenario(input: { priceDeltaPct: number; adBudgetDeltaPc
     romiProjected: Number((132 + input.adBudgetDeltaPct * 0.5 - input.discountDeltaPct * 0.4).toFixed(1)),
     cashflowProjected: Math.round(1180000 + profitImpact * 1.4),
     explanation: "Сценарий учитывает изменение маржи, рекламной эффективности и нагрузки команды продаж."
+  };
+}
+
+export function buildMarketingOverview() {
+  const spend = marketingChannels.reduce((acc, item) => acc + item.spend, 0);
+  const revenue = marketingChannels.reduce((acc, item) => acc + item.revenue, 0);
+  const avgRomi = marketingChannels.reduce((acc, item) => acc + item.romi, 0) / marketingChannels.length;
+  const avgCac = marketingChannels.reduce((acc, item) => acc + item.cac, 0) / marketingChannels.length;
+  const index = clamp(65 + avgRomi * 0.18 - (avgCac / 1000) * 2.2, 0, 100);
+
+  const sortedByRomi = [...marketingChannels].sort((a, b) => b.romi - a.romi);
+  const top = sortedByRomi.slice(0, 3).map((item) => ({ name: item.name, romi: item.romi }));
+  const worst = [...sortedByRomi].reverse().slice(0, 3).map((item) => ({ name: item.name, romi: item.romi }));
+
+  return {
+    index: Math.round(index),
+    period: "30 дней",
+    spend,
+    revenue,
+    romi: Number(avgRomi.toFixed(1)),
+    cac: Math.round(avgCac),
+    topChannels: top,
+    problemChannels: worst,
+    recommendations: [
+      "Сократить бюджет в VK Реклама до стабилизации CAC.",
+      "Усилить Яндекс.Директ на 15% при сохранении текущего ROMI.",
+      "Запустить новый A/B тест оффера для Telegram Ads."
+    ]
   };
 }
 

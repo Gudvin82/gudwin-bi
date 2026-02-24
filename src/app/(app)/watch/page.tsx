@@ -6,6 +6,16 @@ import { HelpPopover } from "@/components/ui/help-popover";
 
 type Alert = { id: string; type: string; level: string; message: string; channel: string; createdAt: string };
 
+const alertTypeLabels: Record<string, string> = {
+  anomaly: "Аномалия",
+  cash_risk: "Кассовый риск",
+  kpi_drop: "Падение KPI",
+  client_risk: "Риск клиента",
+  marketing_romi_drop: "Падение ROMI в маркетинге",
+  marketing_cac_spike: "Рост CAC",
+  creative_burnout: "Выгорание креатива"
+};
+
 export default function WatchPage() {
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [mode, setMode] = useState("critical_only");
@@ -56,7 +66,7 @@ export default function WatchPage() {
         <div className="space-y-2 text-sm">
           {alerts.map((alert) => (
             <div key={alert.id} className={`rounded-xl border p-3 ${alert.level === "critical" ? "border-red-300 bg-red-50" : "border-border"}`}>
-              <p className="font-semibold">{alert.type} • {alert.level}</p>
+              <p className="font-semibold">{alertTypeLabels[alert.type] ?? alert.type} • {alert.level}</p>
               <p>{alert.message}</p>
               <p className="text-xs text-muted">Канал: {alert.channel} • {new Date(alert.createdAt).toLocaleString("ru-RU")}</p>
             </div>

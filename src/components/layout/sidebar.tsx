@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AlertTriangle, Building2, ChevronDown, ChevronRight, FileText, LayoutDashboard, Link2, Settings, Sparkles, Target, UserRoundCog, Users } from "lucide-react";
+import { AlertTriangle, Building2, ChevronDown, ChevronRight, FileText, LayoutDashboard, LineChart, Link2, Settings, Sparkles, Target, UserRoundCog, Users } from "lucide-react";
 import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -39,6 +39,20 @@ const sections: NavSection[] = [
       { href: "/finance", label: "Юнит-экономика и касса" },
       { href: "/finance/bank", label: "Смарт Банк" },
       { href: "/finance/accounting", label: "Смарт Бухгалтерия" }
+    ]
+  },
+  {
+    key: "marketing",
+    href: "/marketing",
+    label: "Маркетинг",
+    icon: LineChart,
+    children: [
+      { href: "/marketing", label: "Обзор" },
+      { href: "/marketing/analytics", label: "Аналитика" },
+      { href: "/marketing/campaigns", label: "Кампании" },
+      { href: "/marketing/experiments", label: "Эксперименты" },
+      { href: "/marketing/creatives", label: "Креативы" },
+      { href: "/marketing/sources", label: "Источники" }
     ]
   },
   {
