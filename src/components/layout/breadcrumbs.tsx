@@ -51,6 +51,7 @@ const labels: Record<string, string> = {
   "ai-keys": "AI-провайдеры и ключи",
   simple: "Объяснить просто",
   goals: "Цели",
+  focus: "Фокус владельца",
   automation: "Сценарии и агенты"
 };
 

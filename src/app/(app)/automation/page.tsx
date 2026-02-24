@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, Boxes, Link2, PlayCircle, Plus } from "lucide-react";
+import { ArrowRight, PlayCircle, Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
 
@@ -46,9 +46,32 @@ type IntegrationRef = {
   status: "active" | "error" | "draft";
 };
 
-const triggerBlocks = ["По расписанию", "При изменении метрики", "При событии"];
-const conditionBlocks = ["Health Score < 70", "ROMI < 20%", "Cash Guard < 7 дней"];
-const actionBlocks = ["Отправить уведомление", "Создать задачу", "Запустить AI-агента"];
+const scenarioPresets = [
+  {
+    name: "Кассовый риск",
+    triggerType: "metric_threshold" as const,
+    metric: "cash_guard_days",
+    operator: "<" as const,
+    value: 7,
+    action: "Отправить Telegram и создать задачу владельцу"
+  },
+  {
+    name: "Падение ROMI",
+    triggerType: "metric_threshold" as const,
+    metric: "romi_total",
+    operator: "<" as const,
+    value: 20,
+    action: "Запустить AI-анализ маркетинга и отправить сводку"
+  },
+  {
+    name: "Просроченная дебиторка",
+    triggerType: "event" as const,
+    metric: "overdue_receivables",
+    operator: ">" as const,
+    value: 3,
+    action: "Создать задачу в CRM и уведомить менеджера"
+  }
+];
 
 export default function AutomationPage() {
   const [workflows, setWorkflows] = useState<Workflow[]>([]);
@@ -61,6 +84,7 @@ export default function AutomationPage() {
   const [value, setValue] = useState(70);
   const [actionDescription, setActionDescription] = useState("Отправить уведомление владельцу и создать задачу");
   const [loading, setLoading] = useState(false);
+  const [selectedPreset, setSelectedPreset] = useState(scenarioPresets[0].name);
 
   const load = async () => {
     const res = await fetch("/api/workflows");
@@ -105,6 +129,18 @@ export default function AutomationPage() {
     await load();
   };
 
+  const applyPreset = (presetName: string) => {
+    const preset = scenarioPresets.find((item) => item.name === presetName);
+    if (!preset) return;
+    setSelectedPreset(preset.name);
+    setName(preset.name);
+    setTriggerType(preset.triggerType);
+    setMetric(preset.metric);
+    setOperator(preset.operator);
+    setValue(preset.value);
+    setActionDescription(preset.action);
+  };
+
   const scenarioPreview = useMemo(() => {
     if (triggerType === "schedule") return "Когда: по расписанию";
     if (triggerType === "event") return "Когда: при событии";
@@ -132,51 +168,43 @@ export default function AutomationPage() {
 
       <div className="grid gap-4 xl:grid-cols-[1fr_1.3fr]">
         <Card>
-          <h3 className="mb-3 flex items-center gap-2 text-base font-semibold">
-            <Boxes size={16} />
-            Палитра кубиков
-          </h3>
+          <h3 className="mb-3 text-base font-semibold">Быстрый запуск из шаблона</h3>
           <div className="space-y-3 text-sm">
-            <div>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Триггеры</p>
-              <div className="grid gap-2 sm:grid-cols-2">
-                {triggerBlocks.map((item) => (
-                  <div key={item} className="rounded-xl border border-cyan-200 bg-cyan-50 px-3 py-2 text-cyan-800">{item}</div>
-                ))}
-              </div>
+            <p className="text-xs text-muted">Выберите типичный сценарий, затем при необходимости отредактируйте шаги справа.</p>
+            <div className="space-y-2">
+              {scenarioPresets.map((preset) => (
+                <button
+                  key={preset.name}
+                  type="button"
+                  onClick={() => applyPreset(preset.name)}
+                  className={`w-full rounded-xl border px-3 py-2 text-left ${
+                    selectedPreset === preset.name ? "border-cyan-300 bg-cyan-50 text-cyan-900" : "border-slate-200 bg-white text-slate-700"
+                  }`}
+                >
+                  <p className="text-sm font-semibold">{preset.name}</p>
+                  <p className="text-xs text-muted">
+                    {preset.metric} {preset.operator} {preset.value}
+                  </p>
+                </button>
+              ))}
             </div>
+
             <div>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Условия</p>
-              <div className="grid gap-2 sm:grid-cols-2">
-                {conditionBlocks.map((item) => (
-                  <div key={item} className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-amber-800">{item}</div>
-                ))}
-              </div>
-            </div>
-            <div>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Действия</p>
-              <div className="grid gap-2 sm:grid-cols-2">
-                {actionBlocks.map((item) => (
-                  <div key={item} className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-emerald-800">{item}</div>
-                ))}
-              </div>
-            </div>
-            <div>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Интеграции</p>
+              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Подключенные интеграции</p>
               <div className="grid gap-2 sm:grid-cols-2">
                 {integrations.map((item) => (
                   <div key={item.id} className="rounded-xl border border-indigo-200 bg-indigo-50 px-3 py-2 text-indigo-800">
                     {item.type} • {item.status}
                   </div>
                 ))}
-                <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-3 py-2 text-slate-600">+ Ещё не подключено</div>
               </div>
             </div>
           </div>
         </Card>
 
         <Card>
-          <h3 className="mb-3 text-base font-semibold">Визуальный сценарий</h3>
+          <h3 className="mb-3 text-base font-semibold">Сценарий за 3 шага</h3>
+          <p className="mb-2 text-xs text-muted">Шаг 1: Когда срабатывает. Шаг 2: Проверка. Шаг 3: Что сделать.</p>
           <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3">
             <div className="grid gap-3 sm:grid-cols-[1fr_auto_1fr_auto_1fr] sm:items-center">
               <div className="rounded-xl border border-cyan-300 bg-cyan-50 px-3 py-2 text-sm font-semibold text-cyan-900">{scenarioPreview}</div>
@@ -263,6 +291,11 @@ export default function AutomationPage() {
                 </div>
               </div>
             ))}
+            {workflows.length === 0 ? (
+              <div className="rounded-xl border border-dashed border-slate-300 p-3 text-sm text-muted">
+                Пока сценариев нет. Выберите шаблон слева и нажмите «Создать сценарий».
+              </div>
+            ) : null}
           </div>
         </Card>
 
@@ -286,12 +319,8 @@ export default function AutomationPage() {
             ) : null}
           </div>
           <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
-            <p className="font-semibold">Pro-режим</p>
-            <p className="mt-1 text-xs text-muted">Расширенные HTTP/webhook блоки и сложные ветвления доступны как следующий этап.</p>
-            <button className="mt-2 inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700">
-              <Link2 size={14} />
-              Заказать расширенную автоматизацию
-            </button>
+            <p className="font-semibold">Важно</p>
+            <p className="mt-1 text-xs text-muted">Для простоты в MVP доступна схема: 1 триггер → до 2 условий → до 3 действий.</p>
           </div>
         </Card>
       </div>

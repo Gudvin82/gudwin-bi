@@ -87,7 +87,7 @@ const sections: NavSection[] = [
     icon: Target,
     children: [
       { href: "/goals", label: "Цели и план" },
-      { href: "/owner", label: "Фокус дня владельца" }
+      { href: "/goals/focus", label: "Фокус владельца" }
     ]
   },
   {
@@ -97,8 +97,7 @@ const sections: NavSection[] = [
     icon: Boxes,
     children: [
       { href: "/automation", label: "Конструктор сценариев" },
-      { href: "/agents", label: "Каталог AI-агентов" },
-      { href: "/connect", label: "Интеграционные действия" }
+      { href: "/automation/templates", label: "Готовые шаблоны" }
     ]
   },
   {
@@ -183,7 +182,11 @@ export function Sidebar({
   const pathname = usePathname();
 
   const defaultOpen = useMemo(() => {
-    const active = sections.find((section) => section.children.some((child) => pathname === child.href || pathname.startsWith(`${child.href}/`)));
+    const active = sections.find((section) =>
+      pathname === section.href
+      || pathname.startsWith(`${section.href}/`)
+      || section.children.some((child) => pathname === child.href || pathname.startsWith(`${child.href}/`))
+    );
     return active?.key ?? "home";
   }, [pathname]);
 
@@ -208,7 +211,9 @@ export function Sidebar({
       <nav ref={navRef} className="max-h-[calc(100dvh-170px)] space-y-2 overflow-y-auto pr-1">
         {sections.map((section) => {
           const Icon = section.icon;
-          const active = section.children.some((child) => pathname === child.href || pathname.startsWith(`${child.href}/`));
+          const active = pathname === section.href
+            || pathname.startsWith(`${section.href}/`)
+            || section.children.some((child) => pathname === child.href || pathname.startsWith(`${child.href}/`));
           const isOpen = opened === section.key;
 
           return (
