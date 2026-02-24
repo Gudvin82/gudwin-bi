@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
@@ -29,67 +29,74 @@ export default function MarketingOverviewPage() {
     void load();
   }, []);
 
+  const efficiencyTone = useMemo(() => {
+    const score = overview?.index ?? 0;
+    if (score >= 75) return "text-emerald-600";
+    if (score >= 60) return "text-amber-600";
+    return "text-rose-600";
+  }, [overview?.index]);
+
   return (
-    <div className="space-y-4">
-      <Card className="animate-fade-up bg-gradient-to-r from-blue-50 via-cyan-50 to-sky-50">
+    <div className="space-y-5">
+      <Card className="animate-fade-up bg-gradient-to-br from-indigo-50 via-cyan-50/70 to-white">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h2 className="text-xl font-bold">Маркетинговый кабинет</h2>
-            <p className="text-sm text-muted">Здесь вы видите, как маркетинг влияет на деньги и прибыль. Красное — проверить, зеленое — усиливать.</p>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-700">Marketing Hub</p>
+            <h2 className="text-2xl font-extrabold tracking-tight">Маркетинговый кабинет</h2>
+            <p className="mt-1 text-sm text-muted">Как маркетинг влияет на деньги и прибыль: что усиливать, а что немедленно останавливать.</p>
           </div>
           <HelpPopover
             title="Что показывает экран"
             items={[
-              "Индекс эффективности маркетинга за последние 30 дней.",
-              "Суммарные расходы, выручка, ROMI и CAC.",
-              "Лучшие и проблемные каналы + рекомендации на неделю."
+              "Индекс эффективности маркетинга за 30 дней.",
+              "Расходы, выручка, ROMI и CAC по всем каналам.",
+              "Топ-каналы и проблемные зоны с рекомендациями на неделю."
             ]}
           />
         </div>
       </Card>
 
       <div className="grid gap-4 lg:grid-cols-4">
-        <Card>
-          <p className="text-xs text-muted">Индекс эффективности маркетинга</p>
-          <p className={`mt-1 text-4xl font-extrabold ${(overview?.index ?? 0) < 60 ? "text-amber-700" : "text-emerald-700"}`}>{overview?.index ?? "--"}</p>
-          <p className="text-xs text-muted">Суммарная отдача за {overview?.period ?? "период"}</p>
+        <Card className="bg-slate-950 text-white">
+          <p className="text-xs uppercase tracking-[0.14em] text-cyan-200">Индекс эффективности</p>
+          <p className={`mt-2 text-5xl font-extrabold ${efficiencyTone}`}>{overview?.index ?? "--"}</p>
+          <p className="mt-1 text-xs text-slate-300">Суммарная отдача за {overview?.period ?? "период"}</p>
         </Card>
         <Card>
           <p className="text-xs text-muted">Расходы на маркетинг</p>
-          <p className="mt-1 text-2xl font-extrabold">{(overview?.spend ?? 0).toLocaleString("ru-RU")} ₽</p>
+          <p className="mt-2 text-2xl font-extrabold">{(overview?.spend ?? 0).toLocaleString("ru-RU")} ₽</p>
           <p className="text-xs text-muted">+7.4% к прошлому периоду</p>
         </Card>
         <Card>
           <p className="text-xs text-muted">Выручка от маркетинга</p>
-          <p className="mt-1 text-2xl font-extrabold">{(overview?.revenue ?? 0).toLocaleString("ru-RU")} ₽</p>
-          <p className="text-xs text-muted">Оценка влияния paid-каналов</p>
+          <p className="mt-2 text-2xl font-extrabold">{(overview?.revenue ?? 0).toLocaleString("ru-RU")} ₽</p>
+          <p className="text-xs text-muted">Влияние paid-каналов</p>
         </Card>
         <Card>
           <p className="text-xs text-muted">ROMI / CAC</p>
-          <p className="mt-1 text-2xl font-extrabold">{overview?.romi ?? "--"}% / {(overview?.cac ?? 0).toLocaleString("ru-RU")} ₽</p>
-          <p className="text-xs text-muted">Средний CAC по каналам</p>
+          <p className="mt-2 text-2xl font-extrabold">{overview?.romi ?? "--"}%</p>
+          <p className="text-xs text-muted">CAC: {(overview?.cac ?? 0).toLocaleString("ru-RU")} ₽</p>
         </Card>
       </div>
 
       <div className="grid gap-4 xl:grid-cols-2">
         <Card>
-          <h3 className="mb-2 text-base font-semibold">Лучшие каналы (топ-3)</h3>
+          <h3 className="mb-3 text-base font-semibold">Лучшие каналы</h3>
           <div className="space-y-2 text-sm">
-            {(overview?.topChannels ?? []).map((item) => (
-              <div key={item.name} className="flex items-center justify-between rounded-xl border border-emerald-200 bg-emerald-50 p-3">
-                <span>{item.name}</span>
+            {(overview?.topChannels ?? []).map((item, idx) => (
+              <div key={item.name} className="flex items-center justify-between rounded-xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-cyan-50 px-3 py-2">
+                <span>{idx + 1}. {item.name}</span>
                 <span className="font-semibold text-emerald-700">ROMI {item.romi}%</span>
               </div>
             ))}
           </div>
         </Card>
-
         <Card>
-          <h3 className="mb-2 text-base font-semibold">Проблемные каналы (топ-3)</h3>
+          <h3 className="mb-3 text-base font-semibold">Проблемные каналы</h3>
           <div className="space-y-2 text-sm">
-            {(overview?.problemChannels ?? []).map((item) => (
-              <div key={item.name} className="flex items-center justify-between rounded-xl border border-rose-200 bg-rose-50 p-3">
-                <span>{item.name}</span>
+            {(overview?.problemChannels ?? []).map((item, idx) => (
+              <div key={item.name} className="flex items-center justify-between rounded-xl border border-rose-200 bg-gradient-to-r from-rose-50 to-orange-50 px-3 py-2">
+                <span>{idx + 1}. {item.name}</span>
                 <span className="font-semibold text-rose-700">ROMI {item.romi}%</span>
               </div>
             ))}
@@ -99,14 +106,17 @@ export default function MarketingOverviewPage() {
 
       <Card>
         <h3 className="mb-2 text-base font-semibold">Рекомендации на неделю</h3>
-        <ul className="list-disc space-y-1 pl-5 text-sm">
+        <div className="grid gap-2 md:grid-cols-3">
           {(overview?.recommendations ?? []).map((item) => (
-            <li key={item}>{item}</li>
+            <div key={item} className="rounded-xl border border-border bg-gradient-to-br from-white to-slate-50 p-3 text-sm">
+              {item}
+            </div>
           ))}
-        </ul>
-        <div className="mt-3 flex flex-wrap gap-2">
-          <Link href="/marketing/campaigns" className="rounded-xl border border-border px-3 py-2 text-sm">Открыть кампании</Link>
-          <Link href="/advisor" className="rounded-xl border border-border px-3 py-2 text-sm">Спросить AI-советника</Link>
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <Link href="/marketing/campaigns" className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-4 py-2 text-sm font-semibold text-white">Разобрать кампании</Link>
+          <Link href="/advisor" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Спросить AI-советника</Link>
+          <Link href="/marketing/experiments" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Запустить A/B тест</Link>
         </div>
       </Card>
     </div>

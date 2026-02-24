@@ -155,8 +155,20 @@ export default function AdvisorPage() {
   };
 
   return (
-    <div className="grid gap-4 xl:grid-cols-[280px_1fr_320px]">
-      <Card className="animate-fade-up">
+    <div className="space-y-4">
+      <Card className="animate-fade-up bg-gradient-to-r from-violet-50 via-cyan-50/70 to-white">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-violet-700">Advisor Center</p>
+            <h2 className="text-2xl font-extrabold tracking-tight">AI-советник</h2>
+            <p className="text-sm text-muted">Бизнес-консультант, AI-бухгалтер и AI-финансист в одном рабочем пространстве.</p>
+          </div>
+          <span className="rounded-full border border-violet-200 bg-white px-3 py-1 text-xs text-violet-700">Контекст + Explain + Decision Log</span>
+        </div>
+      </Card>
+
+      <div className="grid gap-4 xl:grid-cols-[280px_1fr_320px]">
+      <Card className="animate-fade-up bg-white/95">
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-sm font-bold">Сессии</h2>
           <button onClick={createSession} className="rounded-lg border border-border px-2 py-1 text-xs">
@@ -177,7 +189,7 @@ export default function AdvisorPage() {
         </div>
       </Card>
 
-      <Card className="animate-fade-up">
+      <Card className="animate-fade-up bg-white/95">
         <div className="mb-3 flex flex-wrap gap-2">
           {(Object.keys(roleMeta) as AdvisorRole[]).map((roleId) => (
             <button
@@ -186,17 +198,17 @@ export default function AdvisorPage() {
                 setRole(roleId);
                 setInput(roleMeta[roleId].placeholder);
               }}
-              className={`rounded-xl border px-3 py-2 text-sm ${role === roleId ? "border-accent bg-accentSoft text-accent" : "border-border text-muted"}`}
+              className={`rounded-xl border px-3 py-2 text-sm ${role === roleId ? "border-cyan-500 bg-cyan-50 text-cyan-700" : "border-border text-muted"}`}
             >
               {roleMeta[roleId].avatar} {roleMeta[roleId].label}
             </button>
           ))}
         </div>
 
-        <div className="mb-4 max-h-[520px] space-y-3 overflow-y-auto rounded-2xl border border-border bg-slate-50 p-3">
+        <div className="mb-4 max-h-[520px] space-y-3 overflow-y-auto rounded-2xl border border-slate-200 bg-gradient-to-b from-slate-50 to-white p-3">
           {messages.length === 0 ? <p className="text-sm text-muted">Задайте первый вопрос консультанту по вашему бизнесу.</p> : null}
           {messages.map((message) => (
-            <div key={message.id} className={`animate-fade-up rounded-2xl p-3 text-sm ${message.role === "user" ? "ml-auto max-w-[80%] bg-accent text-white" : "mr-auto max-w-[90%] bg-white"}`}>
+            <div key={message.id} className={`animate-fade-up rounded-2xl p-3 text-sm ${message.role === "user" ? "ml-auto max-w-[80%] bg-gradient-to-r from-cyan-600 to-teal-600 text-white" : "mr-auto max-w-[90%] border border-slate-200 bg-white"}`}>
               <p>{message.text}</p>
               {message.structured ? (
                 <div className="mt-3 space-y-2 rounded-xl border border-border bg-slate-50 p-3 text-text">
@@ -271,14 +283,14 @@ export default function AdvisorPage() {
               </button>
             ))}
           </div>
-          <button onClick={askAdvisor} disabled={loading} className="rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">
+          <button onClick={askAdvisor} disabled={loading} className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">
             {loading ? "Анализируем..." : "Отправить консультанту"}
           </button>
         </div>
         {decisionStatus ? <p className="mt-2 text-xs text-muted">{decisionStatus}</p> : null}
       </Card>
 
-      <Card className="animate-fade-up">
+      <Card className="animate-fade-up bg-white/95">
         <h3 className="mb-3 text-sm font-bold">Контекст бизнеса</h3>
         {activeSession ? <p className="mb-3 text-xs text-muted">Активная тема: {activeSession.title}</p> : null}
         <div className="space-y-2 text-sm">
@@ -333,6 +345,7 @@ export default function AdvisorPage() {
           </div>
         </div>
       </Card>
+      </div>
     </div>
   );
 }

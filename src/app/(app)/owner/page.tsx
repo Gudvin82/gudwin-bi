@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
@@ -29,89 +29,90 @@ export default function OwnerPage() {
     void load();
   }, []);
 
+  const healthGradient = useMemo(() => {
+    const degree = Math.round((data.health.score / 100) * 360);
+    return `conic-gradient(#0891b2 0deg, #10b981 ${degree}deg, rgba(226,232,240,.9) ${degree}deg 360deg)`;
+  }, [data.health.score]);
+
   return (
-    <div className="space-y-4">
-      <Card className="animate-fade-up bg-gradient-to-r from-emerald-50 to-cyan-50">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <h2 className="text-xl font-bold">Режим владельца</h2>
-            <p className="text-sm text-muted">Здесь вы видите общее здоровье бизнеса, главную проблему недели и фокус дня.</p>
+    <div className="space-y-5">
+      <Card className="animate-fade-up bg-gradient-to-br from-white via-cyan-50/60 to-emerald-50/60">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="max-w-2xl">
+            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-700">Owner Mode</p>
+            <h2 className="text-2xl font-extrabold tracking-tight">Режим владельца</h2>
+            <p className="mt-1 text-sm text-muted">Главная витрина бизнеса: здоровье компании, главная проблема недели и фокус дня.</p>
           </div>
           <HelpPopover
-            title="Подсказка по разделу"
+            title="Как читать этот экран"
             items={[
-              "Индекс здоровья показывает общее состояние бизнеса по шкале 0-100.",
-              "Главная проблема недели помогает быстро найти точку внимания.",
-              "Фокус дня — конкретное действие, которое стоит сделать сегодня."
+              "Смотрите сначала индекс здоровья и динамику компонентов.",
+              "Проблема недели — главная зона риска.",
+              "Фокус дня — одно действие, которое даст максимальный эффект сегодня."
             ]}
           />
         </div>
       </Card>
 
-      <div className="dashboard-grid">
-        <Card className="col-span-12 md:col-span-4">
-          <div className="mb-1 flex items-center gap-2">
-            <p className="text-sm text-muted">Индекс здоровья бизнеса</p>
-            <HelpPopover
-              title="Что означает индекс"
-              items={[
-                "Выше 75 — хороший уровень устойчивости.",
-                "От 55 до 75 — нужен точечный контроль рисков.",
-                "Ниже 55 — требуется немедленная корректировка финансов и операций."
-              ]}
-            />
+      <div className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
+        <Card className="bg-gradient-to-br from-slate-950 via-cyan-950 to-slate-900 text-white">
+          <div className="flex items-center justify-between">
+            <p className="text-xs uppercase tracking-[0.16em] text-cyan-200">Health Score</p>
+            <span className="rounded-full bg-white/10 px-3 py-1 text-xs">{loading ? "Обновляем" : "Актуально"}</span>
           </div>
-          <p className="text-5xl font-extrabold text-accent">{data.health.score}</p>
-          <p className="text-xs text-muted">0-100, чем выше, тем устойчивее бизнес</p>
-        </Card>
-        <Card className="col-span-12 md:col-span-8">
-          <p className="mb-2 text-sm font-semibold">Компоненты</p>
-          <div className="grid grid-cols-3 gap-2 text-sm">
-            <div className="rounded-xl border border-border p-3">Финансы: {data.health.components.financial}</div>
-            <div className="rounded-xl border border-border p-3">Деньги: {data.health.components.cash}</div>
-            <div className="rounded-xl border border-border p-3">Операции: {data.health.components.operations}</div>
+          <div className="mt-5 flex flex-wrap items-center gap-6">
+            <div className="relative grid h-40 w-40 place-content-center rounded-full" style={{ background: healthGradient }}>
+              <div className="grid h-28 w-28 place-content-center rounded-full bg-slate-950 text-center">
+                <p className="text-4xl font-extrabold leading-none">{data.health.score}</p>
+                <p className="mt-1 text-xs text-cyan-200">из 100</p>
+              </div>
+            </div>
+            <div className="min-w-[220px] flex-1 space-y-2 text-sm">
+              <div className="flex items-center justify-between rounded-xl bg-white/10 px-3 py-2">
+                <span>Финансы</span>
+                <span className="font-semibold">{data.health.components.financial}</span>
+              </div>
+              <div className="flex items-center justify-between rounded-xl bg-white/10 px-3 py-2">
+                <span>Деньги</span>
+                <span className="font-semibold">{data.health.components.cash}</span>
+              </div>
+              <div className="flex items-center justify-between rounded-xl bg-white/10 px-3 py-2">
+                <span>Операции</span>
+                <span className="font-semibold">{data.health.components.operations}</span>
+              </div>
+              <div className="flex items-center justify-between rounded-xl bg-rose-300/20 px-3 py-2 text-rose-100">
+                <span>Штраф риска</span>
+                <span className="font-semibold">-{data.health.components.riskPenalty}</span>
+              </div>
+            </div>
           </div>
-          {loading ? <p className="mt-2 text-xs text-muted">Обновляем показатели...</p> : null}
         </Card>
-      </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <Card>
-          <p className="mb-2 text-sm font-semibold">Главная проблема недели</p>
-          <p className="text-sm">{data.problemOfWeek}</p>
-        </Card>
-        <Card>
-          <p className="mb-2 text-sm font-semibold">Главный фокус дня</p>
-          <p className="text-sm">{data.focusOfDay}</p>
-        </Card>
-      </div>
-
-      <Card className="bg-gradient-to-r from-sky-50 to-indigo-50">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <p className="text-sm font-semibold">Маркетинг</p>
-            <p className="text-sm text-muted">Расходы: 1 790 000 ₽ • ROMI: 50.8% по всем каналам за 30 дней.</p>
-          </div>
-          <Link href="/marketing" className="rounded-xl border border-border bg-white px-4 py-2 text-sm font-semibold">
-            Перейти в Маркетинг
-          </Link>
+        <div className="space-y-4">
+          <Card className="bg-gradient-to-br from-rose-50 to-orange-50">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-rose-700">Главная проблема недели</p>
+            <p className="text-sm font-medium text-slate-800">{data.problemOfWeek}</p>
+          </Card>
+          <Card className="bg-gradient-to-br from-emerald-50 to-cyan-50">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-emerald-700">Фокус дня</p>
+            <p className="text-sm font-medium text-slate-800">{data.focusOfDay}</p>
+          </Card>
+          <Card className="bg-gradient-to-r from-sky-50 to-indigo-50">
+            <p className="text-xs text-muted">Маркетинг</p>
+            <p className="mt-1 text-sm font-semibold">Расходы: 1 790 000 ₽ • ROMI: 50.8%</p>
+            <Link href="/marketing" className="mt-3 inline-flex rounded-xl border border-border bg-white px-3 py-2 text-sm font-semibold">
+              Перейти в маркетинг
+            </Link>
+          </Card>
         </div>
-      </Card>
+      </div>
 
       <Card>
         <div className="flex flex-wrap gap-2">
-          <Link href="/finance" className="rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white">
-            Перейти в Финансы
-          </Link>
-          <Link href="/marketing" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">
-            Открыть Маркетинг
-          </Link>
-          <Link href="/advisor" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">
-            Открыть AI-советника
-          </Link>
-          <Link href="/watch" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">
-            Смотреть алерты
-          </Link>
+          <Link href="/finance" className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-4 py-2 text-sm font-semibold text-white">Финансы</Link>
+          <Link href="/marketing" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Маркетинг</Link>
+          <Link href="/advisor" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">AI-советник</Link>
+          <Link href="/watch" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Мониторинг</Link>
         </div>
       </Card>
     </div>
