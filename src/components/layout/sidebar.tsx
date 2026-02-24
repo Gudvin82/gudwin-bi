@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AlertTriangle, BookOpen, Building2, ChevronDown, ChevronRight, FileText, LayoutDashboard, LineChart, Link2, Settings, Sparkles, Target, UserRoundCog, Users } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 type NavItem = {
@@ -167,6 +167,12 @@ export function Sidebar({
   }, [pathname]);
 
   const [opened, setOpened] = useState<string>(defaultOpen);
+  const navRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    setOpened(defaultOpen);
+    navRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+  }, [defaultOpen]);
 
   return (
     <aside className={cn("sticky top-0 h-dvh w-72 shrink-0 border-r border-slate-200/70 bg-gradient-to-b from-white/85 to-slate-50/80 p-4 backdrop-blur-xl", className)}>
@@ -178,7 +184,7 @@ export function Sidebar({
         </div>
       </Link>
 
-      <nav className="max-h-[calc(100dvh-170px)] space-y-2 overflow-y-auto pr-1">
+      <nav ref={navRef} className="max-h-[calc(100dvh-170px)] space-y-2 overflow-y-auto pr-1">
         {sections.map((section) => {
           const Icon = section.icon;
           const active = section.children.some((child) => pathname === child.href || pathname.startsWith(`${child.href}/`));
@@ -194,7 +200,10 @@ export function Sidebar({
               >
                 <Link
                   href={section.href}
-                  onClick={onNavigate}
+                  onClick={() => {
+                    setOpened(section.key);
+                    onNavigate?.();
+                  }}
                   className={cn(
                     "inline-flex min-w-0 flex-1 items-center gap-2 rounded-l-xl px-3 py-2.5 text-sm font-semibold",
                     active ? "text-white" : "text-text hover:bg-slate-100"
@@ -224,7 +233,7 @@ export function Sidebar({
                       <Link
                         key={child.href}
                         href={child.href}
-                        onClick={onNavigate}
+                        onClick={() => onNavigate?.()}
                         className={cn(
                           "flex items-center gap-2 rounded-lg px-3 py-2 text-xs",
                           childActive ? "border border-cyan-200 bg-gradient-to-r from-cyan-50 to-teal-50 font-semibold text-cyan-800" : "text-muted hover:bg-slate-100"

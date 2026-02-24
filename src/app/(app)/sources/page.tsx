@@ -10,6 +10,12 @@ type SourceRow = {
   lastSync: string;
 };
 
+const sourceTypeLabels: Record<string, string> = {
+  google_sheets: "Google Sheets",
+  excel_upload: "Загрузка Excel/CSV",
+  bitrix24: "Bitrix24 CRM"
+};
+
 const initialSources: SourceRow[] = [
   { type: "google_sheets", name: "P&L 2026", status: "active", lastSync: "2 мин назад" },
   { type: "excel_upload", name: "leads_feb.xlsx", status: "parsed", lastSync: "15 мин назад" },
@@ -187,7 +193,7 @@ export default function SourcesPage() {
             <tbody>
               {sources.map((item) => (
                 <tr key={`${item.type}:${item.name}`} className="border-t border-border">
-                  <td className="py-2">{item.type}</td>
+                  <td className="py-2">{sourceTypeLabels[item.type] ?? item.type}</td>
                   <td className="py-2 font-medium">{item.name}</td>
                   <td className="py-2">{item.status}</td>
                   <td className="py-2">{item.lastSync}</td>

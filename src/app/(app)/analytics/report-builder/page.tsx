@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
@@ -62,6 +62,11 @@ export default function ReportBuilderPage() {
   const [preview, setPreview] = useState<PreviewResponse | null>(null);
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const toggleMetric = (id: MetricId) => {
     setMetrics((prev) => {
@@ -208,31 +213,35 @@ export default function ReportBuilderPage() {
               <div className="space-y-4">
                 {chartType !== "table" ? (
                   <div className="h-64 rounded-xl border border-border bg-white p-2">
-                    <ResponsiveContainer width="100%" height="100%">
-                      {chartType === "line" ? (
-                        <AreaChart data={preview.rows}>
-                          <defs>
-                            <linearGradient id="rb" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="5%" stopColor="#0891b2" stopOpacity={0.32} />
-                              <stop offset="95%" stopColor="#0891b2" stopOpacity={0.04} />
-                            </linearGradient>
-                          </defs>
-                          <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                          <XAxis dataKey="dimension" tick={{ fontSize: 11 }} />
-                          <YAxis tick={{ fontSize: 11 }} />
-                          <Tooltip formatter={(value: number | string | undefined) => Number(value ?? 0).toLocaleString("ru-RU")} />
-                          <Area type="monotone" dataKey={chartMetric} stroke="#0891b2" fill="url(#rb)" strokeWidth={2} />
-                        </AreaChart>
-                      ) : (
-                        <BarChart data={preview.rows}>
-                          <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                          <XAxis dataKey="dimension" tick={{ fontSize: 11 }} />
-                          <YAxis tick={{ fontSize: 11 }} />
-                          <Tooltip formatter={(value: number | string | undefined) => Number(value ?? 0).toLocaleString("ru-RU")} />
-                          <Bar dataKey={chartMetric} fill="#0f766e" radius={[6, 6, 0, 0]} />
-                        </BarChart>
-                      )}
-                    </ResponsiveContainer>
+                    {!mounted ? (
+                      <div className="skeleton h-full w-full" />
+                    ) : (
+                      <ResponsiveContainer width="100%" height="100%">
+                        {chartType === "line" ? (
+                          <AreaChart data={preview.rows}>
+                            <defs>
+                              <linearGradient id="rb" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#0891b2" stopOpacity={0.32} />
+                                <stop offset="95%" stopColor="#0891b2" stopOpacity={0.04} />
+                              </linearGradient>
+                            </defs>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                            <XAxis dataKey="dimension" tick={{ fontSize: 11 }} />
+                            <YAxis tick={{ fontSize: 11 }} />
+                            <Tooltip formatter={(value: number | string | undefined) => Number(value ?? 0).toLocaleString("ru-RU")} />
+                            <Area type="monotone" dataKey={chartMetric} stroke="#0891b2" fill="url(#rb)" strokeWidth={2} />
+                          </AreaChart>
+                        ) : (
+                          <BarChart data={preview.rows}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                            <XAxis dataKey="dimension" tick={{ fontSize: 11 }} />
+                            <YAxis tick={{ fontSize: 11 }} />
+                            <Tooltip formatter={(value: number | string | undefined) => Number(value ?? 0).toLocaleString("ru-RU")} />
+                            <Bar dataKey={chartMetric} fill="#0f766e" radius={[6, 6, 0, 0]} />
+                          </BarChart>
+                        )}
+                      </ResponsiveContainer>
+                    )}
                   </div>
                 ) : null}
 
@@ -293,4 +302,3 @@ export default function ReportBuilderPage() {
     </div>
   );
 }
-

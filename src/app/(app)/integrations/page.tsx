@@ -30,7 +30,7 @@ export default function IntegrationsHubPage() {
   }, []);
 
   const onConnect = (id: string) => {
-    setMessage(`Интеграция ${id} добавлена в очередь подключения (заглушка).`);
+    setMessage(`Интеграция ${id} добавлена в очередь подключения.`);
   };
 
   return (

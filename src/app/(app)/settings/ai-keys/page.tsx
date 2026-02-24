@@ -13,6 +13,7 @@ const providers = [
 
 export default function AiKeysSettingsPage() {
   const [health, setHealth] = useState<{ enabled: boolean; connected: boolean; provider: string; model: string } | null>(null);
+  const [period, setPeriod] = useState<"day" | "month">("month");
 
   useEffect(() => {
     const load = async () => {
@@ -59,6 +60,58 @@ export default function AiKeysSettingsPage() {
               <span className="rounded-full bg-slate-100 px-2 py-1 text-xs text-slate-700">Готово к интеграции</span>
             </div>
           ))}
+        </div>
+      </Card>
+
+      <Card>
+        <div className="mb-3 flex items-center justify-between gap-2">
+          <h3 className="text-base font-semibold">Затраты на AI и агентов</h3>
+          <select value={period} onChange={(event) => setPeriod(event.target.value as "day" | "month")} className="rounded-xl border border-border p-2 text-sm">
+            <option value="day">За день</option>
+            <option value="month">За месяц</option>
+          </select>
+        </div>
+        <div className="grid gap-3 md:grid-cols-3">
+          <div className="rounded-xl border border-border p-3">
+            <p className="text-xs text-muted">Всего по AI</p>
+            <p className="text-2xl font-extrabold">{period === "day" ? "620 ₽" : "18 940 ₽"}</p>
+          </div>
+          <div className="rounded-xl border border-border p-3">
+            <p className="text-xs text-muted">Агентные задачи</p>
+            <p className="text-2xl font-extrabold">{period === "day" ? "170 ₽" : "4 920 ₽"}</p>
+          </div>
+          <div className="rounded-xl border border-border p-3">
+            <p className="text-xs text-muted">Средняя стоимость запроса</p>
+            <p className="text-2xl font-extrabold">{period === "day" ? "3.1 ₽" : "2.8 ₽"}</p>
+          </div>
+        </div>
+        <div className="mt-3 overflow-x-auto rounded-xl border border-border">
+          <table className="min-w-[640px] w-full text-sm">
+            <thead className="bg-slate-50 text-left text-xs text-muted">
+              <tr>
+                <th className="px-3 py-2">Провайдер</th>
+                <th className="px-3 py-2">Запросов</th>
+                <th className="px-3 py-2">Токены</th>
+                <th className="px-3 py-2">Стоимость</th>
+                <th className="px-3 py-2">Статус</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { name: "AI Tunnel", req: period === "day" ? "138" : "4 120", tok: period === "day" ? "182k" : "5.7M", cost: period === "day" ? "390 ₽" : "11 870 ₽" },
+                { name: "OpenAI", req: period === "day" ? "54" : "1 430", tok: period === "day" ? "96k" : "2.1M", cost: period === "day" ? "180 ₽" : "5 240 ₽" },
+                { name: "Агенты (внутренние задачи)", req: period === "day" ? "32" : "920", tok: period === "day" ? "34k" : "1.1M", cost: period === "day" ? "170 ₽" : "4 920 ₽" }
+              ].map((row) => (
+                <tr key={row.name} className="border-t border-border">
+                  <td className="px-3 py-2 font-medium">{row.name}</td>
+                  <td className="px-3 py-2">{row.req}</td>
+                  <td className="px-3 py-2">{row.tok}</td>
+                  <td className="px-3 py-2">{row.cost}</td>
+                  <td className="px-3 py-2"><span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs text-emerald-700">Активно</span></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </Card>
 

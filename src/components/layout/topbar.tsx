@@ -108,9 +108,13 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
         <Link href="/overview" className="hidden min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-sm font-semibold shadow-sm md:inline-flex">
           Открыть обзор
         </Link>
-        <Link href="/sources" className="btn-premium-primary inline-flex min-h-10 flex-1 items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-white shadow-sm sm:flex-none">
+        <Link href="/sources" className="btn-premium-primary hidden min-h-10 items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-white shadow-sm sm:inline-flex">
           <Sparkles size={16} />
           {primarySourceActionLabel}
+        </Link>
+        <Link href="/sources" className="btn-premium-primary inline-flex min-h-10 items-center justify-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-white shadow-sm sm:hidden">
+          <Sparkles size={14} />
+          Источники
         </Link>
         <div className="hidden min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-sm text-muted shadow-sm md:inline-flex">
           <CalendarRange size={16} />

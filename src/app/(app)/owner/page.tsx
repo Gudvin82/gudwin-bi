@@ -77,8 +77,8 @@ export default function OwnerPage() {
       </Card>
 
       <Card className="bg-gradient-to-r from-emerald-50 via-white to-cyan-50">
-        <p className="text-sm font-semibold text-emerald-800">Ваш Health Score {data.health.score} — это хорошо</p>
-        <p className="mt-1 text-sm text-muted">Вы в верхних 25% демо-бенчмарка по вашей категории. За неделю: +5 пунктов.</p>
+        <p className="text-sm font-semibold text-emerald-800">Ваш Health Score {data.health.score} — {healthZone.label.toLowerCase()}</p>
+        <p className="mt-1 text-sm text-muted">Показатель рассчитывается по финансам, ликвидности, операционке и рискам. Динамика за неделю: +5 пунктов.</p>
         <div className="mt-3 flex flex-wrap gap-2">
           <Link href="/advisor" className="rounded-xl border border-emerald-300 bg-white px-3 py-2 text-xs font-semibold text-emerald-700">
             Узнать, как дойти до 90
@@ -111,9 +111,9 @@ export default function OwnerPage() {
                 {healthZone.label}: {data.health.score}/100
               </div>
               <div className="grid grid-cols-3 gap-2 text-[11px]">
-                <div className="rounded-lg bg-rose-500/25 px-2 py-1 text-center text-rose-100">0-40 риск</div>
-                <div className="rounded-lg bg-amber-500/25 px-2 py-1 text-center text-amber-100">41-70 внимание</div>
-                <div className="rounded-lg bg-emerald-500/25 px-2 py-1 text-center text-emerald-100">71-100 норма</div>
+                <div className="rounded-lg border border-rose-300 bg-rose-50 px-2 py-1 text-center text-rose-700">0-40 риск</div>
+                <div className="rounded-lg border border-amber-300 bg-amber-50 px-2 py-1 text-center text-amber-700">41-70 внимание</div>
+                <div className="rounded-lg border border-emerald-300 bg-emerald-50 px-2 py-1 text-center text-emerald-700">71-100 норма</div>
               </div>
               <div className="flex items-center justify-between rounded-xl bg-white/10 px-3 py-2">
                 <span>Финансы</span>

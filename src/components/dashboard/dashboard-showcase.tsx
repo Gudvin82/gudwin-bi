@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Card } from "@/components/ui/card";
 
@@ -35,6 +36,24 @@ const cashData = [
 ];
 
 export function DashboardShowcase() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, idx) => (
+          <Card key={idx}>
+            <div className="skeleton h-44 w-full" />
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
       <Card className="bg-gradient-to-b from-white to-cyan-50/40">
@@ -64,7 +83,7 @@ export function DashboardShowcase() {
       <Card className="bg-gradient-to-b from-white to-emerald-50/40">
         <div className="mb-2 flex items-center justify-between">
           <p className="text-xs text-muted">Каналы продаж</p>
-          <span className="rounded-full bg-cyan-100 px-2 py-0.5 text-[10px] font-semibold text-cyan-700">TOP 4</span>
+          <span className="rounded-full bg-cyan-100 px-2 py-0.5 text-[10px] font-semibold text-cyan-700">ТОП-4</span>
         </div>
         <div className="h-44">
           <ResponsiveContainer width="100%" height="100%">

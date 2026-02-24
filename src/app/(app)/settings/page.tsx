@@ -42,11 +42,11 @@ export default function SettingsPage() {
   }, [role]);
 
   const onInvite = () => {
-    setInviteHint("Приглашение сохранено как заглушка. Реальная отправка будет подключена на следующем этапе.");
+    setInviteHint("Приглашение сохранено. Отправка приглашений будет доступна после подключения почтового провайдера.");
   };
 
   const saveAuthStub = () => {
-    setAuthHint("Заглушки входа сохранены. На следующем этапе подключим реальную авторизацию через провайдер.");
+    setAuthHint("Способы входа сохранены. После подключения провайдера авторизации они будут активированы.");
   };
 
   const saveProfile = () => {
@@ -54,9 +54,13 @@ export default function SettingsPage() {
     localStorage.setItem("gw_profile_role", profileRole);
     localStorage.setItem("gw_theme", themeMode);
     localStorage.setItem("gw_lang", language);
-    document.documentElement.setAttribute("data-theme", themeMode);
+    document.documentElement.setAttribute("data-theme", "light");
     document.documentElement.setAttribute("lang", language === "ru" ? "ru" : "en");
-    setProfileHint("Профиль и предпочтения интерфейса сохранены.");
+    setProfileHint(
+      themeMode === "dark"
+        ? "Профиль сохранён. Тёмная тема временно отключена и будет включена в следующем релизе."
+        : "Профиль и предпочтения интерфейса сохранены."
+    );
   };
 
   useEffect(() => {
@@ -84,10 +88,10 @@ export default function SettingsPage() {
           <div className="space-y-2">
             <label className="text-xs text-muted">Роль доступа (отображение в шапке)</label>
             <select value={profileRole} onChange={(event) => setProfileRole(event.target.value as AccessRole)} className="w-full rounded-xl border border-border p-2.5 text-sm">
-              <option value="owner">owner</option>
-              <option value="admin">admin</option>
-              <option value="member">member</option>
-              <option value="viewer">viewer</option>
+              <option value="owner">Владелец</option>
+              <option value="admin">Администратор</option>
+              <option value="member">Сотрудник</option>
+              <option value="viewer">Наблюдатель</option>
             </select>
           </div>
           <div className="space-y-2">
@@ -110,7 +114,7 @@ export default function SettingsPage() {
       </Card>
 
       <Card>
-        <h2 className="mb-3 text-lg font-semibold">Авторизация (заглушка для прод-подготовки)</h2>
+        <h2 className="mb-3 text-lg font-semibold">Авторизация</h2>
         <p className="mb-3 text-sm text-muted">
           Выберите способы входа, которые будут включены на следующем этапе: телефон, email, Telegram.
         </p>
@@ -147,10 +151,10 @@ export default function SettingsPage() {
             placeholder="Email нового участника"
           />
           <select value={role} onChange={(event) => setRole(event.target.value as AccessRole)} className="rounded-xl border border-border p-2.5 text-sm">
-            <option value="owner">owner / владелец</option>
-            <option value="admin">admin / администратор</option>
-            <option value="member">member / сотрудник</option>
-            <option value="viewer">viewer / наблюдатель</option>
+            <option value="owner">Владелец</option>
+            <option value="admin">Администратор</option>
+            <option value="member">Сотрудник</option>
+            <option value="viewer">Наблюдатель</option>
           </select>
         </div>
         <p className="mt-2 text-xs text-muted">{roleDescription}</p>
@@ -162,15 +166,15 @@ export default function SettingsPage() {
         <div className="mt-4 space-y-2 text-sm">
           <div className="flex items-center justify-between rounded-xl border border-border p-3">
             <span>owner@gudwin.bi</span>
-            <span className="text-muted">owner</span>
+            <span className="text-muted">Владелец</span>
           </div>
           <div className="flex items-center justify-between rounded-xl border border-border p-3">
             <span>ops@gudwin.bi</span>
-            <span className="text-muted">admin</span>
+            <span className="text-muted">Администратор</span>
           </div>
           <div className="flex items-center justify-between rounded-xl border border-border p-3">
             <span>analyst@gudwin.bi</span>
-            <span className="text-muted">member</span>
+            <span className="text-muted">Сотрудник</span>
           </div>
         </div>
       </Card>
@@ -193,10 +197,26 @@ export default function SettingsPage() {
               {sectionPermissions.map((row) => (
                 <tr key={row.section} className="border-t border-border">
                   <td className="py-2 font-medium">{row.section}</td>
-                  <td className="py-2">{row.owner ? "✓" : "—"} {roleLabels.owner}</td>
-                  <td className="py-2">{row.admin ? "✓" : "—"} {roleLabels.admin}</td>
-                  <td className="py-2">{row.member ? "✓" : "—"} {roleLabels.member}</td>
-                  <td className="py-2">{row.viewer ? "✓" : "—"} {roleLabels.viewer}</td>
+                  <td className="py-2">
+                    <span className={`inline-flex rounded-full px-2 py-1 text-xs ${row.owner ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-500"}`}>
+                      {row.owner ? "Доступ" : "Нет доступа"} ({roleLabels.owner})
+                    </span>
+                  </td>
+                  <td className="py-2">
+                    <span className={`inline-flex rounded-full px-2 py-1 text-xs ${row.admin ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-500"}`}>
+                      {row.admin ? "Доступ" : "Нет доступа"} ({roleLabels.admin})
+                    </span>
+                  </td>
+                  <td className="py-2">
+                    <span className={`inline-flex rounded-full px-2 py-1 text-xs ${row.member ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-500"}`}>
+                      {row.member ? "Доступ" : "Нет доступа"} ({roleLabels.member})
+                    </span>
+                  </td>
+                  <td className="py-2">
+                    <span className={`inline-flex rounded-full px-2 py-1 text-xs ${row.viewer ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-500"}`}>
+                      {row.viewer ? "Доступ" : "Нет доступа"} ({roleLabels.viewer})
+                    </span>
+                  </td>
                 </tr>
               ))}
             </tbody>

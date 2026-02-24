@@ -21,7 +21,7 @@ export function AuthEntry({ nextPath, isError }: { nextPath: string; isError: bo
   }, [method]);
 
   const onStubAuth = () => {
-    setHint("Этот способ входа пока в режиме заглушки. Используйте PIN-код ниже.");
+    setHint("Этот способ входа будет доступен после подключения провайдера. Пока используйте PIN-код ниже.");
   };
 
   return (

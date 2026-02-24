@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { DashboardShowcase } from "@/components/dashboard/dashboard-showcase";
 import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
@@ -17,12 +20,24 @@ const dashboards = [
 const miniTrend = [45, 52, 60, 58, 66, 71, 74];
 
 export default function DashboardsPage() {
+  const [healthScore, setHealthScore] = useState(42);
+
+  useEffect(() => {
+    const load = async () => {
+      const res = await fetch("/api/owner/health");
+      if (!res.ok) return;
+      const json = await res.json();
+      setHealthScore(json?.health?.score ?? 42);
+    };
+    void load();
+  }, []);
+
   return (
     <div className="space-y-5">
       <Card className="bg-gradient-to-r from-white via-slate-50 to-cyan-50">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-700">Dashboard Gallery</p>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-700">Галерея дашбордов</p>
             <h3 className="text-2xl font-extrabold tracking-tight">Галерея дашбордов</h3>
             <p className="text-sm text-muted">Премиальная витрина для ежедневной работы и инвесторского показа.</p>
           </div>
@@ -48,7 +63,7 @@ export default function DashboardsPage() {
       <div className="grid gap-4 md:grid-cols-3">
         <Card className="bg-slate-950 text-white">
           <p className="text-xs text-cyan-200">Health Score</p>
-          <p className="mt-1 text-4xl font-extrabold">78</p>
+          <p className="mt-1 text-4xl font-extrabold">{healthScore}</p>
           <p className="text-xs text-slate-300">Главный риск: кассовый разрыв через 12 дней.</p>
         </Card>
         <Card>

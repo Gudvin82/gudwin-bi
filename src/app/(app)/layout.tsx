@@ -5,12 +5,13 @@ import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
+import { GlobalAssistant } from "@/components/assistant/global-assistant";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
-    const theme = localStorage.getItem("gw_theme") || "light";
+    const theme = "light";
     const lang = localStorage.getItem("gw_lang") || "ru";
     document.documentElement.setAttribute("data-theme", theme);
     document.documentElement.setAttribute("lang", lang);
@@ -34,6 +35,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <Breadcrumbs />
         <Topbar onMenuClick={() => setMobileNavOpen(true)} />
         <div className="premium-stage">{children}</div>
+        <GlobalAssistant />
       </main>
       <MobileNav />
     </div>
