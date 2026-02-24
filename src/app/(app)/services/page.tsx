@@ -48,6 +48,48 @@ export default function ServicesPage() {
           </Card>
         ))}
       </div>
+
+      <Card className="bg-gradient-to-r from-violet-50 via-cyan-50 to-emerald-50">
+        <h3 className="mb-2 text-lg font-extrabold">Витрина возможностей: Спринт 2</h3>
+        <p className="text-sm text-muted">Визуальный превью-набор: продвинутый AI-помощник, автозапуск сценариев и действия с подтверждением.</p>
+        <div className="mt-3 grid gap-3 md:grid-cols-3">
+          <div className="rounded-xl border border-slate-200 bg-white p-3">
+            <p className="text-xs text-muted">AI-помощник v2</p>
+            <p className="mt-1 text-sm font-semibold">Команды + подтверждение действий</p>
+            <p className="mt-1 text-xs text-slate-500">Статус: визуальный прототип</p>
+          </div>
+          <div className="rounded-xl border border-slate-200 bg-white p-3">
+            <p className="text-xs text-muted">Action Engine</p>
+            <p className="mt-1 text-sm font-semibold">Если условие → запустить задачу</p>
+            <p className="mt-1 text-xs text-slate-500">Статус: визуальный прототип</p>
+          </div>
+          <div className="rounded-xl border border-slate-200 bg-white p-3">
+            <p className="text-xs text-muted">Журнал команд</p>
+            <p className="mt-1 text-sm font-semibold">Кто и что запускал через AI</p>
+            <p className="mt-1 text-xs text-slate-500">Статус: визуальный прототип</p>
+          </div>
+        </div>
+      </Card>
+
+      <Card className="bg-gradient-to-r from-amber-50 via-orange-50 to-rose-50">
+        <h3 className="mb-2 text-lg font-extrabold">Витрина возможностей: Спринт 3</h3>
+        <p className="text-sm text-muted">Визуальный превью-набор: расширенная отчетность, сравнение периодов и автоматические рассылки.</p>
+        <div className="mt-3 grid gap-3 md:grid-cols-4">
+          {[
+            "Сравнение периодов (YoY/MoM)",
+            "Авто-отчеты по расписанию",
+            "Экспорт PDF/Excel в 1 клик",
+            "Уведомления с приоритетами"
+          ].map((item) => (
+            <div key={item} className="rounded-xl border border-slate-200 bg-white p-3">
+              <p className="text-sm font-semibold">{item}</p>
+              <div className="mt-2 h-2 rounded-full bg-slate-100">
+                <div className="h-2 w-2/3 rounded-full bg-gradient-to-r from-cyan-500 to-teal-500" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </Card>
     </div>
   );
 }

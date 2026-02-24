@@ -125,7 +125,7 @@ export default function HirePage() {
               Скопировать текст заявки
             </button>
             <button className="rounded-xl border border-border px-4 py-2 text-sm" disabled>
-              Отправка в маркетплейсы (скоро)
+              Отправить в маркетплейсы
             </button>
           </div>
         </Card>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { MobileNav } from "@/components/layout/mobile-nav";
+import { RouteLoadingBar } from "@/components/layout/route-loading-bar";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
 import { GlobalAssistant } from "@/components/assistant/global-assistant";
@@ -19,6 +20,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-dvh md:flex premium-shell">
+      <RouteLoadingBar />
       <Sidebar className="hidden md:block" />
 
       {mobileNavOpen ? (

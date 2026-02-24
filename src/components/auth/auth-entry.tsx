@@ -67,7 +67,7 @@ export function AuthEntry({ nextPath, isError }: { nextPath: string; isError: bo
           onClick={onStubAuth}
           className="mt-2 inline-flex w-full items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700"
         >
-          Продолжить (скоро)
+          Продолжить
         </button>
         {hint ? <p className="mt-2 text-xs text-amber-700">{hint}</p> : null}
       </div>
