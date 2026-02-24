@@ -20,6 +20,7 @@ export default function OwnerPage() {
     problemOfWeek: "ROMI в 2 маркетинговых каналах ниже целевого порога."
   });
   const [loading, setLoading] = useState(true);
+  const [focusDone, setFocusDone] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -31,9 +32,7 @@ export default function OwnerPage() {
     void load();
   }, []);
 
-  const healthGradient = useMemo(() => {
-    return "conic-gradient(#ef4444 0deg 144deg, #f59e0b 144deg 252deg, #10b981 252deg 360deg)";
-  }, [data.health.score]);
+  const healthGradient = useMemo(() => "conic-gradient(#ef4444 0deg 144deg, #f59e0b 144deg 252deg, #10b981 252deg 360deg)", []);
   const healthNeedleRotation = useMemo(() => Math.round((data.health.score / 100) * 360), [data.health.score]);
   const healthZone =
     data.health.score < 40
@@ -41,6 +40,21 @@ export default function OwnerPage() {
       : data.health.score < 70
         ? { label: "Зона внимания", tone: "text-amber-700" }
         : { label: "Стабильная зона", tone: "text-emerald-700" };
+  const weeks = useMemo(() => {
+    const start = new Date();
+    start.setDate(start.getDate() - 7 * 11);
+    return Array.from({ length: 12 }, (_, idx) => {
+      const d = new Date(start);
+      d.setDate(start.getDate() + idx * 7);
+      const day = String(d.getDate()).padStart(2, "0");
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      return `${day}.${month}`;
+    });
+  }, []);
+
+  const exportPdf = () => {
+    window.print();
+  };
 
   return (
     <div className="space-y-5">
@@ -59,6 +73,19 @@ export default function OwnerPage() {
               "Фокус дня — одно действие, которое даст максимальный эффект сегодня."
             ]}
           />
+        </div>
+      </Card>
+
+      <Card className="bg-gradient-to-r from-emerald-50 via-white to-cyan-50">
+        <p className="text-sm font-semibold text-emerald-800">Ваш Health Score {data.health.score} — это хорошо</p>
+        <p className="mt-1 text-sm text-muted">Вы в верхних 25% демо-бенчмарка по вашей категории. За неделю: +5 пунктов.</p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <Link href="/advisor" className="rounded-xl border border-emerald-300 bg-white px-3 py-2 text-xs font-semibold text-emerald-700">
+            Узнать, как дойти до 90
+          </Link>
+          <Link href="/marketing" className="rounded-xl border border-border bg-white px-3 py-2 text-xs font-semibold">
+            Сравнить маркетинг с бенчмарком
+          </Link>
         </div>
       </Card>
 
@@ -101,8 +128,8 @@ export default function OwnerPage() {
                 <span className="font-semibold">{data.health.components.operations}</span>
               </div>
               <div className="flex items-center justify-between rounded-xl bg-rose-300/20 px-3 py-2 text-rose-100">
-                <span>Штраф риска</span>
-                <span className="font-semibold">-{data.health.components.riskPenalty}</span>
+                <span>Риск-премия</span>
+                <span className="font-semibold">{Math.abs(data.health.components.riskPenalty)} б.</span>
               </div>
             </div>
           </div>
@@ -116,6 +143,15 @@ export default function OwnerPage() {
           <Card className="bg-gradient-to-br from-emerald-50 to-cyan-50">
             <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-emerald-700">Фокус дня</p>
             <p className="text-sm font-medium text-slate-800">{data.focusOfDay}</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button
+                onClick={() => setFocusDone((prev) => !prev)}
+                className="rounded-lg border border-emerald-300 bg-white px-3 py-1.5 text-xs font-semibold text-emerald-700"
+              >
+                {focusDone ? "✓ Выполнено" : "Отметить выполнено"}
+              </button>
+              {focusDone ? <span className="inline-flex items-center rounded-lg bg-emerald-100 px-2 py-1 text-xs text-emerald-700">Отлично, двигаемся к 90/100</span> : null}
+            </div>
           </Card>
           <Card className="bg-gradient-to-r from-sky-50 to-indigo-50">
             <p className="text-xs text-muted">Маркетинг</p>
@@ -128,12 +164,17 @@ export default function OwnerPage() {
       </div>
 
       <Card>
-        <h3 className="mb-3 text-base font-semibold">Динамика здоровья бизнеса (12 недель)</h3>
+        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+          <h3 className="text-base font-semibold">Динамика здоровья бизнеса (12 недель)</h3>
+          <button onClick={exportPdf} className="rounded-xl border border-border bg-white px-3 py-2 text-xs font-semibold">
+            Скачать PDF отчёт
+          </button>
+        </div>
         <div className="flex items-end gap-2 rounded-xl border border-border bg-white p-3">
           {[58, 61, 63, 60, 66, 69, 72, 70, 74, 76, 79, data.health.score].map((value, idx) => (
             <div key={`health-${idx}`} className="flex flex-1 flex-col items-center gap-1">
               <div className="w-full rounded-t-md bg-gradient-to-t from-cyan-600 to-teal-400" style={{ height: `${Math.max(14, value)}px` }} />
-              <span className="text-[10px] text-muted">W{idx + 1}</span>
+              <span className="text-[10px] text-muted">{weeks[idx]}</span>
             </div>
           ))}
         </div>

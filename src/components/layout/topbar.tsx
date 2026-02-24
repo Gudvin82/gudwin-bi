@@ -24,6 +24,7 @@ const headerMap: Record<string, { title: string; subtitle: string }> = {
 export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
   const pathname = usePathname();
   const [online, setOnline] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     const sync = () => setOnline(typeof navigator !== "undefined" ? navigator.onLine : true);
@@ -41,6 +42,11 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
   const primarySourceActionLabel = ["owner", "overview", "sources", "onboarding"].includes(firstSegment)
     ? "Подключить данные"
     : "Управлять источниками";
+
+  const refreshData = () => {
+    setRefreshing(true);
+    window.location.reload();
+  };
 
   return (
     <header className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-slate-200/70 bg-white/80 p-2 shadow-sm backdrop-blur-xl sm:mb-6 sm:gap-3 sm:p-4">
@@ -77,6 +83,9 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
         </button>
         <button aria-label="Открыть уведомления" className="rounded-xl border border-slate-200 bg-white/90 p-2.5 text-muted shadow-sm">
           <Bell size={16} />
+        </button>
+        <button onClick={refreshData} className="rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm">
+          {refreshing ? "Обновляем..." : "Обновить данные"}
         </button>
         <button aria-label="Открыть профиль владельца" className="hidden min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-sm font-medium shadow-sm sm:inline-flex">
           <UserCircle2 size={16} />

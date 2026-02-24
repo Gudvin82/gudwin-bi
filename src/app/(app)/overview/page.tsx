@@ -7,6 +7,14 @@ import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
 
 export default function OverviewPage() {
+  const cashFlow = [
+    { d: "Пн", in: 320000, out: 210000 },
+    { d: "Вт", in: 280000, out: 260000 },
+    { d: "Ср", in: 410000, out: 295000 },
+    { d: "Чт", in: 350000, out: 310000 },
+    { d: "Пт", in: 480000, out: 330000 }
+  ];
+
   return (
     <div className="space-y-5">
       <Card className="border-cyan-200 bg-gradient-to-r from-cyan-50 to-emerald-50">
@@ -58,6 +66,20 @@ export default function OverviewPage() {
         <RevenueChart />
         <KpiTable />
       </div>
+
+      <Card>
+        <h3 className="mb-3 text-base font-semibold">Cash In / Cash Out (5 дней)</h3>
+        <div className="grid gap-2 sm:grid-cols-5">
+          {cashFlow.map((row) => (
+            <div key={row.d} className="rounded-xl border border-border bg-white p-3 text-sm">
+              <p className="font-semibold">{row.d}</p>
+              <p className="text-emerald-700">+ {row.in.toLocaleString("ru-RU")} ₽</p>
+              <p className="text-rose-700">- {row.out.toLocaleString("ru-RU")} ₽</p>
+              <p className="text-xs text-muted">Итог: {(row.in - row.out).toLocaleString("ru-RU")} ₽</p>
+            </div>
+          ))}
+        </div>
+      </Card>
 
       <Card>
         <div className="mb-2 flex items-center gap-2">
