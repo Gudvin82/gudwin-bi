@@ -6,6 +6,7 @@ type AiPlan = {
   summary: string;
   sql: string;
   visualization: "table" | "metric" | "line" | "bar";
+  isFallback?: boolean;
 };
 
 export async function buildAnalyticPlan(question: string, datasetSchemas: string): Promise<AiPlan> {
@@ -13,7 +14,8 @@ export async function buildAnalyticPlan(question: string, datasetSchemas: string
     return {
       summary: "Тестовый режим: показана mock-аналитика. Добавьте OPENAI_API_KEY для реальной генерации.",
       sql: "select month, sum(revenue) as revenue, avg(check) as avg_check from sales group by month order by month;",
-      visualization: "line"
+      visualization: "line",
+      isFallback: true
     };
   }
 
@@ -40,5 +42,5 @@ export async function buildAnalyticPlan(question: string, datasetSchemas: string
   });
 
   const text = response.output_text;
-  return JSON.parse(text) as AiPlan;
+  return { ...(JSON.parse(text) as AiPlan), isFallback: false };
 }

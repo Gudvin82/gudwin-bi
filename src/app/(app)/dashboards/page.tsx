@@ -7,6 +7,25 @@ const dashboards = [
 ];
 
 export default function DashboardsPage() {
+  if (!dashboards.length) {
+    return (
+      <Card>
+        <h3 className="mb-2 text-lg font-semibold">Пока нет дашбордов</h3>
+        <p className="mb-3 text-sm text-muted">
+          Подключите источник данных и GudWin BI автоматически создаст первый дашборд.
+        </p>
+        <div className="flex gap-2">
+          <Link href="/sources" className="rounded-xl bg-accent px-3 py-2 text-sm font-semibold text-white">
+            Подключить данные
+          </Link>
+          <Link href="/onboarding" className="rounded-xl border border-border px-3 py-2 text-sm font-semibold">
+            Открыть onboarding
+          </Link>
+        </div>
+      </Card>
+    );
+  }
+
   return (
     <div className="grid gap-4 md:grid-cols-2">
       {dashboards.map((dashboard) => (

@@ -10,7 +10,7 @@ export function KpiTable() {
   return (
     <Card className="col-span-12 lg:col-span-4">
       <h3 className="mb-4 text-base font-semibold">Каналы продаж</h3>
-      <div className="overflow-x-auto">
+      <div className="hidden overflow-x-auto sm:block">
         <table className="w-full text-left text-sm">
           <thead className="text-muted">
             <tr>
@@ -31,6 +31,17 @@ export function KpiTable() {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className="space-y-2 sm:hidden">
+        {rows.map((row) => (
+          <div key={row.channel} className="rounded-xl border border-border p-3">
+            <p className="font-semibold">{row.channel}</p>
+            <p className="text-sm text-muted">Лиды: {row.leads}</p>
+            <p className="text-sm text-muted">Конверсия: {row.conversion}</p>
+            <p className="text-sm text-muted">Ср. чек: {row.avgCheck}</p>
+          </div>
+        ))}
       </div>
     </Card>
   );

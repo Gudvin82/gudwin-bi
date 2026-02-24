@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, Bot, Database, LayoutDashboard, Settings } from "lucide-react";
+import { BarChart3, Bot, Database, LayoutDashboard, Rocket, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const items = [
+  { href: "/onboarding", label: "Быстрый старт", icon: Rocket },
   { href: "/overview", label: "Обзор", icon: LayoutDashboard },
   { href: "/dashboards", label: "Дашборды", icon: BarChart3 },
   { href: "/sources", label: "Источники данных", icon: Database },

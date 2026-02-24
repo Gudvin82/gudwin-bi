@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSessionContext } from "@/lib/auth/session";
 import { buildAnalyticPlan } from "@/lib/ai/provider";
+import { checkRateLimit } from "@/lib/security/rate-limit";
 
 const schema = z.object({
   question: z.string().min(5),
@@ -11,6 +12,10 @@ const schema = z.object({
 export async function POST(request: Request) {
   const input = schema.parse(await request.json());
   const session = await getSessionContext();
+  const rate = checkRateLimit(`${session.workspaceId}:${session.userId}`, 25, 60_000);
+  if (!rate.allowed) {
+    return NextResponse.json({ error: "Слишком много AI-запросов. Повторите через минуту." }, { status: 429 });
+  }
 
   const plan = await buildAnalyticPlan(
     input.question,

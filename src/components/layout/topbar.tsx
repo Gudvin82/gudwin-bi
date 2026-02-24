@@ -1,14 +1,22 @@
-import { Bell, CalendarRange, UserCircle2 } from "lucide-react";
+import Link from "next/link";
+import { Bell, CalendarRange, Sparkles, UserCircle2 } from "lucide-react";
+import { appConfig } from "@/lib/config";
 
 export function Topbar() {
   return (
     <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
       <div>
         <h1 className="text-2xl font-bold">Рабочий кабинет</h1>
-        <p className="text-sm text-muted">Загрузите данные и формулируйте отчёты обычным текстом.</p>
+        <p className="text-sm text-muted">
+          {appConfig.demoMode ? "Сейчас включен demo-режим. Подключите свои данные для реальной аналитики." : "Загрузите данные и формулируйте отчеты обычным текстом."}
+        </p>
       </div>
 
       <div className="flex items-center gap-2">
+        <Link href="/sources" className="inline-flex items-center gap-2 rounded-xl bg-accent px-3 py-2 text-sm font-semibold text-white">
+          <Sparkles size={16} />
+          Подключить данные
+        </Link>
         <button className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-sm text-muted">
           <CalendarRange size={16} />
           Последние 30 дней
