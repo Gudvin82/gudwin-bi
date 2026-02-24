@@ -3,6 +3,7 @@ import { KpiTable } from "@/components/dashboard/kpi-table";
 import { MetricCard } from "@/components/dashboard/metric-card";
 import { RevenueChart } from "@/components/dashboard/revenue-chart";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 import { appConfig } from "@/lib/config";
 
 export default function OverviewPage() {
@@ -18,7 +19,7 @@ export default function OverviewPage() {
               Подключить источник
             </Link>
             <Link href="/onboarding" className="rounded-xl border border-accent px-3 py-2 text-sm font-semibold text-accent">
-              Открыть onboarding
+              Открыть быстрый старт
             </Link>
           </div>
         </Card>
@@ -29,9 +30,9 @@ export default function OverviewPage() {
           <Card className="animate-fade-up bg-gradient-to-r from-emerald-50 via-sky-50 to-indigo-50">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <p className="text-sm text-muted">Owner Health Score</p>
+                <p className="text-sm text-muted">Индекс здоровья бизнеса</p>
                 <p className="text-4xl font-extrabold text-accent">78 / 100</p>
-                <p className="text-sm text-muted">Главный риск: cash gap в следующем месяце при текущей дебиторке.</p>
+                <p className="text-sm text-muted">Главный риск: кассовый разрыв в следующем месяце при текущей дебиторке.</p>
               </div>
               <div className="flex gap-2">
                 <Link href="/owner" className="rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white">
@@ -62,7 +63,17 @@ export default function OverviewPage() {
       </div>
 
       <Card>
-        <h3 className="mb-2 text-base font-semibold">Онбординг</h3>
+        <div className="mb-2 flex items-center gap-2">
+          <h3 className="text-base font-semibold">Быстрый старт</h3>
+          <HelpPopover
+            title="С чего начать"
+            items={[
+              "Подключите источник данных: Google Sheets, CRM или файл.",
+              "Проверьте автоматически созданный дашборд.",
+              "Задайте AI-вопрос к данным и сохраните полезный виджет."
+            ]}
+          />
+        </div>
         <ol className="list-decimal space-y-2 pl-5 text-sm text-muted">
           <li>Подключите Google Sheets, CRM webhook или загрузите Excel/CSV.</li>
           <li>Система автоматически предложит стартовый дашборд.</li>
@@ -76,21 +87,21 @@ export default function OverviewPage() {
       <div className="grid gap-4 lg:grid-cols-3">
         <Card className="bg-gradient-to-br from-pink-50 to-rose-50">
           <p className="text-sm font-semibold">Финансовый ракурс</p>
-          <p className="mt-2 text-sm text-muted">Cash Guard, Unit Economics, сценарии и утечки денег в одном блоке.</p>
+          <p className="mt-2 text-sm text-muted">Кассовый прогноз, юнит-экономика, сценарии и утечки денег в одном блоке.</p>
           <Link href="/finance" className="mt-3 inline-flex rounded-lg border border-border px-3 py-2 text-sm">
             Смотреть
           </Link>
         </Card>
         <Card className="bg-gradient-to-br from-violet-50 to-indigo-50">
           <p className="text-sm font-semibold">Операционный ракурс</p>
-          <p className="mt-2 text-sm text-muted">Агенты (Smart Agents) + Action Engine для ежедневных задач и автоматизаций.</p>
+          <p className="mt-2 text-sm text-muted">Агенты и правила действий для ежедневных задач и автоматизаций.</p>
           <Link href="/agents" className="mt-3 inline-flex rounded-lg border border-border px-3 py-2 text-sm">
             Открыть
           </Link>
         </Card>
         <Card className="bg-gradient-to-br from-amber-50 to-orange-50">
           <p className="text-sm font-semibold">Стратегический ракурс</p>
-          <p className="mt-2 text-sm text-muted">Advisor + Конкурентный мониторинг для решений собственника и инвестора.</p>
+          <p className="mt-2 text-sm text-muted">Консультант и конкурентный мониторинг для решений собственника и инвестора.</p>
           <Link href="/advisor" className="mt-3 inline-flex rounded-lg border border-border px-3 py-2 text-sm">
             Перейти
           </Link>

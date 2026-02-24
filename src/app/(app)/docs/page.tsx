@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 
 export default function DocsPage() {
   const [template, setTemplate] = useState("contract");
@@ -73,8 +74,20 @@ export default function DocsPage() {
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up bg-gradient-to-r from-orange-50 to-amber-50">
-        <h2 className="text-xl font-bold">Документы и право (Smart Docs & Law)</h2>
-        <p className="text-sm text-muted">Документы, OCR-сканы, сверка, базовая проверка контрагентов.</p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-xl font-bold">Документы и право (Smart Docs & Law)</h2>
+            <p className="text-sm text-muted">Здесь вы проверяете контрагентов и кандидатов на риски и работаете с документами.</p>
+          </div>
+          <HelpPopover
+            title="Что делает раздел"
+            items={[
+              "Создает базовые документы и помогает со сверкой по сканам.",
+              "Показывает риск-профиль контрагента по данным внешней проверки.",
+              "Проверяет кандидата при наличии согласия по 152-ФЗ."
+            ]}
+          />
+        </div>
       </Card>
 
       <div className="grid gap-4 xl:grid-cols-2">
@@ -95,7 +108,7 @@ export default function DocsPage() {
         </Card>
 
         <Card>
-          <h3 className="mb-3 text-base font-semibold">Проверка контрагента по ФНС (Smart Law)</h3>
+          <h3 className="mb-3 text-base font-semibold">Проверка контрагента по ФНС</h3>
           <input value={inn} onChange={(e) => setInn(e.target.value)} className="w-full rounded-xl border border-border p-2 text-sm" placeholder="ИНН" />
           <button onClick={checkCounterparty} className="mt-3 rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white">Проверить</button>
           {counterpartyCheck ? <p className="mt-3 text-sm text-muted">{counterpartyCheck}</p> : null}

@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 
 const dashboards = [
   { id: "sales-main", name: "Продажи и выручка", updatedAt: "сегодня" },
   { id: "funnel", name: "Воронка лидов", updatedAt: "вчера" },
-  { id: "owner", name: "Режим владельца (Owner Mode) Summary", updatedAt: "сегодня" },
-  { id: "finance", name: "Cash Guard и Unit Economics", updatedAt: "сегодня" },
+  { id: "owner", name: "Сводка режима владельца", updatedAt: "сегодня" },
+  { id: "finance", name: "Касса и юнит-экономика", updatedAt: "сегодня" },
   { id: "departments", name: "KPI отделов и индекс эффективности", updatedAt: "2 часа назад" },
   { id: "marketing", name: "ROMI и рекламные каналы", updatedAt: "30 минут назад" }
 ];
@@ -32,9 +33,21 @@ export default function DashboardsPage() {
 
   return (
     <div className="space-y-4">
-      <Card className="bg-gradient-to-r from-sky-50 to-cyan-50">
-        <h3 className="text-lg font-semibold">Демо-галерея дашбордов</h3>
-        <p className="text-sm text-muted">Разные ракурсы для инвесторского показа: финансы, операции, маркетинг, owner-view.</p>
+        <Card className="bg-gradient-to-r from-sky-50 to-cyan-50">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h3 className="text-lg font-semibold">Демо-галерея дашбордов</h3>
+            <p className="text-sm text-muted">Разные ракурсы для инвесторского показа: финансы, операции, маркетинг и экран собственника.</p>
+          </div>
+          <HelpPopover
+            title="Подсказка"
+            items={[
+              "Откройте дашборд, чтобы посмотреть ключевые показатели по конкретной теме.",
+              "Если данных нет, сначала подключите источник в разделе «Источники данных».",
+              "Можно добавлять AI-виджеты для кастомной аналитики."
+            ]}
+          />
+        </div>
       </Card>
 
       <div className="grid gap-4 md:grid-cols-2">

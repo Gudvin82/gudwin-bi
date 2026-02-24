@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 
 type Alert = { id: string; type: string; level: string; message: string; channel: string; createdAt: string };
 
@@ -22,8 +23,20 @@ export default function WatchPage() {
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up bg-gradient-to-r from-rose-50 to-orange-50">
-        <h2 className="text-xl font-bold">Мониторинг (Smart Watch)</h2>
-        <p className="text-sm text-muted">Мониторинг аномалий, кассовых рисков и KPI-отклонений. Каналы: Telegram/SMS/дашборд.</p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-xl font-bold">Мониторинг (Smart Watch)</h2>
+            <p className="text-sm text-muted">Здесь настраиваются уведомления и утренние отчеты о важных событиях в бизнесе.</p>
+          </div>
+          <HelpPopover
+            title="Как использовать мониторинг"
+            items={[
+              "Выберите режим «утренний брифинг» или «только критические».",
+              "Отслеживайте кассовые риски и провалы KPI без ручной проверки таблиц.",
+              "Для быстрых реакций используйте Telegram-уведомления."
+            ]}
+          />
+        </div>
       </Card>
 
       <Card>
@@ -48,6 +61,11 @@ export default function WatchPage() {
               <p className="text-xs text-muted">Канал: {alert.channel} • {new Date(alert.createdAt).toLocaleString("ru-RU")}</p>
             </div>
           ))}
+          {alerts.length === 0 ? (
+            <p className="rounded-xl border border-border p-3 text-sm text-muted">
+              Пока нет активных сигналов. Подключите данные в разделе «Источники данных», чтобы мониторинг начал работать в полном объеме.
+            </p>
+          ) : null}
         </div>
       </Card>
     </div>

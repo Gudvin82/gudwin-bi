@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 
 type UnitMetric = { dimension: string; cac: number; ltv: number; contribution_margin: number; romi: number; payback_days: number };
 type CashRow = { date: string; inflow: number; outflow: number; balance: number };
@@ -52,24 +54,78 @@ export default function FinancePage() {
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up bg-gradient-to-r from-sky-50 to-teal-50">
-        <h2 className="text-xl font-bold">Финансы (Smart Finance)</h2>
-        <p className="text-sm text-muted">Unit Economics, Cash Guard, Scenario Simulator, Money Leak Scanner и платежный календарь.</p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-xl font-bold">Финансы (Smart Finance)</h2>
+            <p className="text-sm text-muted">Здесь вы видите прогноз денег, юнит-экономику и зоны потери прибыли.</p>
+          </div>
+          <HelpPopover
+            title="Что можно сделать в разделе"
+            items={[
+              "Понять, где возможен кассовый разрыв.",
+              "Проверить, окупаются ли каналы продаж и маркетинга.",
+              "Смоделировать сценарий и увидеть влияние на прибыль.",
+              "Найти утечки денег и приоритизировать действия."
+            ]}
+          />
+        </div>
       </Card>
+
+      {!metrics.length ? (
+        <Card>
+          <p className="text-sm text-muted">
+            Пока нет финансовых данных для расчета. Подключите Google Sheets или CRM, чтобы увидеть прогноз кассовых разрывов и юнит-экономику.
+          </p>
+          <Link href="/sources" className="mt-3 inline-flex rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white">
+            Подключить источники данных
+          </Link>
+        </Card>
+      ) : null}
 
       <div className="grid gap-4 lg:grid-cols-3">
         <Card>
-          <p className="text-sm text-muted">Средний LTV/CAC</p>
+          <div className="mb-1 flex items-center gap-2">
+            <p className="text-sm text-muted">Средний LTV/CAC</p>
+            <HelpPopover
+              title="LTV/CAC"
+              items={[
+                "Показывает, сколько бизнес зарабатывает на клиенте относительно стоимости привлечения.",
+                "Нормой обычно считается значение выше 3.",
+                "Если показатель ниже 3, масштабировать рекламу рискованно."
+              ]}
+            />
+          </div>
           <p className={`text-3xl font-extrabold ${avgLtvCac < 3 ? "text-amber-700" : "text-emerald-700"}`}>{avgLtvCac.toFixed(2)}</p>
           <p className="text-xs text-muted">Целевой уровень: {'>'} 3</p>
         </Card>
         <Card>
-          <p className="text-sm text-muted">Cash Guard (мин. остаток 30д)</p>
+          <div className="mb-1 flex items-center gap-2">
+            <p className="text-sm text-muted">Cash Guard (мин. остаток 30 дней)</p>
+            <HelpPopover
+              title="Cash Guard"
+              items={[
+                "Показывает минимальный прогноз остатка денег за ближайшие 30 дней.",
+                "Если значение красное, есть риск кассового разрыва.",
+                "Нужно ускорить дебиторку или сместить часть расходов."
+              ]}
+            />
+          </div>
           <p className={`text-3xl font-extrabold ${Math.min(...(cash.map((c) => c.balance).length ? cash.map((c) => c.balance) : [0])) < 0 ? "text-red-700" : "text-emerald-700"}`}>
             {(Math.min(...(cash.map((c) => c.balance).length ? cash.map((c) => c.balance) : [0]))).toLocaleString("ru-RU")} ₽
           </p>
         </Card>
         <Card>
-          <p className="text-sm text-muted">Найдено money leaks</p>
+          <div className="mb-1 flex items-center gap-2">
+            <p className="text-sm text-muted">Найдено утечек денег</p>
+            <HelpPopover
+              title="Утечки денег"
+              items={[
+                "Это места, где бизнес теряет прибыль: товары, каналы, клиенты или процессы.",
+                "Начинайте с утечек с максимальным денежным эффектом.",
+                "После исправлений отслеживайте динамику каждую неделю."
+              ]}
+            />
+          </div>
           <p className="text-3xl font-extrabold">{leaks.length}</p>
         </Card>
       </div>
@@ -113,7 +169,7 @@ export default function FinancePage() {
         </Card>
 
         <Card>
-          <h3 className="mb-3 text-base font-semibold">Scenario Simulator</h3>
+          <h3 className="mb-3 text-base font-semibold">Сценарный симулятор</h3>
           <div className="grid gap-2 sm:grid-cols-2">
             <input type="number" value={scenario.priceDeltaPct} onChange={(e) => setScenario({ ...scenario, priceDeltaPct: Number(e.target.value) })} className="rounded-xl border border-border p-2 text-sm" placeholder="Цена %" />
             <input type="number" value={scenario.adBudgetDeltaPct} onChange={(e) => setScenario({ ...scenario, adBudgetDeltaPct: Number(e.target.value) })} className="rounded-xl border border-border p-2 text-sm" placeholder="Реклама %" />
@@ -134,7 +190,7 @@ export default function FinancePage() {
 
       <div className="grid gap-4 xl:grid-cols-2">
         <Card>
-          <h3 className="mb-3 text-base font-semibold">Money Leak Scanner</h3>
+          <h3 className="mb-3 text-base font-semibold">Сканер утечек денег</h3>
           <div className="space-y-2">
             {leaks.map((leak) => (
               <div key={leak.id} className="rounded-xl border border-border p-3 text-sm">
@@ -147,7 +203,7 @@ export default function FinancePage() {
         </Card>
 
         <Card>
-          <h3 className="mb-3 text-base font-semibold">Payment Calendar</h3>
+          <h3 className="mb-3 text-base font-semibold">Платежный календарь</h3>
           <div className="space-y-2 text-sm">
             {payments.map((item) => (
               <div key={item.id} className="flex items-center justify-between rounded-xl border border-border p-3">

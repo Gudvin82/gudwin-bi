@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 
 type OwnerPayload = {
   health: { score: number; components: { financial: number; cash: number; operations: number; riskPenalty: number } };
@@ -25,13 +26,35 @@ export default function OwnerPage() {
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up bg-gradient-to-r from-emerald-50 to-cyan-50">
-        <h2 className="text-xl font-bold">Режим владельца (Owner Mode)</h2>
-        <p className="text-sm text-muted">Экран собственника: Health Score, риски и главный фокус дня.</p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-xl font-bold">Режим владельца (Owner Mode)</h2>
+            <p className="text-sm text-muted">Здесь вы видите общее здоровье бизнеса, главную проблему недели и фокус дня.</p>
+          </div>
+          <HelpPopover
+            title="Подсказка по разделу"
+            items={[
+              "Индекс здоровья показывает общее состояние бизнеса по шкале 0-100.",
+              "Главная проблема недели помогает быстро найти точку внимания.",
+              "Фокус дня — конкретное действие, которое стоит сделать сегодня."
+            ]}
+          />
+        </div>
       </Card>
 
       <div className="dashboard-grid">
         <Card className="col-span-12 md:col-span-4">
-          <p className="text-sm text-muted">Health Score</p>
+          <div className="mb-1 flex items-center gap-2">
+            <p className="text-sm text-muted">Индекс здоровья бизнеса (Health Score)</p>
+            <HelpPopover
+              title="Что означает индекс"
+              items={[
+                "Выше 75 — хороший уровень устойчивости.",
+                "От 55 до 75 — нужен точечный контроль рисков.",
+                "Ниже 55 — требуется немедленная корректировка финансов и операций."
+              ]}
+            />
+          </div>
           <p className="text-5xl font-extrabold text-accent">{data?.health.score ?? "--"}</p>
           <p className="text-xs text-muted">0-100, чем выше, тем устойчивее бизнес</p>
         </Card>

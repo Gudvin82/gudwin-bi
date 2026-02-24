@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 
 type HireResponse = {
   request: {
@@ -75,8 +76,20 @@ export default function HirePage() {
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up">
-        <h2 className="mb-2 text-xl font-bold">Найм (Smart Hire)</h2>
-        <p className="text-sm text-muted">Поиск специалистов и генерация готовой заявки для маркетплейсов услуг.</p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="mb-2 text-xl font-bold">Найм (Smart Hire)</h2>
+            <p className="text-sm text-muted">Здесь можно быстро сформировать понятную заявку на поиск специалиста.</p>
+          </div>
+          <HelpPopover
+            title="Как работать с наймом"
+            items={[
+              "Выберите роль и опишите задачу простыми словами.",
+              "Система подготовит черновик заявки на основе бизнес-контекста.",
+              "Скопируйте текст и разместите его на подходящей площадке."
+            ]}
+          />
+        </div>
       </Card>
 
       <div className="grid gap-4 xl:grid-cols-[1.2fr_1fr]">
@@ -128,7 +141,11 @@ export default function HirePage() {
               <p className="text-xs text-muted">{new Date(item.createdAt).toLocaleString("ru-RU")}</p>
             </div>
           ))}
-          {history.length === 0 ? <p className="text-sm text-muted">Пока нет заявок.</p> : null}
+          {history.length === 0 ? (
+            <p className="text-sm text-muted">
+              Пока нет заявок. Нажмите «Сгенерировать заявку», чтобы получить первый черновик под вашу задачу.
+            </p>
+          ) : null}
         </div>
       </Card>
     </div>

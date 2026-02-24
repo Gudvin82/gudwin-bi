@@ -2,28 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AlertTriangle, BarChart3, Bot, BriefcaseBusiness, Database, FileText, LayoutDashboard, Link2, Rocket, Settings, Sparkles, Target, UserRoundCog, Users } from "lucide-react";
+import { AlertTriangle, Database, LayoutDashboard, Sparkles, Target, UserRoundCog, Wrench } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const items = [
-  { href: "/onboarding", label: "Быстрый старт", icon: Rocket },
   { href: "/owner", label: "Режим владельца (Owner Mode)", icon: UserRoundCog },
-  { href: "/overview", label: "Обзор", icon: LayoutDashboard },
-  { href: "/dashboards", label: "Дашборды", icon: BarChart3 },
+  { href: "/overview", label: "Данные и дашборды", icon: LayoutDashboard },
   { href: "/sources", label: "Источники данных", icon: Database },
-  { href: "/ai", label: "AI-аналитика", icon: Bot },
-  { href: "/advisor", label: "Консультант (Smart Advisor)", icon: Sparkles },
   { href: "/finance", label: "Финансы (Smart Finance)", icon: Target },
-  { href: "/agents", label: "Агенты (Smart Agents)", icon: Bot },
-  { href: "/hire", label: "Найм (Smart Hire)", icon: BriefcaseBusiness },
-  { href: "/docs", label: "Документы и право (Smart Law)", icon: FileText },
-  { href: "/connect", label: "Интеграции (Smart Connect)", icon: Link2 },
   { href: "/watch", label: "Мониторинг (Smart Watch)", icon: AlertTriangle },
-  { href: "/learn", label: "Обучение / FAQ", icon: Users },
-  { href: "/competitor", label: "Конкурентный мониторинг", icon: Target },
-  { href: "/desktop-agent", label: "Desktop AI агент (v2+)", icon: Users },
-  { href: "/contacts", label: "Контакты", icon: Users },
-  { href: "/settings", label: "Настройки", icon: Settings }
+  { href: "/advisor", label: "Консультант (Smart Advisor)", icon: Sparkles },
+  { href: "/services", label: "Сервисы и модули", icon: Wrench }
 ];
 
 export function Sidebar() {

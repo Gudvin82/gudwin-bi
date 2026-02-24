@@ -8,6 +8,7 @@ const labels: Record<string, string> = {
   dashboards: "Дашборды",
   sources: "Источники данных",
   ai: "AI-аналитика",
+  services: "Сервисы и модули",
   settings: "Настройки",
   onboarding: "Быстрый старт",
   owner: "Режим владельца",

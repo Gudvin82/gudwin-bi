@@ -20,7 +20,7 @@ export default function LearnPage() {
   }, []);
 
   const ask = () => {
-    setAnswer("Запустите Demo Mode, откройте Режим владельца (Owner Mode), затем Консультант (Smart Advisor) и Финансы (Smart Finance). Покажите Health Score, Money Leaks и Action rules.");
+    setAnswer("Включите демо-режим, откройте Режим владельца, затем Консультант и Финансы. Покажите индекс здоровья бизнеса, утечки денег и правила действий.");
   };
 
   return (
