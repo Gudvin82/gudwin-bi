@@ -6,6 +6,7 @@ MVP платформы аналитики для малого/среднего �
 
 - Next.js 15 (App Router) + TypeScript + Tailwind, светлая premium UI-концепция.
 - Рабочий кабинет с разделами: `Обзор`, `Дашборды`, `Источники данных`, `AI-аналитика`, `Настройки`.
+- Новые модули: `Smart Advisor`, `Smart Agents`, `Smart Hire`.
 - Пошаговый `onboarding` сценарий первого запуска.
 - Явный demo-режим c CTA и безопасным fallback для AI.
 - API-слой в Next.js:
@@ -17,7 +18,11 @@ MVP платформы аналитики для малого/среднего �
   - `GET /api/export/csv` - экспорт отчета в CSV.
   - `GET /api/integration-logs` - логи интеграций.
   - `POST /api/report-templates` - сохранение шаблонов AI-отчетов.
+  - `POST /api/advisor/query` + `GET/POST /api/advisor/sessions` - Smart Advisor.
+  - `GET/POST /api/agents`, `POST /api/agents/{id}/run-task`, `GET /api/agents/{id}/logs` - Smart Agents.
+  - `POST /api/hire/request`, `GET /api/hire/requests` - Smart Hire.
 - База данных (Supabase/Postgres): миграция с multi-tenant таблицами, индексами и RLS policy.
+- Расширенная схема БД для Smart модулей: `workspace_kpi_cache`, `advisor_*`, `agents_*`, `hire_*`.
 - Роли `owner/member` с ограничением owner-only операций (пример: test SMS).
 - Подготовка i18n структуры (`ru`/`en`) без усложнения UI на старте.
 - Rate limiting для AI endpoint.

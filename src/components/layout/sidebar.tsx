@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, Bot, Database, LayoutDashboard, Rocket, Settings } from "lucide-react";
+import { BarChart3, Bot, BriefcaseBusiness, Database, LayoutDashboard, Rocket, Settings, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const items = [
@@ -11,6 +11,9 @@ const items = [
   { href: "/dashboards", label: "Дашборды", icon: BarChart3 },
   { href: "/sources", label: "Источники данных", icon: Database },
   { href: "/ai", label: "AI-аналитика", icon: Bot },
+  { href: "/advisor", label: "Smart Advisor", icon: Sparkles },
+  { href: "/agents", label: "Smart Agents", icon: Bot },
+  { href: "/hire", label: "Smart Hire", icon: BriefcaseBusiness },
   { href: "/settings", label: "Настройки", icon: Settings }
 ];
 
@@ -30,7 +33,7 @@ export function Sidebar() {
       <nav className="space-y-2">
         {items.map((item) => {
           const Icon = item.icon;
-          const active = pathname === item.href;
+          const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
           return (
             <Link
               key={item.href}

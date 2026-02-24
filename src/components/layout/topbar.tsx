@@ -13,6 +13,9 @@ export function Topbar() {
       </div>
 
       <div className="flex items-center gap-2">
+        <Link href="/overview" className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-sm font-semibold">
+          Показать демо
+        </Link>
         <Link href="/sources" className="inline-flex items-center gap-2 rounded-xl bg-accent px-3 py-2 text-sm font-semibold text-white">
           <Sparkles size={16} />
           Подключить данные
