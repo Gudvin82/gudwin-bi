@@ -21,7 +21,7 @@ export async function POST(request: Request) {
   return NextResponse.json({
     status: risk,
     checks: {
-      passport_validity: invalidPassport ? "Недействителен (демо-проверка)" : "Действителен (демо-проверка)",
+      passport_validity: invalidPassport ? "Недействителен (базовая проверка)" : "Действителен (базовая проверка)",
       inn_status: input.inn ? "ИНН найден, признаков недействительности не обнаружено" : "ИНН не указан",
       self_employed_or_ip: "Требуется дополнительная проверка по внешнему сервису"
     },

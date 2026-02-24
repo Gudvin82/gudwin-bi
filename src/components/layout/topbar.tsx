@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Bell, CalendarRange, Sparkles, UserCircle2 } from "lucide-react";
-import { appConfig } from "@/lib/config";
 
 export function Topbar() {
   const [online, setOnline] = useState(true);
@@ -22,12 +21,7 @@ export function Topbar() {
   return (
     <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
       <div>
-        <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-bold">Рабочий кабинет</h1>
-          {appConfig.demoMode ? (
-            <span className="rounded-full border border-cyan-200 bg-cyan-50 px-2 py-0.5 text-xs font-semibold text-cyan-700">Демо-режим</span>
-          ) : null}
-        </div>
+        <h1 className="text-2xl font-bold">Рабочий кабинет</h1>
         <p className="text-sm text-muted">Управляйте финансами, командой и рисками из единого центра.</p>
         <div className="mt-2 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 px-3 py-1 text-xs text-muted">
           <span className={`inline-flex h-2 w-2 rounded-full ${online ? "bg-emerald-500" : "bg-rose-500"}`} />
@@ -37,7 +31,7 @@ export function Topbar() {
 
       <div className="flex items-center gap-2">
         <Link href="/overview" className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-sm font-semibold shadow-sm">
-          Показать демо
+          Открыть обзор
         </Link>
         <Link href="/sources" className="inline-flex min-h-10 items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm">
           <Sparkles size={16} />

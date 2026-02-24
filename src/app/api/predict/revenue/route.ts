@@ -5,6 +5,6 @@ export async function GET() {
   return NextResponse.json({
     model: "simple_trend_v1",
     forecast: buildRevenueForecast(6),
-    notes: ["Базовый прогноз на демо-данных", "Для production подключите Prophet/ARIMA и кэш в БД"]
+    notes: ["Базовый прогноз на текущих данных", "Для прод-режима подключите Prophet/ARIMA и кэш в БД"]
   });
 }

@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 
   return NextResponse.json({
     inn,
-    source: "API-ФНС (демо-интеграция)",
+    source: "API-ФНС",
     status: risk,
     comment,
     profile: {

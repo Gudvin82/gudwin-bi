@@ -5,7 +5,7 @@ import { HelpPopover } from "@/components/ui/help-popover";
 const links = [
   { href: "/ai", title: "AI-вопрос к данным", note: "Сформулируйте запрос простым текстом и получите отчет" },
   { href: "/sources", title: "Источники данных", note: "Подключение Google Sheets, CSV, CRM и API" },
-  { href: "/dashboards", title: "Дашборды", note: "Готовые демо-панели и пользовательские отчеты" },
+  { href: "/dashboards", title: "Дашборды", note: "Готовые панели и пользовательские отчеты" },
   { href: "/docs", title: "Документы и право", note: "Проверка контрагентов и кандидатов, краткая сводка рисков" },
   { href: "/hire", title: "Найм", note: "Генерация заявок и базовый скрининг" },
   { href: "/agents", title: "Агенты", note: "Каталог и запуск AI-агентов" },

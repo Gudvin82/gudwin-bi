@@ -5,25 +5,22 @@ import { RevenueChart } from "@/components/dashboard/revenue-chart";
 import { ContextHelpLinks } from "@/components/learn/context-help-links";
 import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
-import { appConfig } from "@/lib/config";
 
 export default function OverviewPage() {
   return (
     <div className="space-y-5">
-      {appConfig.demoMode ? (
-        <Card className="border-cyan-200 bg-gradient-to-r from-cyan-50 to-emerald-50">
-          <p className="text-sm font-semibold">Вы смотрите демо-режим.</p>
-          <p className="text-sm text-muted">Подключите Google Sheets/CSV или CRM webhook, и мы построим ваш первый реальный дашборд за несколько минут.</p>
-          <div className="mt-3 flex gap-2">
-            <Link href="/sources" className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-3 py-2 text-sm font-semibold text-white">
-              Подключить источник
-            </Link>
-            <Link href="/onboarding" className="rounded-xl border border-cyan-300 bg-white px-3 py-2 text-sm font-semibold text-cyan-700">
-              Открыть быстрый старт
-            </Link>
-          </div>
-        </Card>
-      ) : null}
+      <Card className="border-cyan-200 bg-gradient-to-r from-cyan-50 to-emerald-50">
+        <p className="text-sm font-semibold">Подключите свои данные и запустите боевой контур аналитики.</p>
+        <p className="text-sm text-muted">Google Sheets/CSV/CRM webhook: после подключения система сформирует стартовый дашборд и AI-рекомендации.</p>
+        <div className="mt-3 flex gap-2">
+          <Link href="/sources" className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-3 py-2 text-sm font-semibold text-white">
+            Подключить источник
+          </Link>
+          <Link href="/onboarding" className="rounded-xl border border-cyan-300 bg-white px-3 py-2 text-sm font-semibold text-cyan-700">
+            Открыть быстрый старт
+          </Link>
+        </div>
+      </Card>
 
       <div className="dashboard-grid">
         <div className="col-span-12">
