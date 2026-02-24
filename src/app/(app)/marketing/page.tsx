@@ -57,6 +57,23 @@ export default function MarketingOverviewPage() {
         </div>
       </Card>
 
+      <div className="sticky top-0 z-20 -mx-1 overflow-x-auto bg-[linear-gradient(180deg,_rgba(248,250,252,0.98),_rgba(248,250,252,0.9))] px-1 py-2 backdrop-blur">
+        <div className="flex min-w-max gap-2">
+          {[
+            { href: "/marketing", label: "Обзор" },
+            { href: "/marketing/analytics", label: "Аналитика" },
+            { href: "/marketing/campaigns", label: "Кампании" },
+            { href: "/marketing/experiments", label: "Эксперименты" },
+            { href: "/marketing/creatives", label: "Креативы" },
+            { href: "/marketing/sources", label: "Источники" }
+          ].map((tab) => (
+            <Link key={tab.href} href={tab.href} className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700">
+              {tab.label}
+            </Link>
+          ))}
+        </div>
+      </div>
+
       <div className="grid gap-4 lg:grid-cols-4">
         <Card className="bg-slate-950 text-white">
           <p className="text-xs uppercase tracking-[0.14em] text-cyan-200">Индекс эффективности</p>

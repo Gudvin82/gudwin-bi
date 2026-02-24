@@ -37,6 +37,22 @@ export default function SettingsPage() {
       </Card>
 
       <Card>
+        <h2 className="mb-3 text-lg font-semibold">Создать своего чат-бота</h2>
+        <p className="mb-3 text-sm text-muted">
+          Подключите своего бота к аналитике: бот сможет отвечать по KPI и отправлять сводки в выбранные группы.
+        </p>
+        <div className="grid gap-3 md:grid-cols-2">
+          <input className="rounded-xl border border-border p-2.5 text-sm" placeholder="Название бота" />
+          <input className="rounded-xl border border-border p-2.5 text-sm" placeholder="Токен бота (шифруется)" />
+          <input className="rounded-xl border border-border p-2.5 text-sm md:col-span-2" placeholder="Группы/чаты для аналитики (через запятую: @sales, @owner, -100...)" />
+        </div>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <button className="rounded-xl bg-accent px-3 py-2 text-sm font-semibold text-white">Создать и подключить бота</button>
+          <button className="rounded-xl border border-border px-3 py-2 text-sm font-semibold">Проверить доступ к группам</button>
+        </div>
+      </Card>
+
+      <Card>
         <h2 className="mb-3 text-lg font-semibold">SMS провайдер</h2>
         <p className="mb-3 text-sm text-muted">Добавьте провайдера и включите короткий KPI-дайджест, например каждый день в 21:00.</p>
         <div className="grid gap-3 md:grid-cols-2">

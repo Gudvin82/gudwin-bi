@@ -78,6 +78,27 @@ export default function AdvisorPage() {
     void load();
   }, []);
 
+  useEffect(() => {
+    if (!activeSessionId) return;
+    const saved = localStorage.getItem(`gw_advisor_messages_${activeSessionId}`);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved) as ChatMessage[];
+        setMessages(parsed.slice(-30));
+        return;
+      } catch {
+        setMessages([]);
+        return;
+      }
+    }
+    setMessages([]);
+  }, [activeSessionId]);
+
+  useEffect(() => {
+    if (!activeSessionId) return;
+    localStorage.setItem(`gw_advisor_messages_${activeSessionId}`, JSON.stringify(messages.slice(-30)));
+  }, [activeSessionId, messages]);
+
   const createSession = async () => {
     const title = `Новая тема: ${roleMeta[role].label}`;
     const res = await fetch("/api/advisor/sessions", {
@@ -159,7 +180,7 @@ export default function AdvisorPage() {
       <Card className="animate-fade-up bg-gradient-to-r from-violet-50 via-cyan-50/70 to-white">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-violet-700">Advisor Center</p>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-violet-700">Центр советника</p>
             <h2 className="text-2xl font-extrabold tracking-tight">AI-советник</h2>
             <p className="text-sm text-muted">Бизнес-консультант, AI-бухгалтер и AI-финансист в одном рабочем пространстве.</p>
           </div>

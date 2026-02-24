@@ -8,6 +8,11 @@ type Source = { id: string; name: string; status: "connected" | "needs_refresh" 
 
 export default function MarketingSourcesPage() {
   const [sources, setSources] = useState<Source[]>([]);
+  const [social, setSocial] = useState({
+    vkGroup: "",
+    telegramChannel: "",
+    maxChannel: ""
+  });
 
   useEffect(() => {
     const load = async () => {
@@ -35,6 +40,36 @@ export default function MarketingSourcesPage() {
             ]}
           />
         </div>
+      </Card>
+
+      <Card>
+        <h3 className="mb-2 text-base font-semibold">Соцсети для анализа маркетинга</h3>
+        <p className="mb-3 text-sm text-muted">
+          Подключите площадки, чтобы видеть охваты, лиды и влияние контента на выручку.
+        </p>
+        <div className="grid gap-3 md:grid-cols-3">
+          <input
+            className="rounded-xl border border-border p-2.5 text-sm"
+            placeholder="VK сообщество / ID"
+            value={social.vkGroup}
+            onChange={(event) => setSocial((prev) => ({ ...prev, vkGroup: event.target.value }))}
+          />
+          <input
+            className="rounded-xl border border-border p-2.5 text-sm"
+            placeholder="Telegram канал / @username"
+            value={social.telegramChannel}
+            onChange={(event) => setSocial((prev) => ({ ...prev, telegramChannel: event.target.value }))}
+          />
+          <input
+            className="rounded-xl border border-border p-2.5 text-sm"
+            placeholder="MAX канал / ID"
+            value={social.maxChannel}
+            onChange={(event) => setSocial((prev) => ({ ...prev, maxChannel: event.target.value }))}
+          />
+        </div>
+        <button className="mt-3 rounded-xl bg-accent px-3 py-2 text-sm font-semibold text-white">
+          Сохранить подключения соцсетей
+        </button>
       </Card>
 
       <div className="space-y-2">

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { ContextHelpLinks } from "@/components/learn/context-help-links";
 import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
@@ -11,6 +12,12 @@ type CashRow = { date: string; inflow: number; outflow: number; balance: number 
 type Leak = { id: string; title: string; severity: "high" | "medium" | "low"; impact: string; recommendation: string };
 type Payment = { id: string; date: string; type: "incoming" | "outgoing"; counterparty: string; amount: number; status: string };
 type MarketingOverview = { romi: number; cac: number };
+
+const paymentStatusLabel: Record<string, string> = {
+  planned: "Запланирован",
+  paid: "Оплачен",
+  overdue: "Просрочен"
+};
 
 export default function FinancePage() {
   const [metrics, setMetrics] = useState<UnitMetric[]>([]);
@@ -45,6 +52,10 @@ export default function FinancePage() {
     if (!metrics.length) return 0;
     return metrics.reduce((acc, item) => acc + item.ltv / item.cac, 0) / metrics.length;
   }, [metrics]);
+  const minBalance30 = useMemo(
+    () => Math.min(...(cash.map((c) => c.balance).length ? cash.map((c) => c.balance) : [0])),
+    [cash]
+  );
 
   const runScenario = async () => {
     const res = await fetch("/api/finance/scenario", {
@@ -76,14 +87,38 @@ export default function FinancePage() {
         </div>
       </Card>
 
+      <div className="sticky top-0 z-20 -mx-1 overflow-x-auto bg-[linear-gradient(180deg,_rgba(248,250,252,0.98),_rgba(248,250,252,0.9))] px-1 py-2 backdrop-blur">
+        <div className="flex min-w-max gap-2">
+          {[
+            { href: "#finance-unit", label: "Юнит-экономика" },
+            { href: "#finance-cash", label: "Прогноз денег" },
+            { href: "#finance-leaks", label: "Утечки" },
+            { href: "#finance-payments", label: "Платежи" },
+            { href: "#finance-scenario", label: "Сценарии" }
+          ].map((tab) => (
+            <a key={tab.href} href={tab.href} className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700">
+              {tab.label}
+            </a>
+          ))}
+        </div>
+      </div>
+
       {!metrics.length ? (
-        <Card>
-          <p className="text-sm text-muted">
-            Пока нет финансовых данных для расчета. Подключите Google Sheets или CRM, чтобы увидеть прогноз кассовых разрывов и юнит-экономику.
-          </p>
-          <Link href="/sources" className="mt-3 inline-flex rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white">
-            Подключить источники данных
-          </Link>
+        <Card className="bg-gradient-to-r from-white to-slate-50">
+          <p className="text-sm font-semibold">Данных пока нет, но вы в 5 минутах от первого отчета.</p>
+          <ol className="mt-2 list-decimal space-y-1 pl-5 text-sm text-muted">
+            <li>Подключите Google Sheets / CSV / CRM в разделе источников.</li>
+            <li>Мы автоматически рассчитаем Cash Guard и юнит-экономику.</li>
+            <li>На этой странице появятся прогноз, утечки денег и платежный календарь.</li>
+          </ol>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Link href="/sources" className="inline-flex rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white">
+              Подключить источники данных
+            </Link>
+            <Link href="/learn/quick-start" className="inline-flex rounded-xl border border-border px-4 py-2 text-sm font-semibold">
+              Открыть быстрый старт
+            </Link>
+          </div>
         </Card>
       ) : null}
 
@@ -117,8 +152,8 @@ export default function FinancePage() {
               ]}
             />
           </div>
-          <p className={`text-3xl font-extrabold ${Math.min(...(cash.map((c) => c.balance).length ? cash.map((c) => c.balance) : [0])) < 0 ? "text-red-700" : "text-emerald-700"}`}>
-            {(Math.min(...(cash.map((c) => c.balance).length ? cash.map((c) => c.balance) : [0]))).toLocaleString("ru-RU")} ₽
+          <p className={`text-3xl font-extrabold ${minBalance30 < 0 ? "text-red-700" : "text-emerald-700"}`}>
+            {minBalance30.toLocaleString("ru-RU")} ₽
           </p>
         </Card>
         <Card>
@@ -153,10 +188,10 @@ export default function FinancePage() {
         </Card>
       </div>
 
-      <Card>
+      <Card id="finance-unit">
         <h3 className="mb-3 text-base font-semibold">Юнит-экономика</h3>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="min-w-[760px] w-full text-sm">
             <thead className="text-left text-muted">
               <tr>
                 <th className="pb-2">Сегмент</th><th className="pb-2">CAC</th><th className="pb-2">LTV</th><th className="pb-2">LTV/CAC</th><th className="pb-2">ROMI</th><th className="pb-2">Payback</th>
@@ -179,8 +214,25 @@ export default function FinancePage() {
       </Card>
 
       <div className="grid gap-4 xl:grid-cols-2">
-        <Card>
+        <Card id="finance-cash">
           <h3 className="mb-3 text-base font-semibold">Прогноз денег (30 дней)</h3>
+          <div className="mb-3 h-56 rounded-xl border border-border bg-white p-2">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={cash}>
+                <defs>
+                  <linearGradient id="cashLine" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#0f766e" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#0f766e" stopOpacity={0.03} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                <XAxis dataKey="date" tick={{ fontSize: 11 }} />
+                <YAxis tick={{ fontSize: 11 }} tickFormatter={(value) => `${Math.round(value / 1000)}k`} />
+                <Tooltip formatter={(value: number | string | undefined) => `${Number(value ?? 0).toLocaleString("ru-RU")} ₽`} />
+                <Area type="monotone" dataKey="balance" stroke="#0f766e" strokeWidth={2} fill="url(#cashLine)" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
           <div className="space-y-1 text-sm">
             {cash.slice(0, 10).map((row) => (
               <div key={row.date} className="flex items-center justify-between rounded-lg border border-border px-3 py-2">
@@ -191,7 +243,7 @@ export default function FinancePage() {
           </div>
         </Card>
 
-        <Card>
+        <Card id="finance-scenario">
           <h3 className="mb-3 text-base font-semibold">Сценарный симулятор</h3>
           <div className="grid gap-2 sm:grid-cols-2">
             <input type="number" value={scenario.priceDeltaPct} onChange={(e) => setScenario({ ...scenario, priceDeltaPct: Number(e.target.value) })} className="rounded-xl border border-border p-2 text-sm" placeholder="Цена %" />
@@ -212,7 +264,7 @@ export default function FinancePage() {
       </div>
 
       <div className="grid gap-4 xl:grid-cols-2">
-        <Card>
+        <Card id="finance-leaks">
           <h3 className="mb-3 text-base font-semibold">Сканер утечек денег</h3>
           <div className="space-y-2">
             {leaks.map((leak) => (
@@ -225,7 +277,7 @@ export default function FinancePage() {
           </div>
         </Card>
 
-        <Card>
+        <Card id="finance-payments">
           <h3 className="mb-3 text-base font-semibold">Платежный календарь</h3>
           <div className="space-y-2 text-sm">
             {payments.map((item) => (
@@ -236,7 +288,9 @@ export default function FinancePage() {
                 </div>
                 <div className="text-right">
                   <p>{item.amount.toLocaleString("ru-RU")} ₽</p>
-                  <p className={`text-xs ${item.status === "overdue" ? "text-red-700" : "text-muted"}`}>{item.status}</p>
+                  <p className={`text-xs ${item.status === "overdue" ? "text-red-700" : "text-muted"}`}>
+                    {paymentStatusLabel[item.status] ?? item.status}
+                  </p>
                 </div>
               </div>
             ))}

@@ -57,11 +57,22 @@ export default function WatchPage() {
 
       <Card>
         <h3 className="mb-3 text-base font-semibold">Режим алертов</h3>
-        <div className="flex gap-2 text-sm">
-          <button onClick={() => setMode("morning_briefing")} className={`rounded-xl border px-3 py-2 ${mode === "morning_briefing" ? "border-accent bg-accentSoft" : "border-border"}`}>
+        <div className="mb-2 text-xs text-muted">
+          Текущий режим: <span className="font-semibold text-text">{mode === "morning_briefing" ? "Утренний брифинг" : "Только критические"}</span>
+        </div>
+        <div className="flex flex-wrap gap-2 text-sm">
+          <button
+            aria-pressed={mode === "morning_briefing"}
+            onClick={() => setMode("morning_briefing")}
+            className={`rounded-xl border px-3 py-2 font-semibold ${mode === "morning_briefing" ? "border-accent bg-accentSoft text-accent" : "border-border"}`}
+          >
             Утренний брифинг
           </button>
-          <button onClick={() => setMode("critical_only")} className={`rounded-xl border px-3 py-2 ${mode === "critical_only" ? "border-accent bg-accentSoft" : "border-border"}`}>
+          <button
+            aria-pressed={mode === "critical_only"}
+            onClick={() => setMode("critical_only")}
+            className={`rounded-xl border px-3 py-2 font-semibold ${mode === "critical_only" ? "border-accent bg-accentSoft text-accent" : "border-border"}`}
+          >
             Только критические
           </button>
         </div>

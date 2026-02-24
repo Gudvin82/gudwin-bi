@@ -34,13 +34,19 @@ export default function OwnerPage() {
     const degree = Math.round((data.health.score / 100) * 360);
     return `conic-gradient(#0891b2 0deg, #10b981 ${degree}deg, rgba(226,232,240,.9) ${degree}deg 360deg)`;
   }, [data.health.score]);
+  const healthZone =
+    data.health.score < 40
+      ? { label: "Критическая зона", tone: "text-rose-700" }
+      : data.health.score < 70
+        ? { label: "Зона внимания", tone: "text-amber-700" }
+        : { label: "Стабильная зона", tone: "text-emerald-700" };
 
   return (
     <div className="space-y-5">
       <Card className="animate-fade-up bg-gradient-to-br from-white via-cyan-50/60 to-emerald-50/60">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="max-w-2xl">
-            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-700">Режим владельца (Owner Mode)</p>
+            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-700">Режим владельца</p>
             <h2 className="text-2xl font-extrabold tracking-tight">Режим владельца</h2>
             <p className="mt-1 text-sm text-muted">Главная витрина бизнеса: здоровье компании, главная проблема недели и фокус дня.</p>
           </div>
@@ -69,6 +75,9 @@ export default function OwnerPage() {
               </div>
             </div>
             <div className="min-w-[220px] flex-1 space-y-2 text-sm">
+              <div className={`rounded-xl bg-white/10 px-3 py-2 text-xs font-semibold ${healthZone.tone}`}>
+                {healthZone.label}: {data.health.score}/100
+              </div>
               <div className="flex items-center justify-between rounded-xl bg-white/10 px-3 py-2">
                 <span>Финансы</span>
                 <span className="font-semibold">{data.health.components.financial}</span>

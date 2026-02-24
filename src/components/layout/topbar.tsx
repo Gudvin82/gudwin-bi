@@ -47,7 +47,7 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
             type="button"
             onClick={onMenuClick}
             aria-label="Открыть меню"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white/90 text-slate-700 shadow-sm lg:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white/90 text-slate-700 shadow-sm md:hidden"
           >
             <Menu size={18} />
           </button>
