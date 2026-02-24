@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { Sidebar } from "@/components/layout/sidebar";
@@ -8,6 +8,13 @@ import { Topbar } from "@/components/layout/topbar";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  useEffect(() => {
+    const theme = localStorage.getItem("gw_theme") || "light";
+    const lang = localStorage.getItem("gw_lang") || "ru";
+    document.documentElement.setAttribute("data-theme", theme);
+    document.documentElement.setAttribute("lang", lang);
+  }, []);
 
   return (
     <div className="min-h-dvh md:flex premium-shell">

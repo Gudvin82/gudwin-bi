@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Card } from "@/components/ui/card";
 
 type AccessRole = "owner" | "admin" | "member" | "viewer";
@@ -24,9 +24,15 @@ const sectionPermissions = [
 ] as const;
 
 export default function SettingsPage() {
+  const [profileName, setProfileName] = useState("Анатолий Гудвин");
+  const [profileRole, setProfileRole] = useState<AccessRole>("owner");
+  const [themeMode, setThemeMode] = useState<"light" | "dark">("light");
+  const [language, setLanguage] = useState<"ru" | "en">("ru");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState<AccessRole>("member");
   const [inviteHint, setInviteHint] = useState("");
+  const [profileHint, setProfileHint] = useState("");
+  const [authHint, setAuthHint] = useState("");
 
   const roleDescription = useMemo(() => {
     if (role === "owner") return "Полный доступ ко всем разделам, ключам и правам.";
@@ -39,8 +45,95 @@ export default function SettingsPage() {
     setInviteHint("Приглашение сохранено как заглушка. Реальная отправка будет подключена на следующем этапе.");
   };
 
+  const saveAuthStub = () => {
+    setAuthHint("Заглушки входа сохранены. На следующем этапе подключим реальную авторизацию через провайдер.");
+  };
+
+  const saveProfile = () => {
+    localStorage.setItem("gw_profile_name", profileName);
+    localStorage.setItem("gw_profile_role", profileRole);
+    localStorage.setItem("gw_theme", themeMode);
+    localStorage.setItem("gw_lang", language);
+    document.documentElement.setAttribute("data-theme", themeMode);
+    document.documentElement.setAttribute("lang", language === "ru" ? "ru" : "en");
+    setProfileHint("Профиль и предпочтения интерфейса сохранены.");
+  };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedName = localStorage.getItem("gw_profile_name");
+      const savedRole = localStorage.getItem("gw_profile_role") as AccessRole | null;
+      const savedTheme = localStorage.getItem("gw_theme") as "light" | "dark" | null;
+      const savedLang = localStorage.getItem("gw_lang") as "ru" | "en" | null;
+      if (savedName) setProfileName(savedName);
+      if (savedRole) setProfileRole(savedRole);
+      if (savedTheme) setThemeMode(savedTheme);
+      if (savedLang) setLanguage(savedLang);
+    }
+  }, []);
+
   return (
     <div className="space-y-4">
+      <Card>
+        <h2 className="mb-3 text-lg font-semibold">Профиль аккаунта и интерфейс</h2>
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="space-y-2">
+            <label className="text-xs text-muted">ФИО аккаунта</label>
+            <input value={profileName} onChange={(event) => setProfileName(event.target.value)} className="w-full rounded-xl border border-border p-2.5 text-sm" />
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs text-muted">Роль доступа (отображение в шапке)</label>
+            <select value={profileRole} onChange={(event) => setProfileRole(event.target.value as AccessRole)} className="w-full rounded-xl border border-border p-2.5 text-sm">
+              <option value="owner">owner</option>
+              <option value="admin">admin</option>
+              <option value="member">member</option>
+              <option value="viewer">viewer</option>
+            </select>
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs text-muted">Тема</label>
+            <select value={themeMode} onChange={(event) => setThemeMode(event.target.value as "light" | "dark")} className="w-full rounded-xl border border-border p-2.5 text-sm">
+              <option value="light">Светлая (по умолчанию)</option>
+              <option value="dark">Лёгкая тёмная</option>
+            </select>
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs text-muted">Язык интерфейса</label>
+            <select value={language} onChange={(event) => setLanguage(event.target.value as "ru" | "en")} className="w-full rounded-xl border border-border p-2.5 text-sm">
+              <option value="ru">Русский (по умолчанию)</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+        </div>
+        <button onClick={saveProfile} className="mt-3 rounded-xl bg-accent px-3 py-2 text-sm font-semibold text-white">Сохранить профиль</button>
+        {profileHint ? <p className="mt-2 text-xs text-emerald-700">{profileHint}</p> : null}
+      </Card>
+
+      <Card>
+        <h2 className="mb-3 text-lg font-semibold">Авторизация (заглушка для прод-подготовки)</h2>
+        <p className="mb-3 text-sm text-muted">
+          Выберите способы входа, которые будут включены на следующем этапе: телефон, email, Telegram.
+        </p>
+        <div className="grid gap-2 md:grid-cols-3">
+          <label className="inline-flex items-center gap-2 rounded-xl border border-border p-3 text-sm">
+            <input type="checkbox" defaultChecked />
+            Вход по номеру телефона
+          </label>
+          <label className="inline-flex items-center gap-2 rounded-xl border border-border p-3 text-sm">
+            <input type="checkbox" defaultChecked />
+            Вход по email
+          </label>
+          <label className="inline-flex items-center gap-2 rounded-xl border border-border p-3 text-sm">
+            <input type="checkbox" defaultChecked />
+            Вход через Telegram
+          </label>
+        </div>
+        <button onClick={saveAuthStub} className="mt-3 rounded-xl bg-accent px-3 py-2 text-sm font-semibold text-white">
+          Сохранить способы входа
+        </button>
+        {authHint ? <p className="mt-2 text-xs text-amber-700">{authHint}</p> : null}
+      </Card>
+
       <Card>
         <h2 className="mb-3 text-lg font-semibold">Выдача доступа к сервису</h2>
         <p className="mb-3 text-sm text-muted">

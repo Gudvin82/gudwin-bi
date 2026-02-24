@@ -118,9 +118,11 @@ const sections: NavSection[] = [
     label: "Интеграции",
     icon: Link2,
     children: [
-      { href: "/connect", label: "Подключенные системы" },
+      { href: "/integrations", label: "Подключенные системы" },
+      { href: "/connect", label: "Сценарии if/then" },
       { href: "/agents", label: "AI-агенты" },
-      { href: "/competitor", label: "Конкурентный мониторинг" }
+      { href: "/competitor", label: "Конкурентный мониторинг" },
+      { href: "/contacts", label: "Заказать доп. интеграцию" }
     ]
   },
   {
@@ -168,13 +170,13 @@ export function Sidebar({
 
   return (
     <aside className={cn("sticky top-0 h-dvh w-72 shrink-0 border-r border-slate-200/70 bg-gradient-to-b from-white/85 to-slate-50/80 p-4 backdrop-blur-xl", className)}>
-      <div className="mb-5 flex items-center gap-3 rounded-2xl border border-slate-200/80 bg-white/95 p-3 shadow-sm">
+      <Link href="/owner" onClick={onNavigate} className="mb-5 flex items-center gap-3 rounded-2xl border border-slate-200/80 bg-white/95 p-3 shadow-sm hover:bg-slate-50">
         <div className="grid h-10 w-10 place-content-center rounded-xl bg-gradient-to-br from-cyan-600 to-teal-600 text-sm font-bold text-white">GW</div>
         <div>
           <p className="premium-title text-base font-extrabold tracking-tight">GudWin BI</p>
           <p className="text-xs text-muted">AI-операционная система</p>
         </div>
-      </div>
+      </Link>
 
       <nav className="max-h-[calc(100dvh-170px)] space-y-2 overflow-y-auto pr-1">
         {sections.map((section) => {
@@ -225,7 +227,7 @@ export function Sidebar({
                         onClick={onNavigate}
                         className={cn(
                           "flex items-center gap-2 rounded-lg px-3 py-2 text-xs",
-                          childActive ? "bg-slate-100 font-semibold text-text" : "text-muted hover:bg-slate-100"
+                          childActive ? "border border-cyan-200 bg-gradient-to-r from-cyan-50 to-teal-50 font-semibold text-cyan-800" : "text-muted hover:bg-slate-100"
                         )}
                       >
                         <span>→</span>
@@ -243,7 +245,7 @@ export function Sidebar({
       <div className="mt-5 rounded-xl border border-slate-200/80 bg-white/95 p-3 text-xs text-muted shadow-sm">
         <div className="mb-1 inline-flex items-center gap-2">
           <Building2 size={14} />
-          <span className="font-semibold text-text">Собственник</span>
+          <span className="font-semibold text-text">GudWin Workspace</span>
         </div>
         <p>Тариф: Премиум</p>
       </div>

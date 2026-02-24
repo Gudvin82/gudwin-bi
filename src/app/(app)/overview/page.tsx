@@ -68,7 +68,7 @@ export default function OverviewPage() {
       </div>
 
       <Card>
-        <h3 className="mb-3 text-base font-semibold">Cash In / Cash Out (5 дней)</h3>
+        <h3 className="mb-3 text-base font-semibold">Поступления и списания (5 дней)</h3>
         <div className="grid gap-2 sm:grid-cols-5">
           {cashFlow.map((row) => (
             <div key={row.d} className="rounded-xl border border-border bg-white p-3 text-sm">

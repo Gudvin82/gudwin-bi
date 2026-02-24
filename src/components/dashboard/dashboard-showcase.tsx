@@ -96,7 +96,7 @@ export function DashboardShowcase() {
 
       <Card className="bg-gradient-to-b from-white to-rose-50/30">
         <div className="mb-2 flex items-center justify-between">
-          <p className="text-xs text-muted">Cash In / Cash Out</p>
+          <p className="text-xs text-muted">Поступления и списания</p>
           <span className="rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-semibold text-violet-700">7 дней</span>
         </div>
         <div className="h-44">
