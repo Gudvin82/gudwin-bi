@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Mic, Send, Sparkles } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 type Message = {
   id: string;
@@ -29,23 +29,23 @@ const sectionMap: Record<string, { name: string; href: string }> = {
   team: { name: "Команда", href: "/team" }
 };
 
-function createId() {
-  const maybeCrypto = globalThis.crypto as { randomUUID?: () => string } | undefined;
-  if (maybeCrypto?.randomUUID) return maybeCrypto.randomUUID();
-  return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
-}
-
 export function GlobalAssistant() {
   const router = useRouter();
   const pathname = usePathname();
   const firstSegment = pathname.split("/").filter(Boolean)[0] ?? "owner";
   const section = sectionMap[firstSegment] ?? sectionMap.owner;
 
+  const msgIdRef = useRef(0);
+  const nextId = () => {
+    msgIdRef.current += 1;
+    return `msg-${msgIdRef.current}`;
+  };
+
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([
     {
-      id: createId(),
+      id: "msg-initial",
       role: "assistant",
       text: `Я AI-помощник по разделу «${section.name}». Могу помочь с навигацией, запуском действий и быстрым сбором отчёта.`
     }
@@ -112,9 +112,9 @@ export function GlobalAssistant() {
   const send = () => {
     const trimmed = input.trim();
     if (!trimmed) return;
-    pushMessage({ id: createId(), role: "user", text: trimmed });
+    pushMessage({ id: nextId(), role: "user", text: trimmed });
     const answer = runCommand(trimmed);
-    pushMessage({ id: createId(), role: "assistant", text: answer });
+    pushMessage({ id: nextId(), role: "assistant", text: answer });
     setInput("");
   };
 
@@ -125,7 +125,7 @@ export function GlobalAssistant() {
       || (window as unknown as { webkitSpeechRecognition?: new () => { [key: string]: unknown } }).webkitSpeechRecognition;
     if (!SpeechRecognition) {
       pushMessage({
-        id: createId(),
+        id: nextId(),
         role: "assistant",
         text: "Голосовой ввод не поддерживается в этом браузере. Используйте текстовый ввод."
       });
@@ -146,9 +146,9 @@ export function GlobalAssistant() {
       const transcript = event.results?.[0]?.[0]?.transcript ?? "";
       if (!transcript.trim()) return;
       setInput(transcript);
-      pushMessage({ id: createId(), role: "user", text: transcript });
+      pushMessage({ id: nextId(), role: "user", text: transcript });
       const answer = runCommand(transcript);
-      pushMessage({ id: createId(), role: "assistant", text: answer });
+      pushMessage({ id: nextId(), role: "assistant", text: answer });
       setInput("");
     };
     recognition.start();

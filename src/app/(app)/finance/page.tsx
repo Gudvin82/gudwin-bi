@@ -223,7 +223,7 @@ export default function FinancePage() {
           <h3 className="mb-3 text-base font-semibold">Прогноз денег (30 дней)</h3>
           <div className="mb-3 h-56 rounded-xl border border-border bg-white p-2">
             {mounted ? (
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height="100%" minWidth={260} minHeight={180}>
                 <AreaChart data={cash}>
                   <defs>
                     <linearGradient id="cashLine" x1="0" y1="0" x2="0" y2="1">

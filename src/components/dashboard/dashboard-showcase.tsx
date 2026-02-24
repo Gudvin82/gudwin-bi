@@ -62,7 +62,7 @@ export function DashboardShowcase() {
           <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">+8.5%</span>
         </div>
         <div className="h-44">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%" minWidth={240} minHeight={160}>
             <AreaChart data={revenueData}>
               <defs>
                 <linearGradient id="showcaseRevenue" x1="0" y1="0" x2="0" y2="1">
@@ -86,7 +86,7 @@ export function DashboardShowcase() {
           <span className="rounded-full bg-cyan-100 px-2 py-0.5 text-[10px] font-semibold text-cyan-700">ТОП-4</span>
         </div>
         <div className="h-44">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%" minWidth={240} minHeight={160}>
             <BarChart data={channels}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis dataKey="name" tick={{ fontSize: 11 }} />
@@ -104,7 +104,7 @@ export function DashboardShowcase() {
           <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-700">Внимание</span>
         </div>
         <div className="h-44">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%" minWidth={240} minHeight={160}>
             <PieChart>
               <Pie dataKey="value" data={riskData} innerRadius={36} outerRadius={64} paddingAngle={2} fill="#f97316" />
               <Tooltip />
@@ -119,7 +119,7 @@ export function DashboardShowcase() {
           <span className="rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-semibold text-violet-700">7 дней</span>
         </div>
         <div className="h-44">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%" minWidth={240} minHeight={160}>
             <BarChart data={cashData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis dataKey="day" tick={{ fontSize: 11 }} />

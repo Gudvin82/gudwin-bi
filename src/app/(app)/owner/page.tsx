@@ -13,6 +13,8 @@ type OwnerPayload = {
   problemOfWeek: string;
 };
 
+const weekLabels = ["10.12", "17.12", "24.12", "31.12", "07.01", "14.01", "21.01", "28.01", "04.02", "11.02", "18.02", "25.02"];
+
 export default function OwnerPage() {
   const [data, setData] = useState<OwnerPayload>({
     health: { score: 78, components: { financial: 74, cash: 62, operations: 81, riskPenalty: 8 } },
@@ -40,17 +42,7 @@ export default function OwnerPage() {
       : data.health.score < 70
         ? { label: "Зона внимания", tone: "text-amber-700" }
         : { label: "Стабильная зона", tone: "text-emerald-700" };
-  const weeks = useMemo(() => {
-    const start = new Date();
-    start.setDate(start.getDate() - 7 * 11);
-    return Array.from({ length: 12 }, (_, idx) => {
-      const d = new Date(start);
-      d.setDate(start.getDate() + idx * 7);
-      const day = String(d.getDate()).padStart(2, "0");
-      const month = String(d.getMonth() + 1).padStart(2, "0");
-      return `${day}.${month}`;
-    });
-  }, []);
+  const weeks = useMemo(() => weekLabels, []);
 
   const exportPdf = () => {
     window.print();

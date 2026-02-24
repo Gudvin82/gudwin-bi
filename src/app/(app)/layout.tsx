@@ -34,7 +34,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <main className="page-enter relative min-w-0 flex-1 overflow-x-hidden px-3 pb-20 pt-4 sm:px-4 md:pb-4 lg:p-8">
         <div className="premium-orb premium-orb-a" />
         <div className="premium-orb premium-orb-b" />
-        <Breadcrumbs />
+        <div className="hidden md:block">
+          <Breadcrumbs />
+        </div>
         <Topbar onMenuClick={() => setMobileNavOpen(true)} />
         <div className="premium-stage">{children}</div>
         <GlobalAssistant />

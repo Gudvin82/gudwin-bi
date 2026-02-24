@@ -216,7 +216,7 @@ export default function ReportBuilderPage() {
                     {!mounted ? (
                       <div className="skeleton h-full w-full" />
                     ) : (
-                      <ResponsiveContainer width="100%" height="100%">
+                      <ResponsiveContainer width="100%" height="100%" minWidth={260} minHeight={180}>
                         {chartType === "line" ? (
                           <AreaChart data={preview.rows}>
                             <defs>

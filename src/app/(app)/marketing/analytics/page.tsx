@@ -131,7 +131,7 @@ export default function MarketingAnalyticsPage() {
           <h3 className="mb-2 text-base font-semibold">Воронка по источникам</h3>
           <div className="h-64 rounded-xl border border-border bg-white p-2">
             {mounted ? (
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height="100%" minWidth={260} minHeight={180}>
                 <BarChart
                   data={[
                     { stage: "Показы", value: funnel.impressions },
@@ -166,7 +166,7 @@ export default function MarketingAnalyticsPage() {
         <h3 className="mb-3 text-base font-semibold">Сравнение расхода и выручки по каналам</h3>
         <div className="h-72 rounded-xl border border-border bg-white p-2">
           {mounted ? (
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={260} minHeight={180}>
               <BarChart data={rows}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                 <XAxis dataKey="name" tick={{ fontSize: 11 }} />
