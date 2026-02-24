@@ -184,19 +184,35 @@ export function Sidebar({
 
           return (
             <div key={section.key} className="rounded-xl border border-slate-200/80 bg-white/90 shadow-sm">
-              <button
-                onClick={() => setOpened(isOpen ? "" : section.key)}
+              <div
                 className={cn(
-                  "flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold",
-                  active ? "bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-sm" : "text-text hover:bg-slate-100"
+                  "flex w-full items-center justify-between rounded-xl",
+                  active ? "bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-sm" : "text-text"
                 )}
               >
-                <span className="inline-flex items-center gap-2">
+                <Link
+                  href={section.href}
+                  onClick={onNavigate}
+                  className={cn(
+                    "inline-flex min-w-0 flex-1 items-center gap-2 rounded-l-xl px-3 py-2.5 text-sm font-semibold",
+                    active ? "text-white" : "text-text hover:bg-slate-100"
+                  )}
+                >
                   <Icon size={16} />
-                  {section.label}
-                </span>
-                {isOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-              </button>
+                  <span className="truncate">{section.label}</span>
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => setOpened(isOpen ? "" : section.key)}
+                  aria-label={isOpen ? `Свернуть раздел ${section.label}` : `Развернуть раздел ${section.label}`}
+                  className={cn(
+                    "grid h-full w-10 place-items-center rounded-r-xl",
+                    active ? "text-white/90 hover:bg-white/10" : "text-slate-500 hover:bg-slate-100"
+                  )}
+                >
+                  {isOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                </button>
+              </div>
 
               {isOpen ? (
                 <div className="space-y-1 p-2">

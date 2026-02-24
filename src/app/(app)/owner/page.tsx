@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ContextHelpLinks } from "@/components/learn/context-help-links";
+import { DashboardShowcase } from "@/components/dashboard/dashboard-showcase";
 import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
 
@@ -136,6 +137,19 @@ export default function OwnerPage() {
           <Link href="/advisor" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">AI-советник</Link>
           <Link href="/watch" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Мониторинг</Link>
         </div>
+      </Card>
+
+      <Card className="bg-gradient-to-r from-white via-slate-50 to-cyan-50">
+        <div className="mb-3 flex items-start justify-between gap-3">
+          <div>
+            <h3 className="text-base font-semibold">Визуальные дашборды дня</h3>
+            <p className="text-sm text-muted">Быстрый срез: выручка, каналы, риски и движение денег.</p>
+          </div>
+          <Link href="/dashboards" className="rounded-xl border border-border bg-white px-3 py-2 text-sm font-semibold">
+            Открыть все дашборды
+          </Link>
+        </div>
+        <DashboardShowcase />
       </Card>
 
       <ContextHelpLinks section="owner" />
