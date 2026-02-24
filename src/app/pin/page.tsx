@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { PIN_COOKIE_NAME, PIN_COOKIE_VALUE } from "@/lib/auth/pin";
 
 type PinPageProps = {
-  searchParams?: Promise<{ next?: string }>;
+  searchParams?: Promise<{ next?: string; error?: string }>;
 };
 
 export default async function PinPage({ searchParams }: PinPageProps) {
