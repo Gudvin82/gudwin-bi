@@ -5,7 +5,10 @@ import { usePathname } from "next/navigation";
 
 const labels: Record<string, string> = {
   overview: "Обзор",
+  main: "Главная",
   dashboards: "Дашборды",
+  builder: "Конструктор",
+  "report-builder": "Конструктор отчетов",
   sources: "Источники данных",
   ai: "AI-аналитика",
   services: "Сервисы и модули",
@@ -44,7 +47,7 @@ export function Breadcrumbs() {
 
   return (
     <div className="mb-3 flex flex-wrap items-center gap-2 text-xs text-muted">
-      <Link href="/overview" className="rounded-md px-2 py-1 hover:bg-slate-100">
+      <Link href="/owner" className="rounded-md px-2 py-1 hover:bg-slate-100">
         GudWin BI
       </Link>
       {segments.map((segment, idx) => {

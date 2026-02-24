@@ -26,8 +26,8 @@ const sections: NavSection[] = [
     label: "Главная",
     icon: UserRoundCog,
     children: [
-      { href: "/owner", label: "Режим владельца" },
-      { href: "/overview", label: "Общий обзор" }
+      { href: "/owner", label: "Рабочий кабинет" },
+      { href: "/overview", label: "Детальный обзор" }
     ]
   },
   {
@@ -48,6 +48,8 @@ const sections: NavSection[] = [
     icon: LayoutDashboard,
     children: [
       { href: "/dashboards", label: "Мои дашборды" },
+      { href: "/dashboards/builder", label: "Конструктор дашбордов" },
+      { href: "/analytics/report-builder", label: "Конструктор отчетов" },
       { href: "/sources", label: "Подключить данные" },
       { href: "/analytics/templates", label: "Шаблоны по отраслям" }
     ]

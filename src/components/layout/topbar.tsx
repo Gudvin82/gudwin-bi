@@ -1,15 +1,12 @@
 import Link from "next/link";
 import { Bell, CalendarRange, Sparkles, UserCircle2 } from "lucide-react";
-import { appConfig } from "@/lib/config";
 
 export function Topbar() {
   return (
     <header className="mb-6 flex flex-wrap items-center justify-between gap-3">
       <div>
         <h1 className="text-2xl font-bold">Рабочий кабинет</h1>
-        <p className="text-sm text-muted">
-          {appConfig.demoMode ? "Сейчас включен демо-режим. Подключите свои данные для реальной аналитики." : "Загрузите данные и формулируйте отчеты обычным текстом."}
-        </p>
+        <p className="text-sm text-muted">Управляйте финансами, командой и рисками из единого центра.</p>
       </div>
 
       <div className="flex items-center gap-2">

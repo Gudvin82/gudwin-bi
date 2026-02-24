@@ -18,6 +18,18 @@ export default function AnalyticsHubPage() {
           hrefLabel: "Открыть дашборды"
         },
         {
+          title: "Конструктор дашбордов",
+          description: "Соберите собственную панель: KPI-карточки, графики и таблицы.",
+          href: "/dashboards/builder",
+          hrefLabel: "Перейти в конструктор"
+        },
+        {
+          title: "Конструктор отчетов",
+          description: "Формируйте управленческие отчеты под Telegram/SMS/Web.",
+          href: "/analytics/report-builder",
+          hrefLabel: "Собрать отчет"
+        },
+        {
           title: "Источники данных",
           description: "Подключение таблиц, CRM и API для обновления аналитики.",
           href: "/sources",
