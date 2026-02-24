@@ -118,6 +118,18 @@ export default function OwnerPage() {
       </div>
 
       <Card>
+        <h3 className="mb-3 text-base font-semibold">Динамика здоровья бизнеса (12 недель)</h3>
+        <div className="flex items-end gap-2 rounded-xl border border-border bg-white p-3">
+          {[58, 61, 63, 60, 66, 69, 72, 70, 74, 76, 79, data.health.score].map((value, idx) => (
+            <div key={`health-${idx}`} className="flex flex-1 flex-col items-center gap-1">
+              <div className="w-full rounded-t-md bg-gradient-to-t from-cyan-600 to-teal-400" style={{ height: `${Math.max(14, value)}px` }} />
+              <span className="text-[10px] text-muted">W{idx + 1}</span>
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      <Card>
         <div className="flex flex-wrap gap-2">
           <Link href="/finance" className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-4 py-2 text-sm font-semibold text-white">Финансы</Link>
           <Link href="/marketing" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Маркетинг</Link>

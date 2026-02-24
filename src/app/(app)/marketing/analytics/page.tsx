@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
 
@@ -22,6 +23,7 @@ type Row = {
 
 export default function MarketingAnalyticsPage() {
   const [rows, setRows] = useState<Row[]>([]);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -30,6 +32,7 @@ export default function MarketingAnalyticsPage() {
       setRows(json.rows ?? []);
     };
     void load();
+    setMounted(true);
   }, []);
 
   const funnel = useMemo(() => {
@@ -71,7 +74,7 @@ export default function MarketingAnalyticsPage() {
       <Card>
         <h3 className="mb-3 text-base font-semibold">Сквозная таблица по каналам</h3>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="min-w-[980px] w-full text-sm">
             <thead className="text-left text-muted">
               <tr>
                 <th className="pb-2">Канал</th>
@@ -109,11 +112,27 @@ export default function MarketingAnalyticsPage() {
       <div className="grid gap-4 xl:grid-cols-2">
         <Card>
           <h3 className="mb-2 text-base font-semibold">Воронка по источникам</h3>
-          <div className="space-y-2 text-sm">
-            <div className="rounded-xl border border-border p-3">Показы: {funnel.impressions.toLocaleString("ru-RU")}</div>
-            <div className="rounded-xl border border-border p-3">Клики: {funnel.clicks.toLocaleString("ru-RU")}</div>
-            <div className="rounded-xl border border-border p-3">Лиды: {funnel.leads.toLocaleString("ru-RU")}</div>
-            <div className="rounded-xl border border-border p-3">Сделки: {funnel.deals.toLocaleString("ru-RU")}</div>
+          <div className="h-64 rounded-xl border border-border bg-white p-2">
+            {mounted ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={[
+                    { stage: "Показы", value: funnel.impressions },
+                    { stage: "Клики", value: funnel.clicks },
+                    { stage: "Лиды", value: funnel.leads },
+                    { stage: "Сделки", value: funnel.deals }
+                  ]}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="stage" tick={{ fontSize: 11 }} />
+                  <YAxis tick={{ fontSize: 11 }} />
+                  <Tooltip formatter={(value: number | string | undefined) => Number(value ?? 0).toLocaleString("ru-RU")} />
+                  <Bar dataKey="value" fill="#0ea5e9" radius={[6, 6, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="skeleton h-full w-full" />
+            )}
           </div>
         </Card>
         <Card>
@@ -125,6 +144,27 @@ export default function MarketingAnalyticsPage() {
           </div>
         </Card>
       </div>
+
+      <Card>
+        <h3 className="mb-3 text-base font-semibold">Сравнение расхода и выручки по каналам</h3>
+        <div className="h-72 rounded-xl border border-border bg-white p-2">
+          {mounted ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={rows}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                <XAxis dataKey="name" tick={{ fontSize: 11 }} />
+                <YAxis tick={{ fontSize: 11 }} />
+                <Tooltip formatter={(value: number | string | undefined) => `${Number(value ?? 0).toLocaleString("ru-RU")} ₽`} />
+                <Legend />
+                <Bar dataKey="spend" name="Расход" fill="#fb7185" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="revenue" name="Выручка" fill="#14b8a6" radius={[6, 6, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="skeleton h-full w-full" />
+          )}
+        </div>
+      </Card>
     </div>
   );
 }

@@ -20,6 +20,7 @@ const paymentStatusLabel: Record<string, string> = {
 };
 
 export default function FinancePage() {
+  const [mounted, setMounted] = useState(false);
   const [metrics, setMetrics] = useState<UnitMetric[]>([]);
   const [cash, setCash] = useState<CashRow[]>([]);
   const [leaks, setLeaks] = useState<Leak[]>([]);
@@ -46,6 +47,7 @@ export default function FinancePage() {
     };
 
     void load();
+    setMounted(true);
   }, []);
 
   const avgLtvCac = useMemo(() => {
@@ -217,21 +219,25 @@ export default function FinancePage() {
         <Card id="finance-cash">
           <h3 className="mb-3 text-base font-semibold">Прогноз денег (30 дней)</h3>
           <div className="mb-3 h-56 rounded-xl border border-border bg-white p-2">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={cash}>
-                <defs>
-                  <linearGradient id="cashLine" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#0f766e" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#0f766e" stopOpacity={0.03} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="date" tick={{ fontSize: 11 }} />
-                <YAxis tick={{ fontSize: 11 }} tickFormatter={(value) => `${Math.round(value / 1000)}k`} />
-                <Tooltip formatter={(value: number | string | undefined) => `${Number(value ?? 0).toLocaleString("ru-RU")} ₽`} />
-                <Area type="monotone" dataKey="balance" stroke="#0f766e" strokeWidth={2} fill="url(#cashLine)" />
-              </AreaChart>
-            </ResponsiveContainer>
+            {mounted ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={cash}>
+                  <defs>
+                    <linearGradient id="cashLine" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#0f766e" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#0f766e" stopOpacity={0.03} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="date" tick={{ fontSize: 11 }} />
+                  <YAxis tick={{ fontSize: 11 }} tickFormatter={(value) => `${Math.round(value / 1000)}k`} />
+                  <Tooltip formatter={(value: number | string | undefined) => `${Number(value ?? 0).toLocaleString("ru-RU")} ₽`} />
+                  <Area type="monotone" dataKey="balance" stroke="#0f766e" strokeWidth={2} fill="url(#cashLine)" />
+                </AreaChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="skeleton h-full w-full" />
+            )}
           </div>
           <div className="space-y-1 text-sm">
             {cash.slice(0, 10).map((row) => (

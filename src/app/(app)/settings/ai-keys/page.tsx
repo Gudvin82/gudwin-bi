@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 
 const providers = [
@@ -9,6 +12,18 @@ const providers = [
 ];
 
 export default function AiKeysSettingsPage() {
+  const [health, setHealth] = useState<{ connected: boolean; provider: string; model: string } | null>(null);
+
+  useEffect(() => {
+    const load = async () => {
+      const res = await fetch("/api/health");
+      if (!res.ok) return;
+      const json = await res.json();
+      setHealth(json.ai ?? null);
+    };
+    void load();
+  }, []);
+
   return (
     <div className="space-y-4">
       <Card className="bg-gradient-to-r from-cyan-50 to-white">
@@ -16,6 +31,12 @@ export default function AiKeysSettingsPage() {
         <p className="mt-1 text-sm text-muted">
           Подготовленный контур для подключения разных AI-моделей. В текущем релизе ключи задаются на сервере в `.env`.
         </p>
+        <div className="mt-3 rounded-xl border border-border bg-white p-3 text-sm">
+          <p className="font-semibold">Статус подключения API</p>
+          <p className="text-muted">
+            {health ? (health.connected ? `Подключено: ${health.provider} (${health.model})` : "Не подключено: ключ не найден в .env") : "Проверяем..."}
+          </p>
+        </div>
       </Card>
 
       <Card>
