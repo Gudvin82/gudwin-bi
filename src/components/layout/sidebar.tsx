@@ -148,28 +148,28 @@ export function Sidebar() {
   const [opened, setOpened] = useState<string>(defaultOpen);
 
   return (
-    <aside className="w-72 shrink-0 border-r border-border bg-card/90 p-5 backdrop-blur-sm">
-      <div className="mb-6 flex items-center gap-3 rounded-2xl border border-border bg-white p-3">
-        <div className="grid h-10 w-10 place-content-center rounded-xl bg-accent text-sm font-bold text-white">GW</div>
+    <aside className="sticky top-0 h-dvh w-72 shrink-0 border-r border-slate-200/70 bg-white/70 p-4 backdrop-blur-xl">
+      <div className="mb-5 flex items-center gap-3 rounded-2xl border border-slate-200/80 bg-white/90 p-3 shadow-sm">
+        <div className="grid h-10 w-10 place-content-center rounded-xl bg-gradient-to-br from-cyan-600 to-teal-600 text-sm font-bold text-white">GW</div>
         <div>
-          <p className="text-base font-bold">GudWin BI</p>
+          <p className="text-base font-bold tracking-tight">GudWin BI</p>
           <p className="text-xs text-muted">AI-операционная система</p>
         </div>
       </div>
 
-      <nav className="space-y-2">
+      <nav className="max-h-[calc(100dvh-170px)] space-y-2 overflow-y-auto pr-1">
         {sections.map((section) => {
           const Icon = section.icon;
           const active = section.children.some((child) => pathname === child.href || pathname.startsWith(`${child.href}/`));
           const isOpen = opened === section.key;
 
           return (
-            <div key={section.key} className="rounded-xl border border-border bg-white/70">
+            <div key={section.key} className="rounded-xl border border-slate-200/80 bg-white/80 shadow-sm">
               <button
                 onClick={() => setOpened(isOpen ? "" : section.key)}
                 className={cn(
                   "flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold",
-                  active ? "bg-accent text-white" : "text-text hover:bg-slate-100"
+                  active ? "bg-gradient-to-r from-cyan-600 to-teal-600 text-white" : "text-text hover:bg-slate-100"
                 )}
               >
                 <span className="inline-flex items-center gap-2">
@@ -204,7 +204,7 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="mt-6 rounded-xl border border-border bg-white p-3 text-xs text-muted">
+      <div className="mt-5 rounded-xl border border-slate-200/80 bg-white/90 p-3 text-xs text-muted shadow-sm">
         <div className="mb-1 inline-flex items-center gap-2">
           <Building2 size={14} />
           <span className="font-semibold text-text">Собственник</span>

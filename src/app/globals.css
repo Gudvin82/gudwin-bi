@@ -6,6 +6,8 @@
 
 :root {
   color-scheme: light;
+  --surface-card: rgba(255, 255, 255, 0.92);
+  --surface-border: rgba(148, 163, 184, 0.25);
 }
 
 * {
@@ -22,6 +24,11 @@ body {
   font-feature-settings: "tnum" 1;
 }
 
+html,
+body {
+  min-height: 100dvh;
+}
+
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -34,6 +41,13 @@ body {
 
 .animate-soft-pulse {
   animation: softPulse 2.2s ease-in-out infinite;
+}
+
+.skeleton {
+  background: linear-gradient(110deg, rgba(226, 232, 240, 0.75) 8%, rgba(248, 250, 252, 0.95) 18%, rgba(226, 232, 240, 0.75) 33%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+  border-radius: 0.75rem;
 }
 
 @keyframes fadeUp {
@@ -54,5 +68,11 @@ body {
   }
   50% {
     box-shadow: 0 0 0 8px rgba(15, 118, 110, 0);
+  }
+}
+
+@keyframes shimmer {
+  to {
+    background-position-x: -200%;
   }
 }
