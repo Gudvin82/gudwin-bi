@@ -59,6 +59,12 @@ export default function ReportBuilderPage() {
   const [metrics, setMetrics] = useState<MetricId[]>(["revenue", "profit", "romi"]);
   const [chartType, setChartType] = useState<ChartId>("line");
   const [channel, setChannel] = useState("telegram");
+  const [scheduleEnabled, setScheduleEnabled] = useState(true);
+  const [frequency, setFrequency] = useState<"daily" | "weekly" | "monthly">("weekly");
+  const [time, setTime] = useState("09:00");
+  const [dayOfWeek, setDayOfWeek] = useState("mon");
+  const [dayOfMonth, setDayOfMonth] = useState(5);
+  const [recipients, setRecipients] = useState("owner@gudwin.bi");
   const [preview, setPreview] = useState<PreviewResponse | null>(null);
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
@@ -105,10 +111,24 @@ export default function ReportBuilderPage() {
         name,
         prompt,
         datasetIds: [dataset],
-        channels: [channel]
+        channels: [channel],
+        recipients: recipients.split(",").map((item) => item.trim()).filter(Boolean),
+        schedule: scheduleEnabled
+          ? {
+              frequency,
+              time,
+              dayOfWeek: frequency === "weekly" ? dayOfWeek : undefined,
+              dayOfMonth: frequency === "monthly" ? dayOfMonth : undefined
+            }
+          : undefined
       })
     });
     setStatus(res.ok ? "Шаблон отчёта сохранён." : "Не удалось сохранить шаблон.");
+  };
+
+  const exportPdf = async () => {
+    await fetch("/api/export/pdf", { method: "POST" });
+    window.print();
   };
 
   const chartMetric = useMemo<MetricId>(() => {
@@ -293,9 +313,64 @@ export default function ReportBuilderPage() {
               <button onClick={saveTemplate} className="rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white">
                 Сохранить как шаблон
               </button>
-              <button className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Отправить в {channel.toUpperCase()}</button>
+              <button onClick={exportPdf} className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Скачать PDF</button>
             </div>
             {status ? <p className="mt-2 text-sm text-muted">{status}</p> : null}
+          </Card>
+
+          <Card>
+            <h3 className="mb-2 text-base font-semibold">Рассылка отчёта</h3>
+            <div className="grid gap-2 sm:grid-cols-2 text-sm">
+              <label>
+                <span className="mb-1 block text-xs text-muted">Канал</span>
+                <select value={channel} onChange={(event) => setChannel(event.target.value)} className="w-full rounded-xl border border-border p-2.5 text-sm">
+                  <option value="telegram">Telegram</option>
+                  <option value="email">Email</option>
+                  <option value="web">Web</option>
+                </select>
+              </label>
+              <label>
+                <span className="mb-1 block text-xs text-muted">Получатели</span>
+                <input value={recipients} onChange={(event) => setRecipients(event.target.value)} className="w-full rounded-xl border border-border p-2.5 text-sm" placeholder="owner@gudwin.bi, cfo@company.ru" />
+              </label>
+              <label className="flex items-center gap-2 text-xs">
+                <input type="checkbox" checked={scheduleEnabled} onChange={(event) => setScheduleEnabled(event.target.checked)} />
+                Отправлять по расписанию
+              </label>
+              <div />
+              <label>
+                <span className="mb-1 block text-xs text-muted">Частота</span>
+                <select value={frequency} onChange={(event) => setFrequency(event.target.value as "daily" | "weekly" | "monthly")} className="w-full rounded-xl border border-border p-2.5 text-sm">
+                  <option value="daily">Ежедневно</option>
+                  <option value="weekly">Еженедельно</option>
+                  <option value="monthly">Ежемесячно</option>
+                </select>
+              </label>
+              <label>
+                <span className="mb-1 block text-xs text-muted">Время</span>
+                <input type="time" value={time} onChange={(event) => setTime(event.target.value)} className="w-full rounded-xl border border-border p-2.5 text-sm" />
+              </label>
+              {frequency === "weekly" ? (
+                <label>
+                  <span className="mb-1 block text-xs text-muted">День недели</span>
+                  <select value={dayOfWeek} onChange={(event) => setDayOfWeek(event.target.value)} className="w-full rounded-xl border border-border p-2.5 text-sm">
+                    <option value="mon">Пн</option>
+                    <option value="tue">Вт</option>
+                    <option value="wed">Ср</option>
+                    <option value="thu">Чт</option>
+                    <option value="fri">Пт</option>
+                    <option value="sat">Сб</option>
+                    <option value="sun">Вс</option>
+                  </select>
+                </label>
+              ) : null}
+              {frequency === "monthly" ? (
+                <label>
+                  <span className="mb-1 block text-xs text-muted">День месяца</span>
+                  <input type="number" min={1} max={28} value={dayOfMonth} onChange={(event) => setDayOfMonth(Number(event.target.value))} className="w-full rounded-xl border border-border p-2.5 text-sm" />
+                </label>
+              ) : null}
+            </div>
           </Card>
         </div>
       </div>

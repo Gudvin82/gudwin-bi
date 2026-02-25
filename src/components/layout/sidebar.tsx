@@ -69,6 +69,7 @@ const sections: NavSection[] = [
     children: [
       { href: "/dashboards", label: "Мои дашборды" },
       { href: "/dashboards/builder", label: "Конструктор дашбордов" },
+      { href: "/dashboards/roles", label: "Ролевые дашборды" },
       { href: "/analytics/report-builder", label: "Конструктор отчетов" },
       { href: "/sources", label: "Подключить данные" },
       { href: "/analytics/templates", label: "Шаблоны по отраслям" }

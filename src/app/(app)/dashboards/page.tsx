@@ -50,15 +50,18 @@ export default function DashboardsPage() {
             ]}
           />
         </div>
-        <div className="mt-4 flex flex-wrap gap-2">
-          <Link href="/dashboards/builder" className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-4 py-2 text-sm font-semibold text-white">
-            Конструктор дашбордов
-          </Link>
-          <Link href="/analytics/report-builder" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">
-            Конструктор отчетов
-          </Link>
-        </div>
-      </Card>
+      <div className="mt-4 flex flex-wrap gap-2">
+        <Link href="/dashboards/builder" className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-4 py-2 text-sm font-semibold text-white">
+          Конструктор дашбордов
+        </Link>
+        <Link href="/analytics/report-builder" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">
+          Конструктор отчетов
+        </Link>
+        <Link href="/dashboards/roles" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">
+          Ролевые дашборды
+        </Link>
+      </div>
+    </Card>
 
       <div className="grid gap-4 md:grid-cols-3">
         <Card className="bg-slate-950 text-white">
@@ -83,6 +86,25 @@ export default function DashboardsPage() {
       </div>
 
       <DashboardShowcase />
+
+      <Card className="bg-gradient-to-r from-white via-slate-50 to-emerald-50">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h3 className="text-base font-semibold">Ролевые дашборды</h3>
+            <p className="text-sm text-muted">Экран под владельца, финансы, маркетинг и продажи.</p>
+          </div>
+          <Link href="/dashboards/roles" className="rounded-xl border border-border bg-white px-3 py-2 text-sm font-semibold">
+            Открыть
+          </Link>
+        </div>
+        <div className="mt-3 grid gap-3 md:grid-cols-3">
+          {["Владелец", "Финансы", "Маркетинг"].map((role) => (
+            <div key={role} className="rounded-xl border border-border bg-white px-3 py-2 text-sm font-semibold">
+              {role}
+            </div>
+          ))}
+        </div>
+      </Card>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         {dashboards.map((dashboard, idx) => (
