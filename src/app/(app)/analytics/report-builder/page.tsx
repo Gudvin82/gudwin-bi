@@ -64,8 +64,10 @@ type ReportTemplate = {
   filters: FilterRow[];
 };
 
+const uid = () => (typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `id-${Date.now()}-${Math.round(Math.random() * 1e6)}`);
+
 const emptyFilter = (): FilterRow => ({
-  id: crypto.randomUUID(),
+  id: uid(),
   field: filterFields[0].id,
   operator: filterOperators[0],
   value: ""
@@ -141,7 +143,7 @@ export default function ReportBuilderPage() {
   const saveTemplate = async () => {
     const prompt = `dataset=${dataset}; period=${period}; groupBy=${groupBy}; metrics=${metrics.join(",")}; chart=${chartType}`;
     const localTemplate: ReportTemplate = {
-      id: crypto.randomUUID(),
+      id: uid(),
       name,
       dataset,
       period,

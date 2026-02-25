@@ -33,8 +33,10 @@ type DashboardTemplate = {
 };
 
 const metricOptions = metricCatalog;
+const uid = () => (typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `id-${Date.now()}-${Math.round(Math.random() * 1e6)}`);
+
 const emptyFilter = (): FilterRow => ({
-  id: crypto.randomUUID(),
+  id: uid(),
   field: filterFields[0].id,
   operator: filterOperators[0],
   value: ""
@@ -110,7 +112,7 @@ export default function DashboardBuilderPage() {
 
   const saveTemplate = () => {
     const next: DashboardTemplate = {
-      id: crypto.randomUUID(),
+      id: uid(),
       name: dashboardName,
       description: dashboardDescription,
       widgets,
