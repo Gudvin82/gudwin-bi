@@ -311,7 +311,7 @@ export const marketingCreatives: MarketingCreative[] = [
   { id: "cr1", title: "Сократили расходы на 18% за 30 дней", channel: "Яндекс.Директ", format: "Баннер", ctr: 4.5, conversion: 6.2, romi: 132, best: true },
   { id: "cr2", title: "Кассовый контроль без Excel", channel: "Telegram Ads", format: "Текст", ctr: 4.1, conversion: 5.5, romi: 104, best: true },
   { id: "cr3", title: "Сводка собственника каждое утро", channel: "VK Реклама", format: "Сторис", ctr: 2.2, conversion: 2.7, romi: -9, best: false },
-  { id: "cr4", title: "AI-советник для бизнеса", channel: "myTarget", format: "Баннер", ctr: 2.0, conversion: 2.1, romi: -15, best: false }
+  { id: "cr4", title: "ИИ-советник для бизнеса", channel: "myTarget", format: "Баннер", ctr: 2.0, conversion: 2.1, romi: -15, best: false }
 ];
 
 export const marketingSources: MarketingSource[] = [
@@ -335,11 +335,11 @@ export const integrationRules: IntegrationRule[] = [
 export const learnFaq = [
   {
     q: "Как подключить данные?",
-    a: "Откройте «Источники данных», вставьте ссылку Google Sheets или загрузите CSV/Excel."
+    a: "Откройте «Источники данных», вставьте ссылку Google Таблиц или загрузите CSV/Excel."
   },
   {
-    q: "Как работает AI-советник?",
-    a: "AI-советник использует KPI, юнит-экономику, прогноз денег и историю сессий для структурированных рекомендаций."
+    q: "Как работает ИИ-советник?",
+    a: "ИИ-советник использует KPI, юнит-экономику, прогноз денег и историю сессий для структурированных рекомендаций."
   },
   {
     q: "Что такое Режим владельца?",

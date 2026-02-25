@@ -21,7 +21,7 @@ export default function LearnPage() {
         <Link href="/learn/quick-start" className="block">
           <Card className="h-full bg-gradient-to-br from-emerald-50 to-teal-50 transition hover:-translate-y-0.5">
             <h3 className="text-base font-semibold">Быстрый старт</h3>
-            <p className="mt-2 text-sm text-muted">Пошаговый сценарий «5 минут до ценности» с примерами AI-запросов и нужными переходами.</p>
+            <p className="mt-2 text-sm text-muted">Пошаговый сценарий «5 минут до ценности» с примерами ИИ-запросов и нужными переходами.</p>
           </Card>
         </Link>
         <Link href="/learn/guides" className="block">

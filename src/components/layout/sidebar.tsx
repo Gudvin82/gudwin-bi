@@ -81,7 +81,7 @@ const sections: NavSection[] = [
     matches: ["/advisor"],
     children: [
       { href: "/advisor", label: "Чат-консультант" },
-      { href: "/advisor/board", label: "AI-совет директоров" },
+      { href: "/advisor/board", label: "ИИ-совет директоров" },
       { href: "/advisor/growth", label: "Идеи роста" },
       { href: "/advisor/journal", label: "Дневник бизнеса" }
     ]
@@ -129,7 +129,7 @@ const sections: NavSection[] = [
       { href: "/team", label: "Сотрудники и кандидаты" },
       { href: "/hire", label: "Подбор и заявки" },
       { href: "/team/insights", label: "Эффективность команды" },
-      { href: "/desktop-agent", label: "Десктоп AI-агент (v2+)" }
+      { href: "/desktop-agent", label: "Десктоп ИИ-агент (v2+)" }
     ]
   },
   {
@@ -226,7 +226,7 @@ export function Sidebar({
         <div className="grid h-10 w-10 place-content-center rounded-xl bg-gradient-to-br from-cyan-600 to-teal-600 text-sm font-bold text-white">GW</div>
         <div>
           <p className="premium-title text-base font-extrabold tracking-tight">GudWin BI</p>
-          <p className="text-xs text-muted">AI-операционная система</p>
+          <p className="text-xs text-muted">ИИ-операционная система</p>
         </div>
       </Link>
 

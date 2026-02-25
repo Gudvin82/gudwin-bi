@@ -38,7 +38,7 @@ export default function AiPage() {
       });
 
       if (!res.ok) {
-        throw new Error("AI-запрос не выполнился. Попробуйте еще раз.");
+        throw new Error("ИИ-запрос не выполнился. Попробуйте ещё раз.");
       }
 
       const json = (await res.json()) as AiResponse;
@@ -86,7 +86,7 @@ export default function AiPage() {
   return (
     <div className="space-y-4">
       <Card>
-        <h2 className="mb-3 text-lg font-semibold">AI-запрос</h2>
+        <h2 className="mb-3 text-lg font-semibold">ИИ-вопрос к данным</h2>
         <textarea
           className="min-h-28 w-full rounded-xl border border-border p-3 text-sm"
           value={query}
@@ -137,7 +137,7 @@ export default function AiPage() {
         <Card>
           <h3 className="mb-2 text-base font-semibold">Результат</h3>
           <p className="mb-3 text-sm text-muted">{result.summary}</p>
-          {result.isFallback ? <p className="mb-3 text-xs text-amber-700">AI-провайдер не подключен. Добавьте `AITUNNEL_API_KEY` или `OPENAI_API_KEY` в переменные окружения.</p> : null}
+          {result.isFallback ? <p className="mb-3 text-xs text-amber-700">ИИ-провайдер не подключен. Добавьте `AITUNNEL_API_KEY` или `OPENAI_API_KEY` в переменные окружения.</p> : null}
           <p className="mb-1 text-xs font-semibold text-muted">SQL</p>
           <pre className="mb-4 overflow-x-auto rounded-xl border border-border bg-slate-50 p-3 text-xs">{result.sql}</pre>
           <div className="overflow-x-auto">

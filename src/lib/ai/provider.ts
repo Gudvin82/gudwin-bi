@@ -20,8 +20,8 @@ export async function buildAnalyticPlan(question: string, datasetSchemas: string
   if (!client) {
     return {
       summary: runtime.enabled
-        ? "AI-провайдер не подключен. Добавьте ключ в переменные окружения для реальной генерации."
-        : "AI-режим отключен в настройках окружения (AI_RUNTIME_ENABLED=false). Используется безопасный режим предварительного просмотра.",
+        ? "ИИ-провайдер не подключен. Добавьте ключ в переменные окружения для реальной генерации."
+        : "ИИ-режим отключен в настройках окружения (AI_RUNTIME_ENABLED=false). Используется безопасный режим предварительного просмотра.",
       sql: "select month, sum(revenue) as revenue, avg(check) as avg_check from sales group by month order by month;",
       visualization: "line",
       isFallback: true
@@ -43,7 +43,7 @@ ${datasetSchemas}
 
   const raw = response.choices[0]?.message?.content;
   if (!raw) {
-    throw new Error("AI вернул пустой ответ.");
+    throw new Error("ИИ вернул пустой ответ.");
   }
 
   const parsed = JSON.parse(raw) as Partial<AiPlan>;

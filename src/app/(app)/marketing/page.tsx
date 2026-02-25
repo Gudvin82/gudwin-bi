@@ -136,7 +136,7 @@ export default function MarketingOverviewPage() {
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
           <Link href="/marketing/campaigns" className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-4 py-2 text-sm font-semibold text-white">Разобрать кампании</Link>
-          <Link href="/advisor" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Спросить AI-советника</Link>
+          <Link href="/advisor" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Спросить ИИ-советника</Link>
           <Link href="/marketing/experiments" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Запустить A/B тест</Link>
         </div>
       </Card>

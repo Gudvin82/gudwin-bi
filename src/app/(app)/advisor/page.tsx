@@ -34,12 +34,12 @@ const roleMeta: Record<AdvisorRole, { label: string; avatar: string; placeholder
     placeholder: "Проанализируй выручку и расходы за 3 месяца и предложи план оптимизации"
   },
   accountant: {
-    label: "AI-бухгалтер",
+    label: "ИИ-бухгалтер",
     avatar: "📘",
     placeholder: "Проверь риски по налогам и закрытию месяца, что критично сделать в первую очередь"
   },
   financier: {
-    label: "AI-финансист",
+    label: "ИИ-финансист",
     avatar: "📊",
     placeholder: "Сделай cash flow прогноз на 3 месяца и дай сценарии best/base/worst"
   }
@@ -182,7 +182,7 @@ export default function AdvisorPage() {
           <div>
             <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-violet-700">Центр советника</p>
             <h2 className="text-2xl font-extrabold tracking-tight">ИИ-советник</h2>
-            <p className="text-sm text-muted">Бизнес-консультант, AI-бухгалтер и AI-финансист в одном рабочем пространстве.</p>
+            <p className="text-sm text-muted">Бизнес-консультант, ИИ-бухгалтер и ИИ-финансист в одном рабочем пространстве.</p>
           </div>
           <div className="hidden flex-wrap gap-2 sm:flex">
             <span className="rounded-full border border-violet-200 bg-white px-3 py-1 text-xs text-violet-700">Контекст</span>

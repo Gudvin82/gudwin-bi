@@ -82,14 +82,14 @@ export default function GoalsPage() {
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <h2 className="text-2xl font-extrabold tracking-tight">Цели и план достижения</h2>
-            <p className="mt-1 text-sm text-muted">Метод от обратного: задайте целевые метрики, а система подскажет чего не хватает и построит AI-план.</p>
+            <p className="mt-1 text-sm text-muted">Метод от обратного: задайте целевые метрики, а система подскажет чего не хватает и построит ИИ-план.</p>
           </div>
           <HelpPopover
             title="Как работает раздел целей"
             items={[
               "Сформулируйте цель и целевую метрику.",
               "Система проверит, хватает ли данных для расчета.",
-              "AI сформирует шаги и передаст задачи в интеграции."
+              "ИИ сформирует шаги и передаст задачи в интеграции."
             ]}
           />
         </div>
@@ -140,7 +140,7 @@ export default function GoalsPage() {
             className="mt-3 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-4 py-2 text-sm font-semibold text-white"
           >
             <Flag size={16} />
-            {creating ? "Считаем..." : "Сформировать AI-план"}
+            {creating ? "Считаем..." : "Сформировать ИИ-план"}
           </button>
         </Card>
 
@@ -167,7 +167,7 @@ export default function GoalsPage() {
                   </div>
 
                   <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
-                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">AI-вывод</p>
+                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">ИИ-вывод</p>
                     <p className="mt-1 text-sm text-slate-700">{goal.aiSummary}</p>
                     {hasMissingData ? (
                       <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-2 py-1 text-xs text-amber-800">
@@ -226,7 +226,7 @@ export default function GoalsPage() {
             </Link>
             <button className="inline-flex items-center gap-2 rounded-xl border border-cyan-300 bg-cyan-50 px-3 py-2 text-xs font-semibold text-cyan-700">
               <Sparkles size={14} />
-              Уточнить план у AI
+              Уточнить план у ИИ
             </button>
           </div>
         </div>

@@ -88,7 +88,7 @@ export function GlobalAssistant() {
 
     if (normalized.includes("цель") || normalized.includes("цели")) {
       router.push("/goals");
-      return "Открываю раздел «Цели». Там можно задать целевые метрики и получить AI-план достижения.";
+      return "Открываю раздел «Цели». Там можно задать целевые метрики и получить ИИ-план достижения.";
     }
 
     if (normalized.includes("сценар") || normalized.includes("автоматизац")) {

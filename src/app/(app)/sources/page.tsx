@@ -58,7 +58,7 @@ export default function SourcesPage() {
       });
 
       if (!res.ok) {
-        throw new Error("Не удалось подключить Google Sheets. Проверьте ссылку.");
+        throw new Error("Не удалось подключить Google Таблицы. Проверьте ссылку.");
       }
 
       const json = (await res.json()) as { syncJob?: { note?: string } };
@@ -71,7 +71,7 @@ export default function SourcesPage() {
         },
         ...prev
       ]);
-      setSheetMessage(json.syncJob?.note ?? "Google Sheets подключен и отправлен в очередь синхронизации.");
+      setSheetMessage(json.syncJob?.note ?? "Google Таблицы подключены и отправлены в очередь синхронизации.");
       setSheetUrl("");
     } catch (error) {
       setSheetMessage(error instanceof Error ? error.message : "Ошибка подключения.");

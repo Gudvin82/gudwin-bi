@@ -3,16 +3,16 @@ import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
 
 const links = [
-  { href: "/ai", title: "AI-вопрос к данным", note: "Сформулируйте запрос простым текстом и получите отчет" },
-  { href: "/sources", title: "Источники данных", note: "Подключение Google Sheets, CSV, CRM и API" },
-  { href: "/dashboards", title: "Дашборды", note: "Готовые панели и пользовательские отчеты" },
+  { href: "/ai", title: "ИИ-вопрос к данным", note: "Сформулируйте запрос простым текстом и получите отчёт" },
+  { href: "/sources", title: "Источники данных", note: "Подключение Google Таблиц, CSV, CRM и API" },
+  { href: "/dashboards", title: "Дашборды", note: "Готовые панели и пользовательские отчёты" },
   { href: "/docs", title: "Документы и право", note: "Проверка контрагентов и кандидатов, краткая сводка рисков" },
   { href: "/hire", title: "Найм", note: "Генерация заявок и базовый скрининг" },
-  { href: "/agents", title: "Агенты", note: "Каталог и запуск AI-агентов" },
+  { href: "/agents", title: "Агенты", note: "Каталог и запуск ИИ-агентов" },
   { href: "/connect", title: "Интеграции", note: "Связи с внешними сервисами и правила «если → то»" },
-  { href: "/learn", title: "Обучение и FAQ", note: "Подсказки, сценарии и AI-справка" },
+  { href: "/learn", title: "Обучение и FAQ", note: "Подсказки, сценарии и ИИ-справка" },
   { href: "/competitor", title: "Конкуренты", note: "Сигналы рынка и рекомендации" },
-  { href: "/desktop-agent", title: "Десктоп AI-агент (v2+)", note: "Архитектура и дорожная карта локального агента" },
+  { href: "/desktop-agent", title: "Десктоп ИИ-агент (v2+)", note: "Архитектура и дорожная карта локального агента" },
   { href: "/settings", title: "Настройки", note: "Telegram, SMS, интеграции и режимы уведомлений" },
   { href: "/contacts", title: "Контакты разработки", note: "Связь с командой и заявки на доработки" }
 ];
@@ -51,10 +51,10 @@ export default function ServicesPage() {
 
       <Card className="bg-gradient-to-r from-violet-50 via-cyan-50 to-emerald-50">
         <h3 className="mb-2 text-lg font-extrabold">Витрина возможностей: Спринт 2</h3>
-        <p className="text-sm text-muted">Визуальный превью-набор: продвинутый AI-помощник, автозапуск сценариев и действия с подтверждением.</p>
+        <p className="text-sm text-muted">Визуальный превью-набор: продвинутый ИИ-помощник, автозапуск сценариев и действия с подтверждением.</p>
         <div className="mt-3 grid gap-3 md:grid-cols-3">
           <div className="rounded-xl border border-slate-200 bg-white p-3">
-            <p className="text-xs text-muted">AI-помощник v2</p>
+            <p className="text-xs text-muted">ИИ-помощник v2</p>
             <p className="mt-1 text-sm font-semibold">Команды + подтверждение действий</p>
             <p className="mt-1 text-xs text-slate-500">Статус: визуальный прототип</p>
           </div>
@@ -65,7 +65,7 @@ export default function ServicesPage() {
           </div>
           <div className="rounded-xl border border-slate-200 bg-white p-3">
             <p className="text-xs text-muted">Журнал команд</p>
-            <p className="mt-1 text-sm font-semibold">Кто и что запускал через AI</p>
+            <p className="mt-1 text-sm font-semibold">Кто и что запускал через ИИ</p>
             <p className="mt-1 text-xs text-slate-500">Статус: визуальный прототип</p>
           </div>
         </div>

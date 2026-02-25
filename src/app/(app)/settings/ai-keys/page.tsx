@@ -38,7 +38,7 @@ export default function AiKeysSettingsPage() {
             {!health
               ? "Проверяем..."
               : !health.enabled
-                ? "AI вызовы отключены политикой безопасности (AI_RUNTIME_ENABLED=false)."
+                ? "ИИ-вызовы отключены политикой безопасности (AI_RUNTIME_ENABLED=false)."
                 : health.connected
                   ? `Подключено: ${health.provider} (${health.model})`
                   : "Не подключено: ключ не найден в .env"}
@@ -65,7 +65,7 @@ export default function AiKeysSettingsPage() {
 
       <Card>
         <div className="mb-3 flex items-center justify-between gap-2">
-          <h3 className="text-base font-semibold">Затраты на AI и агентов</h3>
+          <h3 className="text-base font-semibold">Затраты на ИИ и агентов</h3>
           <select value={period} onChange={(event) => setPeriod(event.target.value as "day" | "month")} className="rounded-xl border border-border p-2 text-sm">
             <option value="day">За день</option>
             <option value="month">За месяц</option>
@@ -73,7 +73,7 @@ export default function AiKeysSettingsPage() {
         </div>
         <div className="grid gap-3 md:grid-cols-3">
           <div className="rounded-xl border border-border p-3">
-            <p className="text-xs text-muted">Всего по AI</p>
+            <p className="text-xs text-muted">Всего по ИИ</p>
             <p className="text-2xl font-extrabold">{period === "day" ? "620 ₽" : "18 940 ₽"}</p>
           </div>
           <div className="rounded-xl border border-border p-3">

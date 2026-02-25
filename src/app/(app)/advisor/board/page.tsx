@@ -3,7 +3,7 @@ import { ModulePageShell } from "@/components/layout/module-page-shell";
 export default function AdvisorBoardPage() {
   return (
     <ModulePageShell
-      title="AI-совет директоров"
+      title="ИИ-совет директоров"
       subtitle="Стратегические рекомендации на языке собственника: что усиливать, что сокращать, где главный риск."
       whatItDoes={[
         "Показывает ежемесячную сводку по сильным и слабым зонам.",

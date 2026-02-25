@@ -61,7 +61,7 @@ const scenarioPresets = [
     metric: "romi_total",
     operator: "<" as const,
     value: 20,
-    action: "Запустить AI-анализ маркетинга и отправить сводку"
+    action: "Запустить ИИ-анализ маркетинга и отправить сводку"
   },
   {
     name: "Просроченная дебиторка",
@@ -153,7 +153,7 @@ export default function AutomationPage() {
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <h2 className="text-2xl font-extrabold tracking-tight">Сценарии и агенты</h2>
-            <p className="mt-1 text-sm text-muted">Собирайте автоматизации кубиками: «Когда → Если → Сделать» и запускайте AI-агентов.</p>
+            <p className="mt-1 text-sm text-muted">Собирайте автоматизации кубиками: «Когда → Если → Сделать» и запускайте ИИ-агентов.</p>
           </div>
           <HelpPopover
             title="Как работает конструктор"

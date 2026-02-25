@@ -11,8 +11,8 @@ const headerMap: Record<string, { title: string; subtitle: string }> = {
   finance: { title: "Финансы", subtitle: "Юнит-экономика, cash flow, сценарии и утечки денег." },
   marketing: { title: "Маркетинг", subtitle: "Эффективность каналов, кампании, эксперименты и креативы." },
   advisor: { title: "ИИ-советник", subtitle: "Рекомендации по бизнесу, финансам и операционке." },
-  goals: { title: "Цели", subtitle: "Целевые метрики, обратный план и AI-рекомендации по достижению." },
-  automation: { title: "Сценарии и агенты", subtitle: "Визуальная автоматизация: когда/если/сделать + запуск AI-агентов." },
+  goals: { title: "Цели", subtitle: "Целевые метрики, обратный план и ИИ-рекомендации по достижению." },
+  automation: { title: "Сценарии и агенты", subtitle: "Визуальная автоматизация: когда/если/сделать + запуск ИИ-агентов." },
   calendar: { title: "Календарь", subtitle: "Планирование встреч, уведомления в Telegram и задачи в CRM." },
   docs: { title: "Юр отдел", subtitle: "Проверка контрагентов, кандидатов, штрафов и договорных рисков." },
   legal: { title: "Юр отдел", subtitle: "Проверка контрагентов, кандидатов, штрафов и договорных рисков." },
@@ -24,7 +24,7 @@ const headerMap: Record<string, { title: string; subtitle: string }> = {
   requisites: { title: "Мои реквизиты", subtitle: "Юридические лица компании для документов, отчетов и интеграций." },
   team: { title: "Команда", subtitle: "Сотрудники, кандидаты и эффективность отделов." },
   hire: { title: "Подбор", subtitle: "Заявки на найм и базовый скрининг кандидатов." },
-  agents: { title: "AI-агенты", subtitle: "Запуск и управление задачами бизнес-агентов." }
+  agents: { title: "ИИ-агенты", subtitle: "Запуск и управление задачами бизнес-агентов." }
 };
 
 const accentMap: Record<string, { title: string; chip: string; ring: string }> = {
@@ -90,7 +90,7 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
   };
 
   return (
-    <header className={`mb-4 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-slate-200/70 bg-white/80 p-2 shadow-sm backdrop-blur-xl ring-1 ${accent.ring} sm:mb-6 sm:gap-3 sm:p-4`}>
+    <header className={`mb-3 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-slate-200/70 bg-white/80 p-2 shadow-sm backdrop-blur-xl ring-1 ${accent.ring} sm:mb-5 sm:gap-3 sm:p-3`}>
       <div className="min-w-0">
         <div className="flex items-center gap-2">
           <button
