@@ -21,6 +21,9 @@ const miniTrend = [45, 52, 60, 58, 66, 71, 74];
 
 export default function DashboardsPage() {
   const [healthScore, setHealthScore] = useState(42);
+  const [notes, setNotes] = useState<{ id: string; scope: string; title: string; note: string; createdAt: string }[]>([]);
+  const [noteTitle, setNoteTitle] = useState("Запустили акцию");
+  const [noteText, setNoteText] = useState("Планируем рост выручки на 8% в течение 2 недель.");
 
   useEffect(() => {
     const load = async () => {
@@ -31,6 +34,26 @@ export default function DashboardsPage() {
     };
     void load();
   }, []);
+
+  useEffect(() => {
+    const loadNotes = async () => {
+      const res = await fetch("/api/annotations");
+      const json = await res.json();
+      setNotes(json.items ?? []);
+    };
+    void loadNotes();
+  }, []);
+
+  const addNote = async () => {
+    await fetch("/api/annotations", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ scope: "dashboard", title: noteTitle, note: noteText })
+    });
+    const res = await fetch("/api/annotations");
+    const json = await res.json();
+    setNotes(json.items ?? []);
+  };
 
   return (
     <div className="space-y-5">
@@ -103,6 +126,27 @@ export default function DashboardsPage() {
               {role}
             </div>
           ))}
+        </div>
+      </Card>
+
+      <Card>
+        <h3 className="mb-3 text-base font-semibold">Комментарии и аннотации</h3>
+        <div className="grid gap-3 md:grid-cols-[1.1fr_0.9fr]">
+          <div className="space-y-2 text-sm">
+            {notes.slice(0, 6).map((item) => (
+              <div key={item.id} className="rounded-xl border border-border p-3">
+                <p className="font-semibold">{item.title}</p>
+                <p className="text-muted">{item.note}</p>
+                <p className="mt-1 text-xs text-muted">{new Date(item.createdAt).toLocaleString("ru-RU")}</p>
+              </div>
+            ))}
+          </div>
+          <div className="rounded-xl border border-border p-3 text-sm">
+            <p className="mb-2 text-xs text-muted">Добавить комментарий к дашборду</p>
+            <input value={noteTitle} onChange={(e) => setNoteTitle(e.target.value)} className="mb-2 w-full rounded-xl border border-border p-2 text-sm" placeholder="Заголовок" />
+            <textarea value={noteText} onChange={(e) => setNoteText(e.target.value)} rows={4} className="w-full rounded-xl border border-border p-2 text-sm" placeholder="Комментарий" />
+            <button onClick={addNote} className="mt-2 rounded-xl bg-accent px-3 py-2 text-sm font-semibold text-white">Добавить</button>
+          </div>
         </div>
       </Card>
 
