@@ -16,9 +16,9 @@ const sectionPermissions = [
   { section: "Режим владельца", owner: true, admin: true, member: false, viewer: true },
   { section: "Финансы", owner: true, admin: true, member: true, viewer: true },
   { section: "Маркетинг", owner: true, admin: true, member: true, viewer: true },
-  { section: "AI-советник", owner: true, admin: true, member: true, viewer: false },
+  { section: "ИИ-советник", owner: true, admin: true, member: true, viewer: false },
   { section: "Дашборды и отчеты", owner: true, admin: true, member: true, viewer: true },
-  { section: "Юридический блок", owner: true, admin: true, member: false, viewer: false },
+  { section: "Юр отдел", owner: true, admin: true, member: false, viewer: false },
   { section: "Интеграции и ключи", owner: true, admin: true, member: false, viewer: false },
   { section: "Настройки доступов", owner: true, admin: false, member: false, viewer: false }
 ] as const;
@@ -78,6 +78,24 @@ export default function SettingsPage() {
 
   return (
     <div className="space-y-4">
+      <Card>
+        <h2 className="mb-3 text-lg font-semibold">Разделы настроек</h2>
+        <div className="grid gap-2 md:grid-cols-3">
+          <a href="/settings/requisites" className="rounded-xl border border-border bg-slate-50 p-3 text-sm font-semibold hover:bg-slate-100">
+            Мои реквизиты
+            <p className="mt-1 text-xs font-normal text-muted">Юрлица, ИНН/КПП, банковские данные и адреса.</p>
+          </a>
+          <a href="/settings/ai-keys" className="rounded-xl border border-border bg-slate-50 p-3 text-sm font-semibold hover:bg-slate-100">
+            ИИ-провайдеры и ключи
+            <p className="mt-1 text-xs font-normal text-muted">Статус подключений и затраты по моделям.</p>
+          </a>
+          <a href="/settings/simple" className="rounded-xl border border-border bg-slate-50 p-3 text-sm font-semibold hover:bg-slate-100">
+            Режим «Объяснить просто»
+            <p className="mt-1 text-xs font-normal text-muted">Человеческие пояснения отчетов для собственника.</p>
+          </a>
+        </div>
+      </Card>
+
       <Card>
         <h2 className="mb-3 text-lg font-semibold">Профиль аккаунта и интерфейс</h2>
         <div className="grid gap-3 md:grid-cols-2">

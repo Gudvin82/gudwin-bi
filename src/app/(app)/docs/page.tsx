@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { ContextHelpLinks } from "@/components/learn/context-help-links";
 import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
@@ -77,8 +78,8 @@ export default function DocsPage() {
       <Card className="animate-fade-up bg-gradient-to-r from-orange-50 to-amber-50">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h2 className="text-xl font-bold">Документы и право</h2>
-            <p className="text-sm text-muted">Здесь вы проверяете контрагентов и кандидатов на риски и работаете с документами.</p>
+            <h2 className="text-xl font-bold">Юр отдел</h2>
+            <p className="text-sm text-muted">Здесь вы проверяете контрагентов и кандидатов на риски, работаете с документами и мониторите штрафы.</p>
           </div>
           <HelpPopover
             title="Что делает раздел"
@@ -88,6 +89,11 @@ export default function DocsPage() {
               "Проверяет кандидата при наличии согласия по 152-ФЗ."
             ]}
           />
+        </div>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <Link href="/docs" className="rounded-full border border-border bg-white px-3 py-1.5 text-xs font-semibold">Контрагенты и проверки</Link>
+          <Link href="/docs/fines-monitoring" className="rounded-full border border-border bg-white px-3 py-1.5 text-xs font-semibold">Мониторинг штрафов</Link>
+          <Link href="/docs/contracts-audit" className="rounded-full border border-border bg-white px-3 py-1.5 text-xs font-semibold">Аудит договоров</Link>
         </div>
       </Card>
 

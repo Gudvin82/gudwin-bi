@@ -181,7 +181,7 @@ export default function AdvisorPage() {
         <div className="flex items-center justify-between gap-3">
           <div>
             <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-violet-700">Центр советника</p>
-            <h2 className="text-2xl font-extrabold tracking-tight">AI-советник</h2>
+            <h2 className="text-2xl font-extrabold tracking-tight">ИИ-советник</h2>
             <p className="text-sm text-muted">Бизнес-консультант, AI-бухгалтер и AI-финансист в одном рабочем пространстве.</p>
           </div>
           <div className="hidden flex-wrap gap-2 sm:flex">

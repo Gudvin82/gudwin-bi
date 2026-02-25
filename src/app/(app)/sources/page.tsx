@@ -11,7 +11,7 @@ type SourceRow = {
 };
 
 const sourceTypeLabels: Record<string, string> = {
-  google_sheets: "Google Sheets",
+  google_sheets: "Google Таблицы",
   excel_upload: "Загрузка Excel/CSV",
   bitrix24: "Bitrix24 CRM"
 };
@@ -147,7 +147,7 @@ export default function SourcesPage() {
         <h2 className="mb-3 text-lg font-semibold">Подключить источник данных</h2>
         <div className="grid gap-4 lg:grid-cols-2">
           <form onSubmit={connectGoogleSheets} className="rounded-xl border border-border p-3">
-            <p className="mb-2 text-sm font-semibold">Google Sheets</p>
+            <p className="mb-2 text-sm font-semibold">Google Таблицы</p>
             <input
               value={sheetUrl}
               onChange={(event) => setSheetUrl(event.target.value)}

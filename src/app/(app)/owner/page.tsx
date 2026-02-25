@@ -181,7 +181,7 @@ export default function OwnerPage() {
         <div className="flex flex-wrap gap-2">
           <Link href="/finance" className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-4 py-2 text-sm font-semibold text-white">Финансы</Link>
           <Link href="/marketing" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Маркетинг</Link>
-          <Link href="/advisor" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">AI-советник</Link>
+          <Link href="/advisor" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">ИИ-советник</Link>
           <Link href="/goals" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Цели</Link>
           <Link href="/automation" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Сценарии и агенты</Link>
           <Link href="/watch" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Мониторинг</Link>

@@ -18,7 +18,7 @@ const sectionMap: Record<string, { name: string; href: string }> = {
   marketing: { name: "Маркетинг", href: "/marketing" },
   analytics: { name: "Аналитика", href: "/analytics" },
   dashboards: { name: "Дашборды", href: "/dashboards" },
-  advisor: { name: "AI-советник", href: "/advisor" },
+  advisor: { name: "ИИ-советник", href: "/advisor" },
   watch: { name: "Мониторинг", href: "/watch" },
   goals: { name: "Цели", href: "/goals" },
   automation: { name: "Сценарии и агенты", href: "/automation" },
@@ -26,7 +26,7 @@ const sectionMap: Record<string, { name: string; href: string }> = {
   sources: { name: "Источники данных", href: "/sources" },
   settings: { name: "Настройки", href: "/settings" },
   integrations: { name: "Интеграции", href: "/integrations" },
-  docs: { name: "Юридический", href: "/docs" },
+  docs: { name: "Юр отдел", href: "/docs" },
   team: { name: "Команда", href: "/team" }
 };
 
@@ -48,7 +48,7 @@ export function GlobalAssistant() {
     {
       id: "msg-initial",
       role: "assistant",
-      text: `Я AI-помощник по разделу «${section.name}». Могу помочь с навигацией, запуском действий и быстрым сбором отчёта.`
+      text: `Я ваш личный ИИ-помощник в разделе «${section.name}». Скажите, что нужно сделать, и я помогу сразу.`
     }
   ]);
 
@@ -164,18 +164,22 @@ export function GlobalAssistant() {
   return (
     <div className="fixed bottom-24 right-3 z-50 md:bottom-6 md:right-6">
       {isOpen ? (
-        <div className="w-[min(92vw,380px)] rounded-2xl border border-slate-200 bg-white p-3 shadow-2xl">
+        <div className="w-[min(92vw,390px)] rounded-3xl border border-cyan-100/80 bg-[linear-gradient(145deg,_rgba(255,255,255,0.97),_rgba(240,249,255,0.94))] p-3 shadow-[0_18px_50px_rgba(8,145,178,0.25)] backdrop-blur-xl">
           <div className="mb-2 flex items-center justify-between gap-2">
             <div>
-              <p className="text-sm font-semibold text-slate-900">AI-помощник</p>
-              <p className="text-xs text-slate-500">Текущий раздел: {section.name}</p>
+              <p className="text-sm font-semibold text-slate-900">Умный помощник</p>
+              <p className="text-xs text-slate-500">Раздел: {section.name}</p>
             </div>
-            <button onClick={() => setIsOpen(false)} className="rounded-lg border border-slate-200 px-2 py-1 text-xs">
+            <button onClick={() => setIsOpen(false)} className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs">
               Свернуть
             </button>
           </div>
 
-          <div className="max-h-56 space-y-2 overflow-y-auto rounded-xl border border-slate-200 bg-slate-50 p-2">
+          <div className="mb-2 rounded-2xl border border-cyan-100 bg-white/85 px-3 py-2 text-xs text-cyan-900">
+            Я ваш личный помощник во всех разделах. Напишите или продиктуйте задачу — помогу с навигацией, отчётом и действиями.
+          </div>
+
+          <div className="max-h-56 space-y-2 overflow-y-auto rounded-2xl border border-slate-200 bg-slate-50/80 p-2">
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -192,7 +196,7 @@ export function GlobalAssistant() {
 
           <div className="mt-2 flex flex-wrap gap-1">
             {hintCommands.map((hint) => (
-              <button key={hint} onClick={() => setInput(hint)} className="rounded-full border border-slate-200 bg-slate-50 px-2 py-1 text-[11px] text-slate-600">
+              <button key={hint} onClick={() => setInput(hint)} className="rounded-full border border-slate-200 bg-white px-2 py-1 text-[11px] text-slate-600 hover:bg-slate-50">
                 {hint}
               </button>
             ))}
@@ -208,10 +212,10 @@ export function GlobalAssistant() {
               className="w-full rounded-xl border border-slate-200 p-2 text-sm"
               placeholder="Например: собери тройной отчет"
             />
-            <button onClick={startVoice} aria-label="Голосовой ввод" className="rounded-xl border border-slate-200 bg-white p-2">
+            <button onClick={startVoice} aria-label="Голосовой ввод" className="rounded-xl border border-slate-200 bg-white p-2 shadow-sm">
               <Mic size={16} />
             </button>
-            <button onClick={send} aria-label="Отправить команду" className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 p-2 text-white">
+            <button onClick={send} aria-label="Отправить команду" className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 p-2 text-white shadow-sm">
               <Send size={16} />
             </button>
           </div>
@@ -223,10 +227,11 @@ export function GlobalAssistant() {
       ) : (
         <button
           onClick={() => setIsOpen(true)}
-          className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-600 to-teal-600 px-4 py-2 text-sm font-semibold text-white shadow-xl"
+          className="group inline-flex items-center gap-2 rounded-full border border-cyan-300/60 bg-[radial-gradient(circle_at_20%_20%,_rgba(125,211,252,0.95),_rgba(8,145,178,0.96)_45%,_rgba(15,118,110,0.96))] px-4 py-2 text-sm font-semibold text-white shadow-[0_14px_34px_rgba(8,145,178,0.35)]"
         >
           <Sparkles size={16} />
-          AI-помощник
+          Помощник
+          <span className="hidden text-[10px] font-medium opacity-90 sm:inline group-hover:opacity-100">Спросите, что сделать</span>
         </button>
       )}
     </div>

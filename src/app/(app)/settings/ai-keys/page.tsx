@@ -28,12 +28,12 @@ export default function AiKeysSettingsPage() {
   return (
     <div className="space-y-4">
       <Card className="bg-gradient-to-r from-cyan-50 to-white">
-        <h2 className="text-xl font-bold">AI-провайдеры и ключи</h2>
+        <h2 className="text-xl font-bold">ИИ-провайдеры и ключи</h2>
         <p className="mt-1 text-sm text-muted">
-          Подготовленный контур для подключения разных AI-моделей. В текущем релизе ключи задаются на сервере в `.env`.
+          Подготовленный контур для подключения разных ИИ-моделей. В текущем релизе ключи задаются на сервере в `.env`.
         </p>
         <div className="mt-3 rounded-xl border border-border bg-white p-3 text-sm">
-          <p className="font-semibold">Статус подключения API</p>
+          <p className="font-semibold">Статус подключения ИИ</p>
           <p className="text-muted">
             {!health
               ? "Проверяем..."

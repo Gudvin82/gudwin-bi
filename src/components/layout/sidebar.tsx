@@ -76,7 +76,7 @@ const sections: NavSection[] = [
   {
     key: "advisor",
     href: "/advisor",
-    label: "AI-Советник",
+    label: "ИИ-советник",
     icon: Sparkles,
     matches: ["/advisor"],
     children: [
@@ -102,7 +102,7 @@ const sections: NavSection[] = [
     href: "/automation",
     label: "Сценарии и агенты",
     icon: Boxes,
-    matches: ["/automation", "/connect"],
+    matches: ["/automation"],
     children: [
       { href: "/automation", label: "Конструктор сценариев" },
       { href: "/calendar", label: "Календарь и встречи" },
@@ -135,11 +135,12 @@ const sections: NavSection[] = [
   {
     key: "legal",
     href: "/docs",
-    label: "Юридический",
+    label: "Юр отдел",
     icon: FileText,
     matches: ["/docs", "/legal"],
     children: [
       { href: "/docs", label: "Контрагенты и проверки" },
+      { href: "/docs/fines-monitoring", label: "Мониторинг штрафов" },
       { href: "/docs/contracts-audit", label: "Глубокий аудит договоров" }
     ]
   },
@@ -159,9 +160,10 @@ const sections: NavSection[] = [
     href: "/integrations",
     label: "Интеграции",
     icon: Link2,
-    matches: ["/integrations", "/competitor", "/agents"],
+    matches: ["/integrations", "/competitor", "/agents", "/connect"],
     children: [
       { href: "/integrations", label: "Подключенные системы" },
+      { href: "/connect", label: "Автоправила (если → то)" },
       { href: "/contacts", label: "Заказать доп. интеграцию" }
     ]
   },
@@ -187,7 +189,8 @@ const sections: NavSection[] = [
     matches: ["/settings"],
     children: [
       { href: "/settings", label: "Рабочее пространство" },
-      { href: "/settings/ai-keys", label: "AI-провайдеры и ключи" },
+      { href: "/settings/requisites", label: "Мои реквизиты" },
+      { href: "/settings/ai-keys", label: "ИИ-провайдеры и ключи" },
       { href: "/settings/simple", label: "Режим «Объяснить просто»" }
     ]
   }
