@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 
 type AccessRole = "owner" | "admin" | "member" | "viewer";
 
@@ -143,7 +144,17 @@ export default function SettingsPage() {
       </Card>
 
       <Card>
-        <h2 className="mb-3 text-lg font-semibold">Профиль аккаунта и интерфейс</h2>
+        <div className="mb-3 flex items-start justify-between gap-3">
+          <h2 className="text-lg font-semibold">Профиль аккаунта и интерфейс</h2>
+          <HelpPopover
+            title="Что можно настроить"
+            items={[
+              "ФИО и роль, которые видны в шапке.",
+              "Язык интерфейса и предпочтения темы.",
+              "Быстрый доступ к режимам продукта."
+            ]}
+          />
+        </div>
         <div className="grid gap-3 md:grid-cols-2">
           <div className="space-y-2">
             <label className="text-xs text-muted">ФИО аккаунта</label>
@@ -178,7 +189,17 @@ export default function SettingsPage() {
       </Card>
 
       <Card>
-        <h2 className="mb-3 text-lg font-semibold">Авторизация</h2>
+        <div className="mb-3 flex items-start justify-between gap-3">
+          <h2 className="text-lg font-semibold">Авторизация</h2>
+          <HelpPopover
+            title="Способы входа"
+            items={[
+              "Настройте будущие методы входа для команды.",
+              "После подключения провайдера методы станут активны.",
+              "Все уведомления останутся на русском языке."
+            ]}
+          />
+        </div>
         <p className="mb-3 text-sm text-muted">
           Выберите способы входа, которые будут включены на следующем этапе: телефон, email, Telegram.
         </p>

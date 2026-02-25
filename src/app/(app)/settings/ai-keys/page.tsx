@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 
 const providers = [
   { id: "aitunnel", name: "AI Tunnel", env: "AITUNNEL_API_KEY", modelEnv: "AI_MODEL" },
@@ -14,6 +15,7 @@ const providers = [
 export default function AiKeysSettingsPage() {
   const [health, setHealth] = useState<{ enabled: boolean; connected: boolean; provider: string; model: string } | null>(null);
   const [period, setPeriod] = useState<"day" | "month">("month");
+  const usageRows: Array<{ name: string; req: string; tok: string; cost: string }> = [];
 
   useEffect(() => {
     const load = async () => {
@@ -28,10 +30,22 @@ export default function AiKeysSettingsPage() {
   return (
     <div className="space-y-4">
       <Card className="bg-gradient-to-r from-cyan-50 to-white">
-        <h2 className="text-xl font-bold">ИИ-провайдеры и ключи</h2>
-        <p className="mt-1 text-sm text-muted">
-          Подготовленный контур для подключения разных ИИ-моделей. В текущем релизе ключи задаются на сервере в `.env`.
-        </p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-xl font-bold">ИИ-провайдеры и ключи</h2>
+            <p className="mt-1 text-sm text-muted">
+              Подготовленный контур для подключения разных ИИ-моделей. В текущем релизе ключи задаются на сервере в `.env`.
+            </p>
+          </div>
+          <HelpPopover
+            title="Как подключать ИИ"
+            items={[
+              "Выберите провайдера и задайте ключ в .env.",
+              "После запуска проверьте статус соединения ниже.",
+              "Расходы и лимиты видны в таблице."
+            ]}
+          />
+        </div>
         <div className="mt-3 rounded-xl border border-border bg-white p-3 text-sm">
           <p className="font-semibold">Статус подключения ИИ</p>
           <p className="text-muted">
@@ -74,15 +88,15 @@ export default function AiKeysSettingsPage() {
         <div className="grid gap-3 md:grid-cols-3">
           <div className="rounded-xl border border-border p-3">
             <p className="text-xs text-muted">Всего по ИИ</p>
-            <p className="text-2xl font-extrabold">{period === "day" ? "620 ₽" : "18 940 ₽"}</p>
+            <p className="text-2xl font-extrabold">—</p>
           </div>
           <div className="rounded-xl border border-border p-3">
             <p className="text-xs text-muted">Агентные задачи</p>
-            <p className="text-2xl font-extrabold">{period === "day" ? "170 ₽" : "4 920 ₽"}</p>
+            <p className="text-2xl font-extrabold">—</p>
           </div>
           <div className="rounded-xl border border-border p-3">
             <p className="text-xs text-muted">Средняя стоимость запроса</p>
-            <p className="text-2xl font-extrabold">{period === "day" ? "3.1 ₽" : "2.8 ₽"}</p>
+            <p className="text-2xl font-extrabold">—</p>
           </div>
         </div>
         <div className="mt-3 overflow-x-auto rounded-xl border border-border">
@@ -97,11 +111,7 @@ export default function AiKeysSettingsPage() {
               </tr>
             </thead>
             <tbody>
-              {[
-                { name: "AI Tunnel", req: period === "day" ? "138" : "4 120", tok: period === "day" ? "182k" : "5.7M", cost: period === "day" ? "390 ₽" : "11 870 ₽" },
-                { name: "OpenAI", req: period === "day" ? "54" : "1 430", tok: period === "day" ? "96k" : "2.1M", cost: period === "day" ? "180 ₽" : "5 240 ₽" },
-                { name: "Агенты (внутренние задачи)", req: period === "day" ? "32" : "920", tok: period === "day" ? "34k" : "1.1M", cost: period === "day" ? "170 ₽" : "4 920 ₽" }
-              ].map((row) => (
+              {usageRows.map((row) => (
                 <tr key={row.name} className="border-t border-border">
                   <td className="px-3 py-2 font-medium">{row.name}</td>
                   <td className="px-3 py-2">{row.req}</td>
@@ -110,6 +120,13 @@ export default function AiKeysSettingsPage() {
                   <td className="px-3 py-2"><span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs text-emerald-700">Активно</span></td>
                 </tr>
               ))}
+              {!usageRows.length ? (
+                <tr>
+                  <td colSpan={5} className="px-3 py-4 text-sm text-muted">
+                    Нет данных по расходам. Подключите ИИ-провайдеров и выполните первые запросы.
+                  </td>
+                </tr>
+              ) : null}
             </tbody>
           </table>
         </div>

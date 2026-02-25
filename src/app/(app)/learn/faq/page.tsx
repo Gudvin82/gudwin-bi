@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 import { faqCategories } from "@/lib/learn-content";
 import { FaqAccordion } from "./section-accordion";
 
@@ -15,10 +16,22 @@ export default async function LearnFaqPage({ searchParams }: LearnFaqPageProps) 
   return (
     <div className="space-y-4">
       <Card className="bg-gradient-to-r from-cyan-50 to-white">
-        <h2 className="text-2xl font-extrabold tracking-tight">FAQ</h2>
-        <p className="mt-1 text-sm text-muted">
-          Быстрые ответы по работе с GudWin BI. Если не нашли нужное, откройте «Контакты разработки».
-        </p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-2xl font-extrabold tracking-tight">FAQ</h2>
+            <p className="mt-1 text-sm text-muted">
+              Быстрые ответы по работе с GudWin BI. Если не нашли нужное, откройте «Контакты разработки».
+            </p>
+          </div>
+          <HelpPopover
+            title="Как искать ответ"
+            items={[
+              "Выберите категорию слева или сверху.",
+              "Используйте фильтр, чтобы быстро сузить вопросы.",
+              "Если ответа нет, напишите в поддержку."
+            ]}
+          />
+        </div>
       </Card>
 
       <Card>

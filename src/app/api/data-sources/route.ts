@@ -15,9 +15,16 @@ export async function POST(request: Request) {
   const session = await getSessionContext();
   const input = createSchema.parse(await request.json());
   const connector = getConnector(input.type as DataSourceType);
+  const config = { ...input.config };
+  if (input.type === "google_sheets") {
+    config.workspaceId = session.workspaceId;
+    if (!("authMode" in config)) {
+      config.authMode = "public";
+    }
+  }
 
-  await connector.validateConfig(input.config);
-  const synced = await connector.sync(input.config);
+  await connector.validateConfig(config);
+  const synced = await connector.sync(config);
   const autoDashboard = proposeDashboard(synced.schema);
 
   return NextResponse.json({
@@ -33,6 +40,6 @@ export async function POST(request: Request) {
       schema: synced.schema
     },
     autoDashboard,
-    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
+    _meta: { mode: "prod", generatedAt: new Date().toISOString() }
   });
 }

@@ -11,8 +11,8 @@ const schema = z.object({
 
 export async function GET() {
   const session = await getSessionContext();
-  const items = annotations.filter((item) => item.workspaceId === session.workspaceId || item.workspaceId === "demo");
-  return NextResponse.json({ items, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
+  const items = annotations.filter((item) => item.workspaceId === session.workspaceId);
+  return NextResponse.json({ items, _meta: { mode: "prod", generatedAt: new Date().toISOString() } });
 }
 
 export async function POST(request: Request) {
@@ -25,5 +25,5 @@ export async function POST(request: Request) {
     ...input
   };
   annotations.unshift(item);
-  return NextResponse.json({ item, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
+  return NextResponse.json({ item, _meta: { mode: "prod", generatedAt: new Date().toISOString() } });
 }

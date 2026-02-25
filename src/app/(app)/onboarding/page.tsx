@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 
 const steps = [
   {
@@ -24,8 +25,20 @@ export default function OnboardingPage() {
   return (
     <div className="space-y-4">
       <Card>
-        <h2 className="mb-2 text-xl font-bold">Быстрый старт GudWin BI</h2>
-        <p className="text-sm text-muted">Цель: получить первый рабочий отчет за 10-15 минут без сложной настройки.</p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="mb-2 text-xl font-bold">Быстрый старт GudWin BI</h2>
+            <p className="text-sm text-muted">Цель: получить первый рабочий отчет за 10-15 минут без сложной настройки.</p>
+          </div>
+          <HelpPopover
+            title="Как пройти онбординг"
+            items={[
+              "Начните с подключения источника.",
+              "Проверьте автодашборд и задайте вопрос ИИ.",
+              "После этого включите автоотчеты."
+            ]}
+          />
+        </div>
       </Card>
 
       <div className="grid gap-4 lg:grid-cols-2">

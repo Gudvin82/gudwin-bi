@@ -1,7 +1,8 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 
 type SourceRow = {
   type: string;
@@ -16,16 +17,14 @@ const sourceTypeLabels: Record<string, string> = {
   bitrix24: "Bitrix24 CRM"
 };
 
-const initialSources: SourceRow[] = [
-  { type: "google_sheets", name: "P&L 2026", status: "active", lastSync: "2 мин назад" },
-  { type: "excel_upload", name: "leads_feb.xlsx", status: "parsed", lastSync: "15 мин назад" },
-  { type: "bitrix24", name: "Bitrix24 CRM", status: "active", lastSync: "1 час назад" }
-];
+const initialSources: SourceRow[] = [];
 
 export default function SourcesPage() {
   const [sheetUrl, setSheetUrl] = useState("");
   const [isSheetLoading, setIsSheetLoading] = useState(false);
   const [sheetMessage, setSheetMessage] = useState<string | null>(null);
+  const [googleStatus, setGoogleStatus] = useState<{ configured: boolean; connected: boolean } | null>(null);
+  const [authMode, setAuthMode] = useState<"public" | "oauth">("public");
 
   const [uploadFileName, setUploadFileName] = useState<string | null>(null);
   const [uploadColumns, setUploadColumns] = useState<string[]>([]);
@@ -47,6 +46,23 @@ export default function SourcesPage() {
     return `${uploadFileName}: ${uploadRows} строк, ${uploadColumns.length} колонок`;
   }, [uploadColumns.length, uploadFileName, uploadRows]);
 
+  useEffect(() => {
+    const loadGoogleStatus = async () => {
+      try {
+        const res = await fetch("/api/integrations/google/status");
+        if (!res.ok) return;
+        const json = await res.json();
+        setGoogleStatus({ configured: Boolean(json.configured), connected: Boolean(json.connected) });
+        if (json.connected) {
+          setAuthMode("oauth");
+        }
+      } catch {
+        setGoogleStatus(null);
+      }
+    };
+    void loadGoogleStatus();
+  }, []);
+
   const connectGoogleSheets = async (event: FormEvent) => {
     event.preventDefault();
     setIsSheetLoading(true);
@@ -58,7 +74,7 @@ export default function SourcesPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           type: "google_sheets",
-          config: { sheetUrl, range: "A:Z" }
+          config: { sheetUrl, range: "A:Z", authMode }
         })
       });
 
@@ -193,7 +209,17 @@ export default function SourcesPage() {
   return (
     <div className="space-y-4">
       <Card>
-        <h2 className="mb-3 text-lg font-semibold">Подключить источник данных</h2>
+        <div className="mb-3 flex items-start justify-between gap-3">
+          <h2 className="text-lg font-semibold">Подключить источник данных</h2>
+          <HelpPopover
+            title="Как подключать данные"
+            items={[
+              "Выберите источник: таблица, файл или CRM.",
+              "После подключения данные синхронизируются в фоне.",
+              "Статусы обновления видны в таблице ниже."
+            ]}
+          />
+        </div>
         <div className="grid gap-4 lg:grid-cols-3">
           <form onSubmit={connectGoogleSheets} className="rounded-xl border border-border p-3">
             <p className="mb-2 text-sm font-semibold">Google Таблицы</p>
@@ -204,7 +230,35 @@ export default function SourcesPage() {
               placeholder="Вставьте ссылку на Google Sheet"
               required
             />
-            <p className="mt-2 text-xs text-muted">Для первого запуска достаточно публичной ссылки. OAuth-подключение — в следующей версии.</p>
+            <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+              <label className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1">
+                <input type="radio" checked={authMode === "public"} onChange={() => setAuthMode("public")} />
+                Публичная ссылка
+              </label>
+              <label className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1">
+                <input type="radio" checked={authMode === "oauth"} onChange={() => setAuthMode("oauth")} />
+                OAuth (рекомендуется)
+              </label>
+            </div>
+            <p className="mt-2 text-xs text-muted">
+              OAuth позволяет читать закрытые таблицы. После подключения доступ сохраняется для workspace.
+            </p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  window.location.href = "/api/integrations/google/authorize";
+                }}
+                className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700"
+              >
+                Подключить Google OAuth
+              </button>
+              {googleStatus ? (
+                <span className={`rounded-full px-3 py-1 text-xs font-semibold ${googleStatus.connected ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}`}>
+                  {googleStatus.connected ? "OAuth подключен" : googleStatus.configured ? "OAuth не подключен" : "OAuth не настроен"}
+                </span>
+              ) : null}
+            </div>
             <button disabled={isSheetLoading} className="mt-2 rounded-xl bg-accent px-3 py-2 text-sm font-semibold text-white disabled:opacity-60">
               {isSheetLoading ? "Подключаем..." : "Подключить"}
             </button>

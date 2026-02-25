@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 
 const templates = [
   {
@@ -25,8 +26,20 @@ export default function AutomationTemplatesPage() {
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up bg-gradient-to-r from-violet-50 to-cyan-50">
-        <h2 className="text-2xl font-extrabold tracking-tight">Готовые шаблоны сценариев</h2>
-        <p className="mt-1 text-sm text-muted">Выберите сценарий и примените за 1 клик, без ручной настройки каждого кубика.</p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-2xl font-extrabold tracking-tight">Готовые шаблоны сценариев</h2>
+            <p className="mt-1 text-sm text-muted">Выберите сценарий и примените за 1 клик, без ручной настройки каждого кубика.</p>
+          </div>
+          <HelpPopover
+            title="Как использовать шаблоны"
+            items={[
+              "Выберите типичный сценарий.",
+              "Проверьте шаги и отредактируйте при необходимости.",
+              "Запустите и включите автосрабатывание."
+            ]}
+          />
+        </div>
       </Card>
 
       <div className="grid gap-4 lg:grid-cols-3">

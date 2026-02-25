@@ -20,6 +20,6 @@ export async function GET() {
       "Перенести часть платежей поставщикам на +7 дней.",
       "Ограничить необязательные расходы до стабилизации остатка."
     ],
-    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
+    _meta: { mode: "prod", generatedAt: new Date().toISOString() }
   });
 }

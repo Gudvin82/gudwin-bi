@@ -6,6 +6,6 @@ export async function POST(request: Request) {
     ok: true,
     received: Boolean(payload && Object.keys(payload).length),
     note: "Webhook Bitrix24 принят. В прод-режиме данные будут записаны в datasets.",
-    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
+    _meta: { mode: "prod", generatedAt: new Date().toISOString() }
   });
 }

@@ -98,6 +98,6 @@ export async function POST(request: Request) {
       warnings: ["2 источника не синхронизировались более 24 часов"]
     },
     isFallback: plan.isFallback ?? false,
-    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
+    _meta: { mode: "prod", generatedAt: new Date().toISOString() }
   });
 }

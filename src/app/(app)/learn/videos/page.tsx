@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 import { videoItems } from "@/lib/learn-content";
 
 const sectionLabels: Record<string, string> = {
@@ -24,8 +25,20 @@ export default async function LearnVideosPage({ searchParams }: LearnVideosPageP
   return (
     <div className="space-y-4">
       <Card className="bg-gradient-to-r from-violet-50 to-white">
-        <h2 className="text-2xl font-extrabold tracking-tight">Видео-обучение</h2>
-        <p className="mt-1 text-sm text-muted">Смотрите короткие ролики и повторяйте шаги в интерфейсе сразу после просмотра.</p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-2xl font-extrabold tracking-tight">Видео-обучение</h2>
+            <p className="mt-1 text-sm text-muted">Смотрите короткие ролики и повторяйте шаги в интерфейсе сразу после просмотра.</p>
+          </div>
+          <HelpPopover
+            title="Как использовать видео"
+            items={[
+              "Выберите тему и откройте ролик.",
+              "Повторите шаги в интерфейсе.",
+              "Используйте быстрый старт для закрепления."
+            ]}
+          />
+        </div>
       </Card>
 
       <Card>

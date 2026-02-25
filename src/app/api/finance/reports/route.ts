@@ -4,8 +4,8 @@ import { getBalanceSummary, getMonthlyDds, getPnlByCategory, ledgerTransactions,
 
 export async function GET() {
   const session = await getSessionContext();
-  const tx = ledgerTransactions.filter((item) => item.workspaceId === session.workspaceId || item.workspaceId === "demo");
-  const payments = manualPayments.filter((item) => item.workspaceId === session.workspaceId || item.workspaceId === "demo");
+  const tx = ledgerTransactions.filter((item) => item.workspaceId === session.workspaceId);
+  const payments = manualPayments.filter((item) => item.workspaceId === session.workspaceId);
 
   const dds = getMonthlyDds(tx);
   const pnl = getPnlByCategory(tx);
@@ -15,6 +15,6 @@ export async function GET() {
     dds,
     pnl,
     balance,
-    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
+    _meta: { mode: "prod", generatedAt: new Date().toISOString() }
   });
 }

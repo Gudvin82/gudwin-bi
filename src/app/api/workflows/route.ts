@@ -18,7 +18,7 @@ const createSchema = z.object({
 
 export async function GET() {
   const session = await getSessionContext();
-  const items = workflows.filter((item) => item.workspaceId === session.workspaceId || item.workspaceId === "demo");
+  const items = workflows.filter((item) => item.workspaceId === session.workspaceId);
 
   return NextResponse.json({
     workflows: items,
@@ -28,7 +28,7 @@ export async function GET() {
       type: item.type,
       status: item.status
     })),
-    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
+    _meta: { mode: "prod", generatedAt: new Date().toISOString() }
   });
 }
 
@@ -62,5 +62,5 @@ export async function POST(request: Request) {
   };
 
   workflows.unshift(workflow);
-  return NextResponse.json({ workflow, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
+  return NextResponse.json({ workflow, _meta: { mode: "prod", generatedAt: new Date().toISOString() } });
 }

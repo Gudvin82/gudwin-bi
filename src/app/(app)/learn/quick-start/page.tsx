@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 
 const steps = [
   {
@@ -28,8 +29,20 @@ export default function LearnQuickStartPage() {
   return (
     <div className="space-y-4">
       <Card className="bg-gradient-to-r from-emerald-50 to-cyan-50">
-        <h2 className="text-2xl font-extrabold tracking-tight">Быстрый старт</h2>
-        <p className="mt-1 text-sm text-muted">Сценарий, который помогает получить первую практическую пользу за 5–10 минут.</p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-2xl font-extrabold tracking-tight">Быстрый старт</h2>
+            <p className="mt-1 text-sm text-muted">Сценарий, который помогает получить первую практическую пользу за 5–10 минут.</p>
+          </div>
+          <HelpPopover
+            title="Как пользоваться сценарием"
+            items={[
+              "Идите по шагам сверху вниз.",
+              "Каждый шаг ведёт прямо в нужный раздел.",
+              "После выполнения шагов вы увидите первые инсайты."
+            ]}
+          />
+        </div>
       </Card>
 
       <div className="grid gap-4 xl:grid-cols-2">

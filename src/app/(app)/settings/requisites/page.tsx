@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 
 type LegalEntity = {
   id: string;
@@ -18,22 +19,7 @@ type LegalEntity = {
   isDefault: boolean;
 };
 
-const initialEntities: LegalEntity[] = [
-  {
-    id: "le1",
-    shortName: "ООО «Гудвин»",
-    fullName: "Общество с ограниченной ответственностью «Гудвин»",
-    inn: "7701234567",
-    kpp: "770101001",
-    ogrn: "1027700123456",
-    legalAddress: "г. Москва, ул. Примерная, д. 10, офис 12",
-    bankName: "ПАО Сбербанк",
-    bankBik: "044525225",
-    account: "40702810900000012345",
-    corrAccount: "30101810400000000225",
-    isDefault: true
-  }
-];
+const initialEntities: LegalEntity[] = [];
 
 export default function RequisitesPage() {
   const [entities, setEntities] = useState<LegalEntity[]>(initialEntities);
@@ -85,10 +71,22 @@ export default function RequisitesPage() {
   return (
     <div className="space-y-4">
       <Card className="bg-gradient-to-r from-cyan-50 to-emerald-50">
-        <h2 className="text-xl font-bold">Мои реквизиты</h2>
-        <p className="mt-1 text-sm text-muted">
-          Добавьте одно или несколько юридических лиц. Реквизиты используются в документах, отчетах и интеграциях.
-        </p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-xl font-bold">Мои реквизиты</h2>
+            <p className="mt-1 text-sm text-muted">
+              Добавьте одно или несколько юридических лиц. Реквизиты используются в документах, отчетах и интеграциях.
+            </p>
+          </div>
+          <HelpPopover
+            title="Где используются реквизиты"
+            items={[
+              "Подставляются в договоры, счета и акты.",
+              "Используются в отчетах и интеграциях.",
+              "Можно выбрать основное юрлицо для шаблонов."
+            ]}
+          />
+        </div>
       </Card>
 
       <Card>

@@ -47,7 +47,7 @@ export default function FinancePage() {
         setPayments(p.items ?? []);
         setMarketing(mo.overview ?? null);
       } catch {
-        setError("Не удалось обновить данные. Показаны последние демо-значения.");
+        setError("Не удалось обновить данные. Проверьте подключение источников.");
       }
     };
 

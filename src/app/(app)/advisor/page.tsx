@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { uid } from "@/lib/utils/uid";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 
 type AdvisorRole = "business" | "accountant" | "financier";
 
@@ -78,7 +79,7 @@ export default function AdvisorPage() {
         const dJson = (await dRes.json()) as { items: Array<{ id: string; recommendation: string; status: string }> };
         setDecisions(dJson.items ?? []);
       } catch {
-        setError("Не удалось обновить данные советника. Показаны демо-сессии.");
+        setError("Не удалось обновить данные советника. Проверьте подключение источников.");
       }
     };
 
@@ -197,6 +198,14 @@ export default function AdvisorPage() {
             <p className="text-sm text-muted">Бизнес-консультант, ИИ-бухгалтер и ИИ-финансист в одном рабочем пространстве.</p>
             {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
           </div>
+          <HelpPopover
+            title="Как получить пользу быстро"
+            items={[
+              "Выберите роль и сформулируйте вопрос одной строкой.",
+              "Получите резюме, ключевые выводы и список действий.",
+              "Сохраните решение и поставьте задачу агенту."
+            ]}
+          />
           <div className="hidden flex-wrap gap-2 sm:flex">
             <span className="rounded-full border border-violet-200 bg-white px-3 py-1 text-xs text-violet-700">Контекст</span>
             <span className="rounded-full border border-cyan-200 bg-white px-3 py-1 text-xs text-cyan-700">Explain</span>
@@ -264,9 +273,9 @@ export default function AdvisorPage() {
                       <li key={item} className="space-y-2">
                         <p>{item}</p>
                         <div className="flex flex-wrap gap-1">
-                          <button onClick={() => saveDecision(activeSessionId ?? "demo", item, "accepted")} className="rounded border border-border px-2 py-1 text-xs">Принято</button>
-                          <button onClick={() => saveDecision(activeSessionId ?? "demo", item, "in_progress")} className="rounded border border-border px-2 py-1 text-xs">В работе</button>
-                          <button onClick={() => saveDecision(activeSessionId ?? "demo", item, "rejected")} className="rounded border border-border px-2 py-1 text-xs">Отклонено</button>
+                          <button onClick={() => activeSessionId && saveDecision(activeSessionId, item, "accepted")} className="rounded border border-border px-2 py-1 text-xs disabled:opacity-50" disabled={!activeSessionId}>Принято</button>
+                          <button onClick={() => activeSessionId && saveDecision(activeSessionId, item, "in_progress")} className="rounded border border-border px-2 py-1 text-xs disabled:opacity-50" disabled={!activeSessionId}>В работе</button>
+                          <button onClick={() => activeSessionId && saveDecision(activeSessionId, item, "rejected")} className="rounded border border-border px-2 py-1 text-xs disabled:opacity-50" disabled={!activeSessionId}>Отклонено</button>
                         </div>
                       </li>
                     ))}
@@ -345,41 +354,42 @@ export default function AdvisorPage() {
         <div className="space-y-2 text-sm">
           <div className="rounded-xl border border-border p-3">
             <p className="text-xs text-muted">KPI (кэш)</p>
-            <p>Выручка: {(context.kpi?.revenue_30d ?? 3950000).toLocaleString("ru-RU")} ₽</p>
-            <p>Расходы: {(context.kpi?.expenses_30d ?? 2510000).toLocaleString("ru-RU")} ₽</p>
-            <p>Маржа: {context.kpi?.margin_pct ?? 36.5}%</p>
+            <p>Выручка: {(context.kpi?.revenue_30d ?? 0).toLocaleString("ru-RU")} ₽</p>
+            <p>Расходы: {(context.kpi?.expenses_30d ?? 0).toLocaleString("ru-RU")} ₽</p>
+            <p>Маржа: {context.kpi?.margin_pct ?? 0}%</p>
           </div>
           <div className="rounded-xl border border-border p-3">
             <p className="text-xs text-muted">Источники данных</p>
-            <p>{(context.dataSources ?? ["google_sheets", "bitrix24", "excel_upload"]).join(", ")}</p>
+            <p>{(context.dataSources ?? []).length ? (context.dataSources ?? []).join(", ") : "Нет подключённых источников"}</p>
           </div>
           <div className="rounded-xl border border-border p-3">
             <p className="text-xs text-muted">Юнит-экономика</p>
-            <p>LTV/CAC: 2.84 (цель {'>'} 3)</p>
-            <p>ROMI: 132%</p>
+            <p>LTV/CAC: —</p>
+            <p>ROMI: —</p>
           </div>
           <div className="rounded-xl border border-border p-3">
             <p className="text-xs text-muted">Прогноз денег</p>
-            <p>Прогноз мин. остатка на 30 дней: -120 000 ₽</p>
+            <p>Прогноз мин. остатка на 30 дней: —</p>
           </div>
           <div className="rounded-xl border border-border p-3">
             <p className="text-xs text-muted">Утечки денег</p>
-            <p>3 критичных зоны утечки</p>
+            <p>Нет данных</p>
           </div>
           <div className="rounded-xl border border-border p-3">
             <p className="text-xs text-muted">Маркетинг</p>
-            <p>ROMI: 50.8% • CAC: 4 373 ₽</p>
-            <p>Проблема: VK Реклама и myTarget убыточны</p>
+            <p>ROMI: — • CAC: —</p>
+            <p>Нет данных по каналам</p>
           </div>
           <div className="rounded-xl border border-border p-3">
             <p className="text-xs text-muted">Прогноз</p>
-            <p>Прогноз выручки на 3 мес: +8.5%</p>
+            <p>Прогноз выручки на 3 мес: —</p>
           </div>
           <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-amber-800 animate-soft-pulse">
             <p className="text-xs font-bold">Предупреждения</p>
-            {(context.warnings ?? ["2 источника данных требуют синхронизацию"]).map((warning) => (
+            {(context.warnings ?? []).map((warning) => (
               <p key={warning}>{warning}</p>
             ))}
+            {!context.warnings?.length ? <p>Пока нет предупреждений</p> : null}
           </div>
           <div className="rounded-xl border border-border p-3">
             <p className="text-xs font-bold">Журнал решений</p>

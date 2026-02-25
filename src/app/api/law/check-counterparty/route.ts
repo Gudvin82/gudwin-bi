@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 
   return NextResponse.json({
     inn,
-    source: "demo",
+    source: "local",
     status: risk,
     comment,
     profile: {
@@ -21,6 +21,6 @@ export async function POST(request: Request) {
       risk_factors: risk === "red" ? ["массовый директор", "признаки недостоверных сведений"] : risk === "yellow" ? ["требуется доп.проверка отчетности"] : ["критичные риски не выявлены"],
       monitor_available: true
     },
-    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
+    _meta: { mode: "prod", generatedAt: new Date().toISOString() }
   });
 }

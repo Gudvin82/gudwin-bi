@@ -7,13 +7,7 @@ import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
 
 export default function OverviewPage() {
-  const cashFlow = [
-    { d: "Пн", in: 320000, out: 210000 },
-    { d: "Вт", in: 280000, out: 260000 },
-    { d: "Ср", in: 410000, out: 295000 },
-    { d: "Чт", in: 350000, out: 310000 },
-    { d: "Пт", in: 480000, out: 330000 }
-  ];
+  const hasData = false;
 
   return (
     <div className="space-y-5">
@@ -30,56 +24,68 @@ export default function OverviewPage() {
         </div>
       </Card>
 
-      <div className="dashboard-grid">
-        <div className="col-span-12">
-          <Card className="animate-fade-up bg-gradient-to-r from-slate-950 via-cyan-950 to-slate-900 text-white">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <p className="text-sm text-cyan-100">Индекс здоровья бизнеса</p>
-                <p className="text-4xl font-extrabold">78 / 100</p>
-                <p className="text-sm text-slate-200">Главный риск: кассовый разрыв в следующем месяце при текущей дебиторке.</p>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <Link href="/owner" className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-900">
-                  Открыть Режим владельца
-                </Link>
-                <Link href="/finance" className="rounded-xl border border-white/35 px-4 py-2 text-sm font-semibold text-white">
-                  Перейти в Финансы
-                </Link>
-              </div>
+      {hasData ? (
+        <>
+          <div className="dashboard-grid">
+            <div className="col-span-12">
+              <Card className="animate-fade-up bg-gradient-to-r from-slate-950 via-cyan-950 to-slate-900 text-white">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <p className="text-sm text-cyan-100">Индекс здоровья бизнеса</p>
+                    <p className="text-4xl font-extrabold">78 / 100</p>
+                    <p className="text-sm text-slate-200">Главный риск: кассовый разрыв в следующем месяце при текущей дебиторке.</p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <Link href="/owner" className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-900">
+                      Открыть Режим владельца
+                    </Link>
+                    <Link href="/finance" className="rounded-xl border border-white/35 px-4 py-2 text-sm font-semibold text-white">
+                      Перейти в Финансы
+                    </Link>
+                  </div>
+                </div>
+              </Card>
+            </div>
+
+            <div className="col-span-12 md:col-span-6 xl:col-span-4">
+              <MetricCard title="Выручка" value="3 950 000 ₽" delta="+18% к прошлому месяцу" />
+            </div>
+            <div className="col-span-12 md:col-span-6 xl:col-span-4">
+              <MetricCard title="Сделки" value="1 482" delta="+7.3%" />
+            </div>
+            <div className="col-span-12 md:col-span-6 xl:col-span-4">
+              <MetricCard title="Средний чек" value="3 215 ₽" delta="+2.1%" />
+            </div>
+          </div>
+
+          <div className="dashboard-grid">
+            <RevenueChart />
+            <KpiTable />
+          </div>
+
+          <Card>
+            <h3 className="mb-3 text-base font-semibold">Поступления и списания (5 дней)</h3>
+            <div className="grid gap-2 sm:grid-cols-5">
+              {[]}
             </div>
           </Card>
-        </div>
-
-        <div className="col-span-12 md:col-span-6 xl:col-span-4">
-          <MetricCard title="Выручка" value="3 950 000 ₽" delta="+18% к прошлому месяцу" />
-        </div>
-        <div className="col-span-12 md:col-span-6 xl:col-span-4">
-          <MetricCard title="Сделки" value="1 482" delta="+7.3%" />
-        </div>
-        <div className="col-span-12 md:col-span-6 xl:col-span-4">
-          <MetricCard title="Средний чек" value="3 215 ₽" delta="+2.1%" />
-        </div>
-      </div>
-
-      <div className="dashboard-grid">
-        <RevenueChart />
-        <KpiTable />
-      </div>
-
-      <Card>
-        <h3 className="mb-3 text-base font-semibold">Поступления и списания (5 дней)</h3>
-        <div className="grid gap-2 sm:grid-cols-5">
-          {cashFlow.map((row) => (
-            <div key={row.d} className="rounded-xl border border-border bg-white p-3 text-sm">
-              <p className="font-semibold">{row.d}</p>
-              <p className="text-emerald-700">+ {row.in.toLocaleString("ru-RU")} ₽</p>
-              <p className="text-rose-700">- {row.out.toLocaleString("ru-RU")} ₽</p>
-              <p className="text-xs text-muted">Итог: {(row.in - row.out).toLocaleString("ru-RU")} ₽</p>
-            </div>
-          ))}
-        </div>
-      </Card>
+        </>
+      ) : (
+        <Card className="border-dashed border-slate-200 bg-white">
+          <h3 className="text-base font-semibold">Данных пока нет</h3>
+          <p className="mt-2 text-sm text-muted">
+            Подключите хотя бы один источник, и на этом экране появится стартовый дашборд с ключевыми метриками.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Link href="/sources" className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-3 py-2 text-sm font-semibold text-white">
+              Подключить источник
+            </Link>
+            <Link href="/learn/quick-start" className="rounded-xl border border-border px-3 py-2 text-sm font-semibold">
+              Открыть быстрый старт
+            </Link>
+          </div>
+        </Card>
+      )}
 
       <Card>
         <div className="mb-2 flex items-center gap-2">

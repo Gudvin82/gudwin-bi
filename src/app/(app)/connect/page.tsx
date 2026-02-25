@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 
 type Integration = { id: string; type: string; status: string; lastSync: string };
 type Rule = { id: string; when: string; then: string; enabled: boolean };
@@ -26,8 +27,20 @@ export default function ConnectPage() {
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up bg-gradient-to-r from-violet-50 to-sky-50">
-        <h2 className="text-xl font-bold">Интеграции</h2>
-        <p className="text-sm text-muted">Единая интеграционная шина: CRM, банки, реклама, маркетплейсы, вебхуки и правила действий.</p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-xl font-bold">Интеграции</h2>
+            <p className="text-sm text-muted">Единая интеграционная шина: CRM, банки, реклама, маркетплейсы и вебхуки.</p>
+          </div>
+          <HelpPopover
+            title="Что можно делать здесь"
+            items={[
+              "Подключать системы и видеть статус синхронизации.",
+              "Настраивать правила «если → то» для автоматизации.",
+              "Проверять ошибки и историю обновлений."
+            ]}
+          />
+        </div>
       </Card>
 
       <div className="grid gap-4 xl:grid-cols-2">

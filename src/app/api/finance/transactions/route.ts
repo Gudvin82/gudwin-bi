@@ -18,12 +18,12 @@ export async function GET(request: Request) {
   const session = await getSessionContext();
   const { searchParams } = new URL(request.url);
   const limit = Number(searchParams.get("limit") ?? 100);
-  const workspaceRows = ledgerTransactions.filter((row) => row.workspaceId === session.workspaceId || row.workspaceId === "demo");
+  const workspaceRows = ledgerTransactions.filter((row) => row.workspaceId === session.workspaceId);
   const rows = workspaceRows
     .slice()
     .sort((a, b) => b.date.localeCompare(a.date))
     .slice(0, Math.max(1, Math.min(limit, 500)));
-  return NextResponse.json({ items: rows, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
+  return NextResponse.json({ items: rows, _meta: { mode: "prod", generatedAt: new Date().toISOString() } });
 }
 
 export async function POST(request: Request) {
@@ -36,5 +36,5 @@ export async function POST(request: Request) {
     ...input
   };
   ledgerTransactions.unshift(tx);
-  return NextResponse.json({ item: tx, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
+  return NextResponse.json({ item: tx, _meta: { mode: "prod", generatedAt: new Date().toISOString() } });
 }

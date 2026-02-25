@@ -49,8 +49,9 @@ export default function MarketingAnalyticsPage() {
     return totals;
   }, [rows]);
 
+  const hasData = rows.length > 0;
   const avgCac = useMemo(() => (rows.length ? Math.round(rows.reduce((acc, item) => acc + item.cac, 0) / rows.length) : 0), [rows]);
-  const avgLtv = 6200;
+  const avgLtv: number = 0;
 
   return (
     <div className="space-y-4">
@@ -71,61 +72,71 @@ export default function MarketingAnalyticsPage() {
         </div>
       </Card>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card className="bg-gradient-to-br from-emerald-50 to-white">
-          <p className="text-xs text-muted">ROMI по рынку</p>
-          <p className="mt-1 text-3xl font-extrabold text-emerald-700">+50.8%</p>
-          <p className="text-xs text-muted">Бенчмарк отрасли: +45%</p>
+      {!hasData ? (
+        <Card className="border-dashed border-slate-200 bg-white">
+          <h3 className="text-base font-semibold">Данных маркетинга пока нет</h3>
+          <p className="mt-2 text-sm text-muted">Подключите рекламные источники или загрузите данные из Google Sheets/Excel, чтобы увидеть сквозную аналитику.</p>
         </Card>
-        <Card className="bg-gradient-to-br from-cyan-50 to-white">
-          <p className="text-xs text-muted">Средний CAC</p>
-          <p className="mt-1 text-3xl font-extrabold text-cyan-700">{avgCac.toLocaleString("ru-RU")} ₽</p>
-          <p className="text-xs text-muted">Цель: ниже 4 500 ₽</p>
-        </Card>
-        <Card className="bg-gradient-to-br from-violet-50 to-white">
-          <p className="text-xs text-muted">Фокус недели</p>
-          <p className="mt-1 text-sm font-semibold">Снизить CAC в VK и масштабировать Яндекс.Директ.</p>
-        </Card>
-      </div>
-
-      <Card>
-        <h3 className="mb-3 text-base font-semibold">Сквозная таблица по каналам</h3>
-        <div className="overflow-x-auto">
-          <table className="min-w-[980px] w-full text-sm">
-            <thead className="text-left text-muted">
-              <tr>
-                <th className="pb-2">Канал</th>
-                <th className="pb-2">Показы</th>
-                <th className="pb-2">Клики</th>
-                <th className="pb-2">CTR</th>
-                <th className="pb-2">Лиды</th>
-                <th className="pb-2">Сделки</th>
-                <th className="pb-2">Расход</th>
-                <th className="pb-2">Выручка</th>
-                <th className="pb-2">CAC</th>
-                <th className="pb-2">ROMI</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row) => (
-                <tr key={row.name} className="border-t border-border">
-                  <td className="py-2 font-medium">{row.name}</td>
-                  <td className="py-2">{row.impressions.toLocaleString("ru-RU")}</td>
-                  <td className="py-2">{row.clicks.toLocaleString("ru-RU")}</td>
-                  <td className="py-2">{row.ctr}%</td>
-                  <td className="py-2">{row.leads}</td>
-                  <td className="py-2">{row.deals}</td>
-                  <td className="py-2">{row.spend.toLocaleString("ru-RU")} ₽</td>
-                  <td className="py-2">{row.revenue.toLocaleString("ru-RU")} ₽</td>
-                  <td className="py-2">{row.cac.toLocaleString("ru-RU")} ₽</td>
-                  <td className={`py-2 font-semibold ${row.romi < 0 ? "text-red-700" : "text-emerald-700"}`}>{row.romi}%</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-3">
+          <Card className="bg-gradient-to-br from-emerald-50 to-white">
+            <p className="text-xs text-muted">ROMI по рынку</p>
+            <p className="mt-1 text-3xl font-extrabold text-emerald-700">{rows.length ? `+${rows[0].romi}%` : "—"}</p>
+            <p className="text-xs text-muted">Бенчмарк отрасли появится после загрузки данных.</p>
+          </Card>
+          <Card className="bg-gradient-to-br from-cyan-50 to-white">
+            <p className="text-xs text-muted">Средний CAC</p>
+            <p className="mt-1 text-3xl font-extrabold text-cyan-700">{avgCac ? `${avgCac.toLocaleString("ru-RU")} ₽` : "—"}</p>
+            <p className="text-xs text-muted">Цель сформируется после первых отчётов.</p>
+          </Card>
+          <Card className="bg-gradient-to-br from-violet-50 to-white">
+            <p className="text-xs text-muted">Фокус недели</p>
+            <p className="mt-1 text-sm font-semibold">Фокус появится после подключения источников.</p>
+          </Card>
         </div>
-      </Card>
+      )}
 
+      {hasData ? (
+        <Card>
+          <h3 className="mb-3 text-base font-semibold">Сквозная таблица по каналам</h3>
+          <div className="overflow-x-auto">
+            <table className="min-w-[980px] w-full text-sm">
+              <thead className="text-left text-muted">
+                <tr>
+                  <th className="pb-2">Канал</th>
+                  <th className="pb-2">Показы</th>
+                  <th className="pb-2">Клики</th>
+                  <th className="pb-2">CTR</th>
+                  <th className="pb-2">Лиды</th>
+                  <th className="pb-2">Сделки</th>
+                  <th className="pb-2">Расход</th>
+                  <th className="pb-2">Выручка</th>
+                  <th className="pb-2">CAC</th>
+                  <th className="pb-2">ROMI</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row) => (
+                  <tr key={row.name} className="border-t border-border">
+                    <td className="py-2 font-medium">{row.name}</td>
+                    <td className="py-2">{row.impressions.toLocaleString("ru-RU")}</td>
+                    <td className="py-2">{row.clicks.toLocaleString("ru-RU")}</td>
+                    <td className="py-2">{row.ctr}%</td>
+                    <td className="py-2">{row.leads}</td>
+                    <td className="py-2">{row.deals}</td>
+                    <td className="py-2">{row.spend.toLocaleString("ru-RU")} ₽</td>
+                    <td className="py-2">{row.revenue.toLocaleString("ru-RU")} ₽</td>
+                    <td className="py-2">{row.cac.toLocaleString("ru-RU")} ₽</td>
+                    <td className={`py-2 font-semibold ${row.romi < 0 ? "text-red-700" : "text-emerald-700"}`}>{row.romi}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+      ) : null}
+
+      {hasData ? (
       <div className="grid gap-4 xl:grid-cols-2">
         <Card>
           <h3 className="mb-2 text-base font-semibold">Воронка по источникам</h3>
@@ -156,32 +167,35 @@ export default function MarketingAnalyticsPage() {
           <h3 className="mb-2 text-base font-semibold">Юнит-экономика маркетинга</h3>
           <div className="space-y-2 text-sm">
             <div className="rounded-xl border border-border p-3">Средний CAC: {avgCac.toLocaleString("ru-RU")} ₽</div>
-            <div className="rounded-xl border border-border p-3">Средний LTV: {avgLtv.toLocaleString("ru-RU")} ₽</div>
-            <div className="rounded-xl border border-border p-3">Окупаемость клиента: {Math.ceil(avgCac / 900)} мес.</div>
+            <div className="rounded-xl border border-border p-3">Средний LTV: {avgLtv ? `${avgLtv.toLocaleString("ru-RU")} ₽` : "—"}</div>
+            <div className="rounded-xl border border-border p-3">Окупаемость клиента: {avgCac ? `${Math.ceil(avgCac / 900)} мес.` : "—"}</div>
           </div>
         </Card>
       </div>
+      ) : null}
 
-      <Card>
-        <h3 className="mb-3 text-base font-semibold">Сравнение расхода и выручки по каналам</h3>
-        <div className="chart-shell h-72">
-          {mounted ? (
-            <ResponsiveContainer width="100%" height="100%" minWidth={260} minHeight={180}>
-              <BarChart data={rows}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="name" tick={{ fontSize: 11 }} />
-                <YAxis tick={{ fontSize: 11 }} />
-                <Tooltip formatter={(value: number | string | undefined) => `${Number(value ?? 0).toLocaleString("ru-RU")} ₽`} />
-                <Legend />
-                <Bar dataKey="spend" name="Расход" fill="#fb7185" radius={[6, 6, 0, 0]} />
-                <Bar dataKey="revenue" name="Выручка" fill="#14b8a6" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          ) : (
-            <div className="skeleton h-full w-full" />
-          )}
-        </div>
-      </Card>
+      {hasData ? (
+        <Card>
+          <h3 className="mb-3 text-base font-semibold">Сравнение расхода и выручки по каналам</h3>
+          <div className="chart-shell h-72">
+            {mounted ? (
+              <ResponsiveContainer width="100%" height="100%" minWidth={260} minHeight={180}>
+                <BarChart data={rows}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="name" tick={{ fontSize: 11 }} />
+                  <YAxis tick={{ fontSize: 11 }} />
+                  <Tooltip formatter={(value: number | string | undefined) => `${Number(value ?? 0).toLocaleString("ru-RU")} ₽`} />
+                  <Legend />
+                  <Bar dataKey="spend" name="Расход" fill="#fb7185" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="revenue" name="Выручка" fill="#14b8a6" radius={[6, 6, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="skeleton h-full w-full" />
+            )}
+          </div>
+        </Card>
+      ) : null}
     </div>
   );
 }

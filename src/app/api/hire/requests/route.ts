@@ -6,6 +6,6 @@ export async function GET() {
   const session = await getSessionContext();
   return NextResponse.json({
     requests: hireRequests.filter((r) => r.workspaceId === session.workspaceId),
-    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
+    _meta: { mode: "prod", generatedAt: new Date().toISOString() }
   });
 }

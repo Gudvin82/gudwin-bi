@@ -1,14 +1,27 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 
 export default function LearnPage() {
   return (
     <div className="space-y-5">
       <Card className="animate-fade-up bg-gradient-to-r from-cyan-50 via-white to-indigo-50">
-        <h2 className="text-2xl font-extrabold tracking-tight">Помощь и обучение</h2>
-        <p className="mt-1 text-sm text-muted">
-          Материалы для быстрого старта, ответы на частые вопросы и обучение по ключевым разделам GudWin BI.
-        </p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-2xl font-extrabold tracking-tight">Помощь и обучение</h2>
+            <p className="mt-1 text-sm text-muted">
+              Материалы для быстрого старта, ответы на частые вопросы и обучение по ключевым разделам GudWin BI.
+            </p>
+          </div>
+          <HelpPopover
+            title="Как пользоваться"
+            items={[
+              "Выберите формат: FAQ, быстрый старт или видео.",
+              "В каждом разделе есть прямые кнопки возврата в продукт.",
+              "Материалы построены на реальных сценариях SMB."
+            ]}
+          />
+        </div>
       </Card>
 
       <div className="grid gap-4 md:grid-cols-2">

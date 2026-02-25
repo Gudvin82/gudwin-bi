@@ -17,9 +17,9 @@ const weekLabels = ["10.12", "17.12", "24.12", "31.12", "07.01", "14.01", "21.01
 
 export default function OwnerPage() {
   const [data, setData] = useState<OwnerPayload>({
-    health: { score: 78, components: { financial: 74, cash: 62, operations: 81, riskPenalty: 8 } },
-    focusOfDay: "Проверить 3 просроченные дебиторки и снизить кассовый риск.",
-    problemOfWeek: "ROMI в 2 маркетинговых каналах ниже целевого порога."
+    health: { score: 0, components: { financial: 0, cash: 0, operations: 0, riskPenalty: 0 } },
+    focusOfDay: "",
+    problemOfWeek: ""
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -36,7 +36,7 @@ export default function OwnerPage() {
         const json = (await res.json()) as OwnerPayload;
         setData(json);
       } catch {
-        setError("Не удалось загрузить данные. Показаны демо-значения.");
+        setError("Не удалось загрузить данные. Проверьте подключение источников.");
       } finally {
         setLoading(false);
       }
@@ -57,6 +57,7 @@ export default function OwnerPage() {
         ? { label: "Зона внимания", tone: "text-amber-700" }
         : { label: "Стабильная зона", tone: "text-emerald-700" };
   const weeks = useMemo(() => weekLabels, []);
+  const hasData = data.health.score > 0 || data.focusOfDay.trim().length > 0 || data.problemOfWeek.trim().length > 0;
 
   const exportPdf = () => {
     setPdfStatus("PDF формируется. Ссылка для скачивания появится в разделе отчётов.");
@@ -83,19 +84,35 @@ export default function OwnerPage() {
         </div>
       </Card>
 
-      <Card className="bg-gradient-to-r from-emerald-50 via-white to-cyan-50">
-        <p className="text-sm font-semibold text-emerald-800">Ваш Health Score {data.health.score} — {healthZone.label.toLowerCase()}</p>
-        <p className="mt-1 text-sm text-muted">Показатель рассчитывается по финансам, ликвидности, операционке и рискам. Динамика за неделю: +5 пунктов.</p>
-        <div className="mt-3 flex flex-wrap gap-2">
-          <Link href="/advisor" className="rounded-xl border border-emerald-300 bg-white px-3 py-2 text-xs font-semibold text-emerald-700">
-            Узнать, как дойти до 90
-          </Link>
-          <Link href="/marketing" className="rounded-xl border border-border bg-white px-3 py-2 text-xs font-semibold">
-            Сравнить маркетинг с бенчмарком
-          </Link>
-        </div>
-      </Card>
+      {hasData ? (
+        <Card className="bg-gradient-to-r from-emerald-50 via-white to-cyan-50">
+          <p className="text-sm font-semibold text-emerald-800">Ваш Health Score {data.health.score} — {healthZone.label.toLowerCase()}</p>
+          <p className="mt-1 text-sm text-muted">Показатель рассчитывается по финансам, ликвидности, операционке и рискам. Динамика за неделю появится после загрузки данных.</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Link href="/advisor" className="rounded-xl border border-emerald-300 bg-white px-3 py-2 text-xs font-semibold text-emerald-700">
+              Узнать, как дойти до 90
+            </Link>
+            <Link href="/marketing" className="rounded-xl border border-border bg-white px-3 py-2 text-xs font-semibold">
+              Сравнить маркетинг с бенчмарком
+            </Link>
+          </div>
+        </Card>
+      ) : (
+        <Card className="bg-gradient-to-r from-white via-cyan-50/60 to-emerald-50/70">
+          <p className="text-sm font-semibold text-slate-900">Пока нет данных для расчёта Health Score</p>
+          <p className="mt-1 text-sm text-muted">Подключите источники и загрузите первые данные — мы покажем индекс здоровья и фокус дня.</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Link href="/sources" className="rounded-xl border border-emerald-300 bg-white px-3 py-2 text-xs font-semibold text-emerald-700">
+              Подключить источник
+            </Link>
+            <Link href="/learn/quick-start" className="rounded-xl border border-border bg-white px-3 py-2 text-xs font-semibold">
+              Быстрый старт
+            </Link>
+          </div>
+        </Card>
+      )}
 
+      {hasData ? (
       <div className="grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
         <Card className="bg-gradient-to-br from-slate-950 via-cyan-950 to-slate-900 text-white">
           <div className="flex items-center justify-between">
@@ -162,19 +179,21 @@ export default function OwnerPage() {
           </Card>
           <Card className="bg-gradient-to-r from-sky-50 to-indigo-50">
             <p className="text-xs text-muted">Маркетинг</p>
-            <p className="mt-1 text-sm font-semibold">Расходы: 1 790 000 ₽ • ROMI: 50.8%</p>
+            <p className="mt-1 text-sm font-semibold">Данные маркетинга появятся после подключения источников.</p>
             <div className="mt-3 flex flex-wrap gap-2">
               <Link href="/marketing" className="inline-flex rounded-xl border border-border bg-white px-3 py-2 text-sm font-semibold">
                 Перейти в маркетинг
               </Link>
-              <Link href="/goals" className="inline-flex rounded-xl border border-border bg-white px-3 py-2 text-sm font-semibold">
-                Открыть цели
+              <Link href="/sources" className="inline-flex rounded-xl border border-border bg-white px-3 py-2 text-sm font-semibold">
+                Подключить источник
               </Link>
             </div>
           </Card>
         </div>
       </div>
+      ) : null}
 
+      {hasData ? (
       <Card>
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <h3 className="text-base font-semibold">Динамика здоровья бизнеса (12 недель)</h3>
@@ -194,7 +213,9 @@ export default function OwnerPage() {
           ))}
         </div>
       </Card>
+      ) : null}
 
+      {hasData ? (
       <Card>
         <div className="flex flex-wrap gap-2">
           <Link href="/finance" className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-4 py-2 text-sm font-semibold text-white">Финансы</Link>
@@ -205,7 +226,9 @@ export default function OwnerPage() {
           <Link href="/watch" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">Мониторинг</Link>
         </div>
       </Card>
+      ) : null}
 
+      {hasData ? (
       <Card className="bg-gradient-to-r from-white via-slate-50 to-cyan-50">
         <div className="mb-3 flex items-start justify-between gap-3">
           <div>
@@ -218,6 +241,7 @@ export default function OwnerPage() {
         </div>
         <DashboardShowcase />
       </Card>
+      ) : null}
 
       <ContextHelpLinks section="owner" />
     </div>

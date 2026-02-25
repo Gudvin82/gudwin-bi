@@ -28,7 +28,7 @@ export async function POST(request: Request) {
   telegramConfigs.unshift(record);
   return NextResponse.json({
     config: record,
-    note: "Бот подключен. В демо-режиме сообщения не отправляются.",
-    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
+    note: "Бот подключен. Сообщения будут отправляться после включения интеграции.",
+    _meta: { mode: "prod", generatedAt: new Date().toISOString() }
   });
 }

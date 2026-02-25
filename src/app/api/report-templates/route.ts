@@ -21,7 +21,7 @@ const schema = z.object({
 
 export async function GET() {
   const session = await getSessionContext();
-  const items = reportTemplates.filter((item) => item.workspaceId === session.workspaceId || item.workspaceId === "demo");
+  const items = reportTemplates.filter((item) => item.workspaceId === session.workspaceId);
   return NextResponse.json({ templates: items });
 }
 

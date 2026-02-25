@@ -133,204 +133,27 @@ export type MarketingSource = {
 
 const now = new Date();
 
-export const unitMetrics: UnitMetric[] = [
-  { dimension: "Онлайн-магазин", cac: 1800, ltv: 7600, contribution_margin: 41.2, romi: 186, payback_days: 49 },
-  { dimension: "Маркетплейс", cac: 2400, ltv: 5400, contribution_margin: 24.5, romi: 94, payback_days: 82 },
-  { dimension: "Розница", cac: 900, ltv: 4200, contribution_margin: 36.1, romi: 210, payback_days: 35 }
-];
+export const unitMetrics: UnitMetric[] = [];
 
-export const paymentCalendar: PaymentItem[] = [
-  { id: "p1", date: nextDate(1), type: "incoming", counterparty: "ООО Альфа", amount: 220000, status: "planned" },
-  { id: "p2", date: nextDate(2), type: "outgoing", counterparty: "Аренда", amount: 160000, status: "planned" },
-  { id: "p3", date: nextDate(4), type: "outgoing", counterparty: "ФОТ", amount: 540000, status: "planned" },
-  { id: "p4", date: nextDate(6), type: "incoming", counterparty: "ИП Смирнов", amount: 140000, status: "overdue" },
-  { id: "p5", date: nextDate(7), type: "outgoing", counterparty: "Налоги", amount: 210000, status: "planned" }
-];
+export const paymentCalendar: PaymentItem[] = [];
 
-export const moneyLeaks: Leak[] = [
-  {
-    id: "l1",
-    title: "Канал marketplace с отрицательным ROMI в 2 кампаниях",
-    severity: "high",
-    impact: "-148 000 ₽ / мес",
-    recommendation: "Отключить 2 кампании с ROMI < 0, перераспределить бюджет в retargeting."
-  },
-  {
-    id: "l2",
-    title: "SKU A17 продается с маржой ниже 8%",
-    severity: "medium",
-    impact: "-62 000 ₽ / мес",
-    recommendation: "Повысить цену на 6% или заменить поставщика."
-  },
-  {
-    id: "l3",
-    title: "Группа лидов без follow-up > 5 дней",
-    severity: "medium",
-    impact: "Потеря 11-15 сделок/мес",
-    recommendation: "Передать в Sales Agent, включить автозадачу в CRM."
-  }
-];
+export const moneyLeaks: Leak[] = [];
 
-export const watchAlerts: WatchAlert[] = [
-  {
-    id: "w1",
-    type: "cash_risk",
-    level: "critical",
-    message: "Прогноз остатка на 2026-03-03 ниже 0: риск кассового разрыва.",
-    channel: "telegram",
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: "w2",
-    type: "kpi_drop",
-    level: "warning",
-    message: "Конверсия отдела продаж снизилась на 14% неделя к неделе.",
-    channel: "dashboard",
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: "w3",
-    type: "marketing_romi_drop",
-    level: "critical",
-    message: "ROMI канала VK Реклама упал ниже 0% за последние 7 дней.",
-    channel: "telegram",
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: "w4",
-    type: "marketing_cac_spike",
-    level: "warning",
-    message: "CAC кампании «Весенний оффер» вырос на 28% неделя к неделе.",
-    channel: "dashboard",
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: "w5",
-    type: "creative_burnout",
-    level: "warning",
-    message: "Креатив «Скидка 15%» выгорел: CTR снизился на 41%.",
-    channel: "dashboard",
-    createdAt: new Date().toISOString()
-  }
-];
+export const watchAlerts: WatchAlert[] = [];
 
-export const marketingChannels: MarketingChannel[] = [
-  {
-    name: "Яндекс.Директ",
-    impressions: 420000,
-    clicks: 16800,
-    ctr: 4.0,
-    leads: 740,
-    deals: 186,
-    spend: 680000,
-    revenue: 2320000,
-    margin: 39.5,
-    cpl: 919,
-    cac: 3656,
-    romi: 142,
-    roas: 3.41
-  },
-  {
-    name: "VK Реклама",
-    impressions: 510000,
-    clicks: 15300,
-    ctr: 3.0,
-    leads: 510,
-    deals: 92,
-    spend: 590000,
-    revenue: 470000,
-    margin: 24.2,
-    cpl: 1157,
-    cac: 6413,
-    romi: -21,
-    roas: 0.8
-  },
-  {
-    name: "Telegram Ads",
-    impressions: 300000,
-    clicks: 12300,
-    ctr: 4.1,
-    leads: 430,
-    deals: 117,
-    spend: 310000,
-    revenue: 980000,
-    margin: 33.8,
-    cpl: 721,
-    cac: 2649,
-    romi: 94,
-    roas: 3.16
-  },
-  {
-    name: "myTarget",
-    impressions: 220000,
-    clicks: 6600,
-    ctr: 3.0,
-    leads: 230,
-    deals: 44,
-    spend: 210000,
-    revenue: 160000,
-    margin: 18.9,
-    cpl: 913,
-    cac: 4773,
-    romi: -12,
-    roas: 0.76
-  }
-];
+export const marketingChannels: MarketingChannel[] = [];
 
-export const marketingCampaigns: MarketingCampaign[] = [
-  { id: "mc1", channel: "Яндекс.Директ", name: "Поиск бренд + конкуренты", status: "active", spend: 240000, leads: 312, deals: 79, revenue: 920000, romi: 131, cac: 3038, aiDecision: "Масштабировать" },
-  { id: "mc2", channel: "VK Реклама", name: "Весенний оффер", status: "active", spend: 210000, leads: 146, deals: 21, revenue: 120000, romi: -44, cac: 10000, aiDecision: "Отключить" },
-  { id: "mc3", channel: "Telegram Ads", name: "Лид-магнит B2B", status: "paused", spend: 98000, leads: 132, deals: 31, revenue: 360000, romi: 108, cac: 3161, aiDecision: "Оптимизировать" },
-  { id: "mc4", channel: "myTarget", name: "Ретаргетинг каталог", status: "archived", spend: 64000, leads: 45, deals: 7, revenue: 42000, romi: -34, cac: 9142, aiDecision: "Отключить" }
-];
+export const marketingCampaigns: MarketingCampaign[] = [];
 
-export const marketingExperiments: MarketingExperiment[] = [
-  {
-    id: "ex1",
-    name: "Новый оффер для сегмента SMB",
-    hypothesis: "Сокращенный оффер повысит конверсию в заявку",
-    metric: "Конверсия в лид",
-    status: "Победитель выбран",
-    winner: "B",
-    a: { ctr: 2.9, conversion: 4.8, romi: 56 },
-    b: { ctr: 3.8, conversion: 6.1, romi: 88 }
-  },
-  {
-    id: "ex2",
-    name: "Креативы с кейсами",
-    hypothesis: "Кейсы клиентов дадут выше CTR в Telegram",
-    metric: "CTR",
-    status: "Идет",
-    winner: "Нет",
-    a: { ctr: 3.3, conversion: 5.1, romi: 72 },
-    b: { ctr: 3.5, conversion: 4.9, romi: 69 }
-  }
-];
+export const marketingExperiments: MarketingExperiment[] = [];
 
-export const marketingCreatives: MarketingCreative[] = [
-  { id: "cr1", title: "Сократили расходы на 18% за 30 дней", channel: "Яндекс.Директ", format: "Баннер", ctr: 4.5, conversion: 6.2, romi: 132, best: true },
-  { id: "cr2", title: "Кассовый контроль без Excel", channel: "Telegram Ads", format: "Текст", ctr: 4.1, conversion: 5.5, romi: 104, best: true },
-  { id: "cr3", title: "Сводка собственника каждое утро", channel: "VK Реклама", format: "Сторис", ctr: 2.2, conversion: 2.7, romi: -9, best: false },
-  { id: "cr4", title: "ИИ-советник для бизнеса", channel: "myTarget", format: "Баннер", ctr: 2.0, conversion: 2.1, romi: -15, best: false }
-];
+export const marketingCreatives: MarketingCreative[] = [];
 
-export const marketingSources: MarketingSource[] = [
-  { id: "ms1", name: "Яндекс.Директ", status: "connected", lastSync: "3 мин назад" },
-  { id: "ms2", name: "VK Реклама", status: "connected", lastSync: "6 мин назад" },
-  { id: "ms3", name: "Telegram Ads", status: "needs_refresh", lastSync: "вчера 22:17" },
-  { id: "ms4", name: "myTarget", status: "error", lastSync: "ошибка синка" }
-];
+export const marketingSources: MarketingSource[] = [];
 
-export const integrations: IntegrationItem[] = [
-  { id: "i1", type: "bitrix24", status: "active", lastSync: "5 мин назад" },
-  { id: "i2", type: "yandex_direct", status: "active", lastSync: "12 мин назад" },
-  { id: "i3", type: "vk_ads", status: "draft", lastSync: "не запускался" }
-];
+export const integrations: IntegrationItem[] = [];
 
-export const integrationRules: IntegrationRule[] = [
-  { id: "r1", when: "Если конверсия < 8%", then: "То создать задачу в CRM на разбор воронки продаж", enabled: true },
-  { id: "r2", when: "Если просрочка платежа > 3 дней", then: "То отправить напоминание в Telegram и SMS", enabled: true }
-];
+export const integrationRules: IntegrationRule[] = [];
 
 export const learnFaq = [
   {
@@ -347,36 +170,33 @@ export const learnFaq = [
   }
 ];
 
-export const competitorSignals = [
-  { competitor: "Конкурент A", signal: "Снизил цену на флагман SKU на 9%", action: "Проверить эластичность цены и запустить бандл" },
-  { competitor: "Конкурент B", signal: "Запустил промо 2+1", action: "Сделать ограниченную акцию на high-margin товары" },
-  { competitor: "Конкурент C", signal: "Рост негативных отзывов по доставке", action: "Усилить коммуникацию SLA в рекламе" }
-];
+export const competitorSignals: Array<{ competitor: string; signal: string; action: string }> = [];
 
 export const devRequests: DevRequest[] = [];
 
 export const decisionLog: DecisionLogItem[] = [];
 
-export function buildCashForecast(days = 30, openingBalance = 420000) {
-  const rows: CashDay[] = [];
-  let balance = openingBalance;
-
-  for (let i = 0; i < days; i += 1) {
-    const date = nextDate(i);
-    const inflow = i % 5 === 0 ? 260000 : 110000 + (i % 3) * 15000;
-    const outflow = i % 7 === 0 ? 340000 : 130000 + (i % 4) * 14000;
-    balance += inflow - outflow;
-    rows.push({ date, inflow, outflow, balance });
-  }
-
-  return rows;
+export function buildCashForecast(_days = 30) {
+  return [] as CashDay[];
 }
 
 export function computeHealthScore() {
+  if (unitMetrics.length === 0 && moneyLeaks.length === 0 && watchAlerts.length === 0) {
+    return {
+      score: 0,
+      components: {
+        financial: 0,
+        cash: 0,
+        operations: 0,
+        riskPenalty: 0
+      }
+    };
+  }
+
   const avgRomi = unitMetrics.reduce((acc, item) => acc + item.romi, 0) / unitMetrics.length;
   const avgLtvCac = unitMetrics.reduce((acc, item) => acc + item.ltv / item.cac, 0) / unitMetrics.length;
-  const cashForecast = buildCashForecast(30);
-  const minBalance = Math.min(...cashForecast.map((d) => d.balance));
+  const cashForecast = buildCashForecast();
+  const minBalance = cashForecast.length ? Math.min(...cashForecast.map((d) => d.balance)) : 0;
 
   const financial = clamp(55 + (avgLtvCac - 1.5) * 15 + (avgRomi - 100) * 0.05, 0, 100);
   const cash = clamp(50 + (minBalance > 0 ? 25 : -20), 0, 100);
@@ -396,30 +216,36 @@ export function computeHealthScore() {
   };
 }
 
-export function buildRevenueForecast(months = 6) {
-  const base = [3.95, 4.12, 4.08, 4.24, 4.38, 4.56];
-  return Array.from({ length: months }, (_, idx) => ({
-    month: `M${idx + 1}`,
-    revenue_mln: Number((base[idx] ?? (base[base.length - 1] * (1 + idx * 0.02))).toFixed(2))
-  }));
+export function buildRevenueForecast(_months = 6) {
+  return [];
 }
 
-export function simulateScenario(input: { priceDeltaPct: number; adBudgetDeltaPct: number; managerDelta: number; discountDeltaPct: number }) {
-  const baselineProfit = 820000;
-  const profitImpact = baselineProfit * (input.priceDeltaPct * 0.9 + input.adBudgetDeltaPct * 0.35 - input.discountDeltaPct * 0.7) / 100 + input.managerDelta * 38000;
-  const projectedProfit = baselineProfit + profitImpact;
-
+export function simulateScenario(_input?: unknown) {
   return {
-    baselineProfit,
-    projectedProfit: Math.round(projectedProfit),
-    deltaPct: Number((((projectedProfit - baselineProfit) / baselineProfit) * 100).toFixed(1)),
-    romiProjected: Number((132 + input.adBudgetDeltaPct * 0.5 - input.discountDeltaPct * 0.4).toFixed(1)),
-    cashflowProjected: Math.round(1180000 + profitImpact * 1.4),
-    explanation: "Сценарий учитывает изменение маржи, рекламной эффективности и нагрузки команды продаж."
+    baselineProfit: 0,
+    projectedProfit: 0,
+    deltaPct: 0,
+    romiProjected: 0,
+    cashflowProjected: 0,
+    explanation: "Недостаточно данных для сценарного моделирования."
   };
 }
 
 export function buildMarketingOverview() {
+  if (!marketingChannels.length) {
+    return {
+      index: 0,
+      period: "—",
+      spend: 0,
+      revenue: 0,
+      romi: 0,
+      cac: 0,
+      topChannels: [],
+      problemChannels: [],
+      recommendations: []
+    };
+  }
+
   const spend = marketingChannels.reduce((acc, item) => acc + item.spend, 0);
   const revenue = marketingChannels.reduce((acc, item) => acc + item.revenue, 0);
   const avgRomi = marketingChannels.reduce((acc, item) => acc + item.romi, 0) / marketingChannels.length;
@@ -443,11 +269,7 @@ export function buildMarketingOverview() {
     cac: Math.round(avgCac),
     topChannels: top,
     problemChannels: worst,
-    recommendations: [
-      "Сократить бюджет в VK Реклама до стабилизации CAC.",
-      "Усилить Яндекс.Директ на 15% при сохранении текущего ROMI.",
-      "Запустить новый A/B тест оффера для Telegram Ads."
-    ]
+    recommendations: []
   };
 }
 

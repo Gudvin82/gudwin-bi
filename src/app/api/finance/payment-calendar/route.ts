@@ -19,8 +19,8 @@ const updateSchema = z.object({
 
 export async function GET() {
   const session = await getSessionContext();
-  const items = manualPayments.filter((item) => item.workspaceId === session.workspaceId || item.workspaceId === "demo");
-  return NextResponse.json({ items, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
+  const items = manualPayments.filter((item) => item.workspaceId === session.workspaceId);
+  return NextResponse.json({ items, _meta: { mode: "prod", generatedAt: new Date().toISOString() } });
 }
 
 export async function POST(request: Request) {

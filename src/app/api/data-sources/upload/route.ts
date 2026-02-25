@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSessionContext } from "@/lib/auth/session";
+import * as XLSX from "xlsx";
 
 type PreviewRow = Record<string, string | number | null>;
 
@@ -26,6 +27,22 @@ function parseCsvPreview(text: string) {
   return { columns, rows, totalRows: Math.max(lines.length - 1, 0) };
 }
 
+function parseXlsxPreview(buffer: Buffer) {
+  const workbook = XLSX.read(buffer, { type: "buffer" });
+  const sheetName = workbook.SheetNames[0];
+  if (!sheetName) {
+    return { columns: [], rows: [], totalRows: 0 };
+  }
+  const sheet = workbook.Sheets[sheetName];
+  const rows = XLSX.utils.sheet_to_json<Record<string, string | number | null>>(sheet, { defval: "" });
+  if (!rows.length) {
+    return { columns: [], rows: [], totalRows: 0 };
+  }
+  const columns = Object.keys(rows[0] ?? {});
+  const previewRows = rows.slice(0, 20);
+  return { columns, rows: previewRows, totalRows: rows.length };
+}
+
 export async function POST(request: Request) {
   await getSessionContext();
   const formData = await request.formData();
@@ -45,18 +62,18 @@ export async function POST(request: Request) {
       fileName,
       format: "csv",
       ...preview,
-      _meta: { mode: "demo", generatedAt: new Date().toISOString() }
+      _meta: { mode: "prod", generatedAt: new Date().toISOString() }
     });
   }
 
   if (ext === "xlsx" || ext === "xls") {
-    return NextResponse.json(
-      {
-        error: "XLSX в подготовке. Пока поддерживается CSV.",
-        _meta: { mode: "demo", generatedAt: new Date().toISOString() }
-      },
-      { status: 415 }
-    );
+    const preview = parseXlsxPreview(buffer);
+    return NextResponse.json({
+      fileName,
+      format: "xlsx",
+      ...preview,
+      _meta: { mode: "prod", generatedAt: new Date().toISOString() }
+    });
   }
 
   return NextResponse.json({ error: "Поддерживаются только CSV/XLSX" }, { status: 415 });

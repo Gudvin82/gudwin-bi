@@ -28,6 +28,6 @@ export async function POST(request: Request) {
   return NextResponse.json({
     config: record,
     note: "Подключение сохранено. Данные появятся после первой синхронизации.",
-    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
+    _meta: { mode: "prod", generatedAt: new Date().toISOString() }
   });
 }

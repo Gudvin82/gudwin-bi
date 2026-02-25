@@ -25,74 +25,11 @@ export type ManualPayment = {
   note?: string;
 };
 
-const nowIso = new Date().toISOString();
-
-export const ledgerTransactions: LedgerTx[] = [
-  {
-    id: "tx_1",
-    workspaceId: "demo",
-    date: "2026-02-01",
-    direction: "income",
-    account: "Расчетный счет",
-    category: "Выручка",
-    counterparty: "ООО Альфа",
-    amount: 320000,
-    source: "manual",
-    createdAt: nowIso
-  },
-  {
-    id: "tx_2",
-    workspaceId: "demo",
-    date: "2026-02-02",
-    direction: "expense",
-    account: "Расчетный счет",
-    category: "Реклама",
-    counterparty: "Яндекс.Директ",
-    amount: 92000,
-    source: "manual",
-    createdAt: nowIso
-  },
-  {
-    id: "tx_3",
-    workspaceId: "demo",
-    date: "2026-02-03",
-    direction: "expense",
-    account: "Касса",
-    category: "Операционные",
-    counterparty: "Логистика",
-    amount: 54000,
-    source: "manual",
-    createdAt: nowIso
-  },
-  {
-    id: "tx_4",
-    workspaceId: "demo",
-    date: "2026-02-05",
-    direction: "expense",
-    account: "Расчетный счет",
-    category: "ФОТ",
-    counterparty: "Сотрудники",
-    amount: 270000,
-    source: "manual",
-    createdAt: nowIso
-  },
-  {
-    id: "tx_5",
-    workspaceId: "demo",
-    date: "2026-02-06",
-    direction: "income",
-    account: "Расчетный счет",
-    category: "Выручка",
-    counterparty: "ИП Смирнов",
-    amount: 180000,
-    source: "manual",
-    createdAt: nowIso
-  }
-];
+export const ledgerTransactions: LedgerTx[] = [];
 
 export const manualPayments: ManualPayment[] = paymentCalendar.map((item, idx) => ({
   id: `pay_${idx + 1}`,
-  workspaceId: "demo",
+  workspaceId: "default",
   date: item.date,
   type: item.type,
   counterparty: item.counterparty,

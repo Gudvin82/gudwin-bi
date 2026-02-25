@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 
 type Signal = { competitor: string; signal: string; action: string };
 
@@ -21,8 +22,20 @@ export default function CompetitorPage() {
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up bg-gradient-to-r from-fuchsia-50 to-pink-50">
-        <h2 className="text-xl font-bold">Конкурентный мониторинг</h2>
-        <p className="text-sm text-muted">Мониторинг цен, акций и сигналов конкурентов с рекомендациями действий.</p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-xl font-bold">Конкурентный мониторинг</h2>
+            <p className="text-sm text-muted">Мониторинг цен, акций и сигналов конкурентов с рекомендациями действий.</p>
+          </div>
+          <HelpPopover
+            title="Как читать сигналы"
+            items={[
+              "Сигналы показывают изменения у конкурентов.",
+              "Рекомендация — быстрый шаг, который стоит сделать.",
+              "Подключите источники, чтобы добавить больше сигналов."
+            ]}
+          />
+        </div>
       </Card>
 
       <Card>

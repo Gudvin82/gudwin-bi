@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 
 type Agent = {
   id: string;
@@ -103,8 +104,20 @@ export default function AgentsPage() {
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up">
-        <h2 className="mb-2 text-xl font-bold">ИИ-агенты</h2>
-        <p className="text-sm text-muted">Платформа для OpenClaw-агентов: поддержка, HR, продажи, маркетинг и кастомные сценарии.</p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="mb-2 text-xl font-bold">ИИ-агенты</h2>
+            <p className="text-sm text-muted">Платформа для агентов, которые берут на себя рутинные задачи и анализ.</p>
+          </div>
+          <HelpPopover
+            title="Как использовать агента"
+            items={[
+              "Выберите тип агента под задачу отдела.",
+              "Настройте доступы к данным и источникам.",
+              "Запускайте вручную или по расписанию."
+            ]}
+          />
+        </div>
       </Card>
 
       <div className="grid gap-4 lg:grid-cols-5">

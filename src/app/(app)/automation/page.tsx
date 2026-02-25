@@ -46,32 +46,14 @@ type IntegrationRef = {
   status: "active" | "error" | "draft";
 };
 
-const scenarioPresets = [
-  {
-    name: "Кассовый риск",
-    triggerType: "metric_threshold" as const,
-    metric: "cash_guard_days",
-    operator: "<" as const,
-    value: 7,
-    action: "Отправить Telegram и создать задачу владельцу"
-  },
-  {
-    name: "Падение ROMI",
-    triggerType: "metric_threshold" as const,
-    metric: "romi_total",
-    operator: "<" as const,
-    value: 20,
-    action: "Запустить ИИ-анализ маркетинга и отправить сводку"
-  },
-  {
-    name: "Просроченная дебиторка",
-    triggerType: "event" as const,
-    metric: "overdue_receivables",
-    operator: ">" as const,
-    value: 3,
-    action: "Создать задачу в CRM и уведомить менеджера"
-  }
-];
+const scenarioPresets: Array<{
+  name: string;
+  triggerType: "schedule" | "metric_threshold" | "event";
+  metric: string;
+  operator: ">" | "<" | "=";
+  value: number;
+  action: string;
+}> = [];
 const metricLabel: Record<string, string> = {
   cash_guard_days: "Дни до кассового разрыва",
   romi_total: "ROMI общий",
@@ -80,10 +62,10 @@ const metricLabel: Record<string, string> = {
 };
 
 const integrationTiles = [
-  { name: "Bitrix24", state: "Подключено", tone: "text-emerald-700 bg-emerald-50 border-emerald-200" },
+  { name: "Bitrix24", state: "Доступно", tone: "text-cyan-700 bg-cyan-50 border-cyan-200" },
   { name: "amoCRM", state: "Доступно", tone: "text-cyan-700 bg-cyan-50 border-cyan-200" },
-  { name: "Google Таблицы", state: "Подключено", tone: "text-emerald-700 bg-emerald-50 border-emerald-200" },
-  { name: "Telegram", state: "Подключено", tone: "text-emerald-700 bg-emerald-50 border-emerald-200" },
+  { name: "Google Таблицы", state: "Доступно", tone: "text-cyan-700 bg-cyan-50 border-cyan-200" },
+  { name: "Telegram", state: "Доступно", tone: "text-cyan-700 bg-cyan-50 border-cyan-200" },
   { name: "Webhook/API", state: "Доступно", tone: "text-cyan-700 bg-cyan-50 border-cyan-200" },
   { name: "Яндекс.Директ", state: "Скоро", tone: "text-amber-700 bg-amber-50 border-amber-200" }
 ];
@@ -92,14 +74,14 @@ export default function AutomationPage() {
   const [workflows, setWorkflows] = useState<Workflow[]>([]);
   const [logs, setLogs] = useState<WorkflowLog[]>([]);
   const [integrations, setIntegrations] = useState<IntegrationRef[]>([]);
-  const [name, setName] = useState("Новый сценарий");
+  const [name, setName] = useState("");
   const [triggerType, setTriggerType] = useState<"schedule" | "metric_threshold" | "event">("metric_threshold");
   const [metric, setMetric] = useState("health_score");
   const [operator, setOperator] = useState<">" | "<" | "=">("<");
-  const [value, setValue] = useState(70);
-  const [actionDescription, setActionDescription] = useState("Отправить уведомление владельцу и создать задачу");
+  const [value, setValue] = useState(0);
+  const [actionDescription, setActionDescription] = useState("");
   const [loading, setLoading] = useState(false);
-  const [selectedPreset, setSelectedPreset] = useState(scenarioPresets[0].name);
+  const [selectedPreset, setSelectedPreset] = useState("");
 
   const load = async () => {
     const res = await fetch("/api/workflows");

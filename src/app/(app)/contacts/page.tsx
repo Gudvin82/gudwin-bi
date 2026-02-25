@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 
 type SupportMessage = { id: string; from: "you" | "support"; text: string };
 
 export default function ContactsPage() {
-  const [name, setName] = useState("ООО Пример");
-  const [contact, setContact] = useState("owner@example.com");
-  const [message, setMessage] = useState("Нужна доработка модуля прогнозирования спроса и интеграции с банком.");
+  const [name, setName] = useState("");
+  const [contact, setContact] = useState("");
+  const [message, setMessage] = useState("");
   const [status, setStatus] = useState("");
   const [chatInput, setChatInput] = useState("");
   const [chat, setChat] = useState<SupportMessage[]>([
@@ -41,8 +42,20 @@ export default function ContactsPage() {
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up bg-gradient-to-r from-emerald-50 to-lime-50">
-        <h2 className="text-xl font-bold">Контакты разработчиков</h2>
-        <p className="text-sm text-muted">Связь с командой GudWin BI: поддержка, внедрение, кастомные модули.</p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-xl font-bold">Контакты разработчиков</h2>
+            <p className="text-sm text-muted">Связь с командой GudWin BI: поддержка, внедрение, кастомные модули.</p>
+          </div>
+          <HelpPopover
+            title="Когда использовать"
+            items={[
+              "Если нужна доработка или интеграция под ваш бизнес.",
+              "Чтобы обсудить внедрение и сроки.",
+              "Для вопросов по функционалу и тарифам."
+            ]}
+          />
+        </div>
       </Card>
 
       <div className="grid gap-4 xl:grid-cols-2">

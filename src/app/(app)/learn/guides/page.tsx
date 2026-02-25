@@ -1,13 +1,26 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 import { guideItems } from "@/lib/learn-content";
 
 export default function LearnGuidesPage() {
   return (
     <div className="space-y-4">
       <Card className="bg-gradient-to-r from-amber-50 to-white">
-        <h2 className="text-2xl font-extrabold tracking-tight">Гайды и статьи</h2>
-        <p className="mt-1 text-sm text-muted">Короткие материалы, чтобы быстро разобраться в метриках и сразу применить их в работе.</p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-2xl font-extrabold tracking-tight">Гайды и статьи</h2>
+            <p className="mt-1 text-sm text-muted">Короткие материалы, чтобы быстро разобраться в метриках и сразу применить их в работе.</p>
+          </div>
+          <HelpPopover
+            title="Как использовать гайды"
+            items={[
+              "Читайте инструкцию и сразу применяйте шаги.",
+              "Каждый гайд привязан к разделу продукта.",
+              "Шаги можно выполнять в любом порядке."
+            ]}
+          />
+        </div>
       </Card>
 
       <div className="space-y-3">

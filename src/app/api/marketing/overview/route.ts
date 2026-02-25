@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { buildMarketingOverview } from "@/lib/demo-os";
+import { buildMarketingOverview, marketingChannels } from "@/lib/demo-os";
 
 export async function GET() {
-  return NextResponse.json({ overview: buildMarketingOverview(), _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
+  const overview = marketingChannels.length ? buildMarketingOverview() : null;
+  return NextResponse.json({ overview, _meta: { mode: "prod", generatedAt: new Date().toISOString() } });
 }

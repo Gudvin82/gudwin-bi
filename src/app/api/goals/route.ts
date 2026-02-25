@@ -21,8 +21,8 @@ const updateTaskSchema = z.object({
 export async function GET() {
   const session = await getSessionContext();
   return NextResponse.json({
-    goals: goals.filter((item) => item.workspaceId === session.workspaceId || item.workspaceId === "demo"),
-    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
+    goals: goals.filter((item) => item.workspaceId === session.workspaceId),
+    _meta: { mode: "prod", generatedAt: new Date().toISOString() }
   });
 }
 
@@ -67,7 +67,7 @@ export async function POST(request: Request) {
   };
 
   goals.unshift(goal);
-  return NextResponse.json({ goal, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
+  return NextResponse.json({ goal, _meta: { mode: "prod", generatedAt: new Date().toISOString() } });
 }
 
 export async function PATCH(request: Request) {
@@ -85,5 +85,5 @@ export async function PATCH(request: Request) {
   task.status = input.status;
   goal.updatedAt = new Date().toISOString();
 
-  return NextResponse.json({ goal, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
+  return NextResponse.json({ goal, _meta: { mode: "prod", generatedAt: new Date().toISOString() } });
 }

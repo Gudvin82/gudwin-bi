@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
+import { HelpPopover } from "@/components/ui/help-popover";
 
 type AiResponse = {
   summary: string;
@@ -86,7 +87,17 @@ export default function AiPage() {
   return (
     <div className="space-y-4">
       <Card>
-        <h2 className="mb-3 text-lg font-semibold">ИИ-вопрос к данным</h2>
+        <div className="mb-3 flex items-start justify-between gap-3">
+          <h2 className="text-lg font-semibold">ИИ-вопрос к данным</h2>
+          <HelpPopover
+            title="Как работает ИИ-запрос"
+            items={[
+              "Опишите задачу простыми словами.",
+              "Выберите наборы данных, которые нужно анализировать.",
+              "ИИ вернёт резюме, SQL-логику и визуализацию."
+            ]}
+          />
+        </div>
         <textarea
           className="min-h-28 w-full rounded-xl border border-border p-3 text-sm"
           value={query}
