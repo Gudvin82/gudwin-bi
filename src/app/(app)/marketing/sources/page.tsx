@@ -13,6 +13,10 @@ export default function MarketingSourcesPage() {
     telegramChannel: "",
     maxChannel: ""
   });
+  const [yandexLogin, setYandexLogin] = useState("");
+  const [yandexClientId, setYandexClientId] = useState("");
+  const [yandexToken, setYandexToken] = useState("");
+  const [yandexStatus, setYandexStatus] = useState("");
 
   useEffect(() => {
     const load = async () => {
@@ -22,6 +26,29 @@ export default function MarketingSourcesPage() {
     };
     void load();
   }, []);
+
+  const connectYandex = async () => {
+    setYandexStatus("");
+    try {
+      const res = await fetch("/api/marketing/yandex/connect", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          login: yandexLogin,
+          clientId: yandexClientId,
+          token: yandexToken
+        })
+      });
+      if (!res.ok) throw new Error("Ошибка подключения Яндекс.Директ.");
+      const json = await res.json();
+      setYandexStatus(json.note ?? "Яндекс.Директ подключен. Синхронизация начнётся через 5 минут.");
+      setYandexLogin("");
+      setYandexClientId("");
+      setYandexToken("");
+    } catch {
+      setYandexStatus("Не удалось подключить Яндекс.Директ. Проверьте логин и токен.");
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -70,6 +97,37 @@ export default function MarketingSourcesPage() {
         <button className="mt-3 rounded-xl bg-accent px-3 py-2 text-sm font-semibold text-white">
           Сохранить подключения соцсетей
         </button>
+      </Card>
+
+      <Card>
+        <h3 className="mb-2 text-base font-semibold">Яндекс.Директ</h3>
+        <p className="mb-3 text-sm text-muted">
+          Подключите рекламный кабинет, чтобы получать расходы, клики и конверсии по кампаниям.
+        </p>
+        <div className="grid gap-3 md:grid-cols-3">
+          <input
+            className="rounded-xl border border-border p-2.5 text-sm"
+            placeholder="Логин в Яндекс.Директ"
+            value={yandexLogin}
+            onChange={(event) => setYandexLogin(event.target.value)}
+          />
+          <input
+            className="rounded-xl border border-border p-2.5 text-sm"
+            placeholder="Client ID приложения"
+            value={yandexClientId}
+            onChange={(event) => setYandexClientId(event.target.value)}
+          />
+          <input
+            className="rounded-xl border border-border p-2.5 text-sm"
+            placeholder="OAuth токен"
+            value={yandexToken}
+            onChange={(event) => setYandexToken(event.target.value)}
+          />
+        </div>
+        <button onClick={connectYandex} className="mt-3 rounded-xl bg-accent px-3 py-2 text-sm font-semibold text-white">
+          Подключить Яндекс.Директ
+        </button>
+        {yandexStatus ? <p className="mt-2 text-xs text-muted">{yandexStatus}</p> : null}
       </Card>
 
       <div className="space-y-2">

@@ -33,6 +33,13 @@ export default function SettingsPage() {
   const [inviteHint, setInviteHint] = useState("");
   const [profileHint, setProfileHint] = useState("");
   const [authHint, setAuthHint] = useState("");
+  const [telegramToken, setTelegramToken] = useState("");
+  const [telegramChatId, setTelegramChatId] = useState("");
+  const [telegramStatus, setTelegramStatus] = useState("");
+  const [botName, setBotName] = useState("");
+  const [botToken, setBotToken] = useState("");
+  const [botGroups, setBotGroups] = useState("");
+  const [botStatus, setBotStatus] = useState("");
 
   const roleDescription = useMemo(() => {
     if (role === "owner") return "Полный доступ ко всем разделам, ключам и правам.";
@@ -61,6 +68,45 @@ export default function SettingsPage() {
         ? "Профиль сохранён. Тёмная тема временно отключена и будет включена в следующем релизе."
         : "Профиль и предпочтения интерфейса сохранены."
     );
+  };
+
+  const saveTelegramConfig = async () => {
+    setTelegramStatus("");
+    try {
+      const res = await fetch("/api/telegram/connect", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ botToken: telegramToken, chatId: telegramChatId })
+      });
+      if (!res.ok) throw new Error("Ошибка подключения Telegram.");
+      setTelegramStatus("Telegram подключен. Ежедневные сводки будут отправляться в этот чат.");
+      setTelegramToken("");
+      setTelegramChatId("");
+    } catch {
+      setTelegramStatus("Не удалось подключить Telegram. Проверьте токен и chat_id.");
+    }
+  };
+
+  const createBot = async () => {
+    setBotStatus("");
+    try {
+      const res = await fetch("/api/telegram/bot-create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          botName,
+          botToken,
+          groups: botGroups.split(",").map((item) => item.trim()).filter(Boolean)
+        })
+      });
+      if (!res.ok) throw new Error("Ошибка подключения бота.");
+      setBotStatus("Бот создан и подключен. Группы добавлены в рассылку.");
+      setBotName("");
+      setBotToken("");
+      setBotGroups("");
+    } catch {
+      setBotStatus("Не удалось создать бота. Проверьте токен и группы.");
+    }
   };
 
   useEffect(() => {
@@ -246,10 +292,23 @@ export default function SettingsPage() {
         <h2 className="mb-3 text-lg font-semibold">Telegram агент</h2>
         <p className="mb-3 text-sm text-muted">1) Создайте бота через BotFather 2) Вставьте токен 3) Укажите chat_id для ежедневных отчётов.</p>
         <div className="grid gap-3 md:grid-cols-2">
-          <input className="rounded-xl border border-border p-2.5 text-sm" placeholder="Токен бота (шифруется)" />
-          <input className="rounded-xl border border-border p-2.5 text-sm" placeholder="Основной chat_id" />
+          <input
+            className="rounded-xl border border-border p-2.5 text-sm"
+            placeholder="Токен бота (шифруется)"
+            value={telegramToken}
+            onChange={(event) => setTelegramToken(event.target.value)}
+          />
+          <input
+            className="rounded-xl border border-border p-2.5 text-sm"
+            placeholder="Основной chat_id"
+            value={telegramChatId}
+            onChange={(event) => setTelegramChatId(event.target.value)}
+          />
         </div>
-        <button className="mt-3 rounded-xl bg-accent px-3 py-2 text-sm font-semibold text-white">Сохранить Telegram настройки</button>
+        <button onClick={saveTelegramConfig} className="mt-3 rounded-xl bg-accent px-3 py-2 text-sm font-semibold text-white">
+          Сохранить Telegram настройки
+        </button>
+        {telegramStatus ? <p className="mt-2 text-xs text-muted">{telegramStatus}</p> : null}
       </Card>
 
       <Card>
@@ -258,14 +317,30 @@ export default function SettingsPage() {
           Подключите своего бота к аналитике: бот сможет отвечать по KPI и отправлять сводки в выбранные группы.
         </p>
         <div className="grid gap-3 md:grid-cols-2">
-          <input className="rounded-xl border border-border p-2.5 text-sm" placeholder="Название бота" />
-          <input className="rounded-xl border border-border p-2.5 text-sm" placeholder="Токен бота (шифруется)" />
-          <input className="rounded-xl border border-border p-2.5 text-sm md:col-span-2" placeholder="Группы/чаты для аналитики (через запятую: @sales, @owner, -100...)" />
+          <input
+            className="rounded-xl border border-border p-2.5 text-sm"
+            placeholder="Название бота"
+            value={botName}
+            onChange={(event) => setBotName(event.target.value)}
+          />
+          <input
+            className="rounded-xl border border-border p-2.5 text-sm"
+            placeholder="Токен бота (шифруется)"
+            value={botToken}
+            onChange={(event) => setBotToken(event.target.value)}
+          />
+          <input
+            className="rounded-xl border border-border p-2.5 text-sm md:col-span-2"
+            placeholder="Группы/чаты для аналитики (через запятую: @sales, @owner, -100...)"
+            value={botGroups}
+            onChange={(event) => setBotGroups(event.target.value)}
+          />
         </div>
         <div className="mt-3 flex flex-wrap gap-2">
-          <button className="rounded-xl bg-accent px-3 py-2 text-sm font-semibold text-white">Создать и подключить бота</button>
+          <button onClick={createBot} className="rounded-xl bg-accent px-3 py-2 text-sm font-semibold text-white">Создать и подключить бота</button>
           <button className="rounded-xl border border-border px-3 py-2 text-sm font-semibold">Проверить доступ к группам</button>
         </div>
+        {botStatus ? <p className="mt-2 text-xs text-muted">{botStatus}</p> : null}
       </Card>
     </div>
   );

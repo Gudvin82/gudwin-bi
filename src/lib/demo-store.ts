@@ -143,6 +143,27 @@ export type CalendarActionLog = {
   createdAt: string;
 };
 
+export type TelegramConfig = {
+  id: string;
+  workspaceId: string;
+  botName?: string;
+  tokenMasked: string;
+  chatId: string;
+  groups?: string[];
+  createdAt: string;
+  status: "connected" | "needs_attention";
+};
+
+export type YandexDirectConfig = {
+  id: string;
+  workspaceId: string;
+  login: string;
+  clientId: string;
+  tokenMasked: string;
+  createdAt: string;
+  status: "connected" | "needs_refresh";
+};
+
 const now = new Date().toISOString();
 
 export const advisorSessions: AdvisorSession[] = [
@@ -215,6 +236,9 @@ export const agentLogs: AgentLog[] = [
 ];
 
 export const hireRequests: HireRequest[] = [];
+
+export const telegramConfigs: TelegramConfig[] = [];
+export const yandexDirectConfigs: YandexDirectConfig[] = [];
 
 export const workflows: Workflow[] = [
   {
