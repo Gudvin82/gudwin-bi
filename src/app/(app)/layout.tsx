@@ -39,8 +39,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         </div>
         <Topbar onMenuClick={() => setMobileNavOpen(true)} />
         <div className="premium-stage">{children}</div>
-        <GlobalAssistant />
       </main>
+      <GlobalAssistant />
       <MobileNav />
     </div>
   );
