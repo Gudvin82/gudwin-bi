@@ -5,6 +5,7 @@ import { Area, AreaChart, Bar, BarChart, CartesianGrid, ResponsiveContainer, Too
 import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
 import { filterFields, filterOperators, metricCatalog, metricGroups } from "@/lib/metrics-catalog";
+import { uid } from "@/lib/utils/uid";
 
 type MetricId = string;
 type DatasetId = "sales" | "marketing" | "finance";
@@ -63,8 +64,6 @@ type ReportTemplate = {
   chartType: ChartId;
   filters: FilterRow[];
 };
-
-const uid = () => (typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `id-${Date.now()}-${Math.round(Math.random() * 1e6)}`);
 
 const emptyFilter = (): FilterRow => ({
   id: uid(),
@@ -125,19 +124,24 @@ export default function ReportBuilderPage() {
   const buildPreview = async () => {
     setLoading(true);
     setStatus("");
-    const res = await fetch("/api/report-builder/preview", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ dataset, period, groupBy, metrics, filters })
-    });
-    if (!res.ok) {
-      setStatus("Не удалось построить отчёт. Проверьте параметры и попробуйте снова.");
+    try {
+      const res = await fetch("/api/report-builder/preview", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dataset, period, groupBy, metrics, filters })
+      });
+      if (!res.ok) {
+        setStatus("Не удалось построить отчёт. Проверьте параметры и попробуйте снова.");
+        return;
+      }
+      const json = (await res.json()) as PreviewResponse;
+      setPreview(json);
+    } catch {
+      setStatus("Не удалось построить отчёт. Попробуйте ещё раз.");
+      setPreview(null);
+    } finally {
       setLoading(false);
-      return;
     }
-    const json = (await res.json()) as PreviewResponse;
-    setPreview(json);
-    setLoading(false);
   };
 
   const saveTemplate = async () => {
@@ -155,32 +159,40 @@ export default function ReportBuilderPage() {
     const nextTemplates = [localTemplate, ...templates];
     setTemplates(nextTemplates);
     localStorage.setItem(storeKey, JSON.stringify(nextTemplates));
-    const res = await fetch("/api/report-templates", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name,
-        prompt,
-        datasetIds: [dataset],
-        channels: [channel],
-        recipients: recipients.split(",").map((item) => item.trim()).filter(Boolean),
-        schedule: scheduleEnabled
-          ? {
-              frequency,
-              time,
-              dayOfWeek: frequency === "weekly" ? dayOfWeek : undefined,
-              dayOfMonth: frequency === "monthly" ? dayOfMonth : undefined
-            }
-          : undefined,
-        filters
-      })
-    });
-    setStatus(res.ok ? "Шаблон отчёта сохранён." : "Не удалось сохранить шаблон.");
+    try {
+      const res = await fetch("/api/report-templates", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          prompt,
+          datasetIds: [dataset],
+          channels: [channel],
+          recipients: recipients.split(",").map((item) => item.trim()).filter(Boolean),
+          schedule: scheduleEnabled
+            ? {
+                frequency,
+                time,
+                dayOfWeek: frequency === "weekly" ? dayOfWeek : undefined,
+                dayOfMonth: frequency === "monthly" ? dayOfMonth : undefined
+              }
+            : undefined,
+          filters
+        })
+      });
+      setStatus(res.ok ? "Шаблон отчёта сохранён." : "Не удалось сохранить шаблон.");
+    } catch {
+      setStatus("Не удалось сохранить шаблон. Проверьте соединение.");
+    }
   };
 
   const exportPdf = async () => {
-    await fetch("/api/export/pdf", { method: "POST" });
-    window.print();
+    try {
+      await fetch("/api/export/pdf", { method: "POST" });
+      setStatus("PDF формируется. Проверьте раздел отчётов.");
+    } catch {
+      setStatus("Не удалось сформировать PDF. Попробуйте позже.");
+    }
   };
 
   const chartMetric = useMemo<MetricId>(() => {

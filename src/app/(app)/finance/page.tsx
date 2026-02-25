@@ -28,22 +28,27 @@ export default function FinancePage() {
   const [marketing, setMarketing] = useState<MarketingOverview | null>(null);
   const [scenario, setScenario] = useState({ priceDeltaPct: 3, adBudgetDeltaPct: 10, managerDelta: 1, discountDeltaPct: 0 });
   const [scenarioResult, setScenarioResult] = useState<{ projectedProfit: number; deltaPct: number; romiProjected: number; cashflowProjected: number; explanation: string } | null>(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const load = async () => {
-      const [m, c, l, p, mo] = await Promise.all([
-        fetch("/api/finance/unit-metrics").then((r) => r.json()),
-        fetch("/api/finance/cash-guard").then((r) => r.json()),
-        fetch("/api/finance/money-leaks").then((r) => r.json()),
-        fetch("/api/finance/payment-calendar").then((r) => r.json()),
-        fetch("/api/marketing/overview").then((r) => r.json())
-      ]);
+      try {
+        const [m, c, l, p, mo] = await Promise.all([
+          fetch("/api/finance/unit-metrics").then((r) => r.json()),
+          fetch("/api/finance/cash-guard").then((r) => r.json()),
+          fetch("/api/finance/money-leaks").then((r) => r.json()),
+          fetch("/api/finance/payment-calendar").then((r) => r.json()),
+          fetch("/api/marketing/overview").then((r) => r.json())
+        ]);
 
-      setMetrics(m.metrics ?? []);
-      setCash(c.forecast30 ?? []);
-      setLeaks(l.leaks ?? []);
-      setPayments(p.items ?? []);
-      setMarketing(mo.overview ?? null);
+        setMetrics(m.metrics ?? []);
+        setCash(c.forecast30 ?? []);
+        setLeaks(l.leaks ?? []);
+        setPayments(p.items ?? []);
+        setMarketing(mo.overview ?? null);
+      } catch {
+        setError("Не удалось обновить данные. Показаны последние демо-значения.");
+      }
     };
 
     void load();
@@ -60,13 +65,18 @@ export default function FinancePage() {
   );
 
   const runScenario = async () => {
-    const res = await fetch("/api/finance/scenario", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(scenario)
-    });
-    const json = await res.json();
-    setScenarioResult(json.scenario ?? null);
+    try {
+      const res = await fetch("/api/finance/scenario", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(scenario)
+      });
+      const json = await res.json();
+      setScenarioResult(json.scenario ?? null);
+    } catch {
+      setScenarioResult(null);
+      setError("Не удалось рассчитать сценарий. Попробуйте позже.");
+    }
   };
 
   return (
@@ -76,6 +86,7 @@ export default function FinancePage() {
           <div>
             <h2 className="text-xl font-bold">Финансы</h2>
             <p className="text-sm text-muted">Здесь вы видите прогноз денег, юнит-экономику и зоны потери прибыли.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
             <Link href="/automation" className="mt-2 inline-flex rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700">
               Создать правило из финансовой метрики
             </Link>
@@ -258,10 +269,22 @@ export default function FinancePage() {
         <Card id="finance-scenario">
           <h3 className="mb-3 text-base font-semibold">Сценарный симулятор</h3>
           <div className="grid gap-2 sm:grid-cols-2">
-            <input type="number" value={scenario.priceDeltaPct} onChange={(e) => setScenario({ ...scenario, priceDeltaPct: Number(e.target.value) })} className="rounded-xl border border-border p-2 text-sm" placeholder="Цена %" />
-            <input type="number" value={scenario.adBudgetDeltaPct} onChange={(e) => setScenario({ ...scenario, adBudgetDeltaPct: Number(e.target.value) })} className="rounded-xl border border-border p-2 text-sm" placeholder="Реклама %" />
-            <input type="number" value={scenario.managerDelta} onChange={(e) => setScenario({ ...scenario, managerDelta: Number(e.target.value) })} className="rounded-xl border border-border p-2 text-sm" placeholder="Менеджеры +/-" />
-            <input type="number" value={scenario.discountDeltaPct} onChange={(e) => setScenario({ ...scenario, discountDeltaPct: Number(e.target.value) })} className="rounded-xl border border-border p-2 text-sm" placeholder="Скидка %" />
+            <label className="space-y-1 text-xs text-muted">
+              Цена, %
+              <input type="number" value={scenario.priceDeltaPct} onChange={(e) => setScenario({ ...scenario, priceDeltaPct: Number(e.target.value) })} className="w-full rounded-xl border border-border p-2 text-sm text-slate-900" placeholder="Например, +5" />
+            </label>
+            <label className="space-y-1 text-xs text-muted">
+              Рекламный бюджет, %
+              <input type="number" value={scenario.adBudgetDeltaPct} onChange={(e) => setScenario({ ...scenario, adBudgetDeltaPct: Number(e.target.value) })} className="w-full rounded-xl border border-border p-2 text-sm text-slate-900" placeholder="Например, +10" />
+            </label>
+            <label className="space-y-1 text-xs text-muted">
+              Менеджеры, шт.
+              <input type="number" value={scenario.managerDelta} onChange={(e) => setScenario({ ...scenario, managerDelta: Number(e.target.value) })} className="w-full rounded-xl border border-border p-2 text-sm text-slate-900" placeholder="+1 / -1" />
+            </label>
+            <label className="space-y-1 text-xs text-muted">
+              Скидка, %
+              <input type="number" value={scenario.discountDeltaPct} onChange={(e) => setScenario({ ...scenario, discountDeltaPct: Number(e.target.value) })} className="w-full rounded-xl border border-border p-2 text-sm text-slate-900" placeholder="Например, -3" />
+            </label>
           </div>
           <button onClick={runScenario} className="mt-3 rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white">Рассчитать сценарий</button>
           {scenarioResult ? (

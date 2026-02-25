@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { uid } from "@/lib/utils/uid";
 import { Card } from "@/components/ui/card";
 
 type AdvisorRole = "business" | "accountant" | "financier";
@@ -55,6 +56,8 @@ export default function AdvisorPage() {
   const [loading, setLoading] = useState(false);
   const [decisionStatus, setDecisionStatus] = useState<string>("");
   const [decisions, setDecisions] = useState<Array<{ id: string; recommendation: string; status: string }>>([]);
+  const [error, setError] = useState("");
+  const [actionStatus, setActionStatus] = useState("");
   const appendMessages = (incoming: ChatMessage[]) => {
     setMessages((prev) => [...prev, ...incoming].slice(-30));
   };
@@ -63,16 +66,20 @@ export default function AdvisorPage() {
 
   useEffect(() => {
     const load = async () => {
-      const res = await fetch("/api/advisor/sessions");
-      const json = (await res.json()) as { sessions: SessionItem[] };
-      setSessions(json.sessions);
-      if (json.sessions[0]) {
-        setActiveSessionId(json.sessions[0].id);
-      }
+      try {
+        const res = await fetch("/api/advisor/sessions");
+        const json = (await res.json()) as { sessions: SessionItem[] };
+        setSessions(json.sessions);
+        if (json.sessions[0]) {
+          setActiveSessionId(json.sessions[0].id);
+        }
 
-      const dRes = await fetch("/api/advisor/decision-log");
-      const dJson = (await dRes.json()) as { items: Array<{ id: string; recommendation: string; status: string }> };
-      setDecisions(dJson.items ?? []);
+        const dRes = await fetch("/api/advisor/decision-log");
+        const dJson = (await dRes.json()) as { items: Array<{ id: string; recommendation: string; status: string }> };
+        setDecisions(dJson.items ?? []);
+      } catch {
+        setError("Не удалось обновить данные советника. Показаны демо-сессии.");
+      }
     };
 
     void load();
@@ -123,7 +130,7 @@ export default function AdvisorPage() {
     }
 
     setLoading(true);
-    const userMessage: ChatMessage = { id: crypto.randomUUID(), role: "user", text: input };
+    const userMessage: ChatMessage = { id: uid("chat"), role: "user", text: input };
     appendMessages([userMessage]);
 
     const res = await fetch("/api/advisor/query", {
@@ -133,7 +140,7 @@ export default function AdvisorPage() {
     });
 
     if (!res.ok) {
-      appendMessages([{ id: crypto.randomUUID(), role: "assistant", text: "Ошибка запроса к консультанту. Попробуйте снова." }]);
+      appendMessages([{ id: uid("chat"), role: "assistant", text: "Ошибка запроса к консультанту. Попробуйте снова." }]);
       setLoading(false);
       return;
     }
@@ -144,7 +151,7 @@ export default function AdvisorPage() {
     };
     appendMessages([
       {
-        id: crypto.randomUUID(),
+        id: uid("chat"),
         role: "assistant",
         text: json.summary,
         structured: {
@@ -175,6 +182,11 @@ export default function AdvisorPage() {
     }
   };
 
+  const notifyAction = (text: string) => {
+    setActionStatus(text);
+    setTimeout(() => setActionStatus(""), 4000);
+  };
+
   return (
     <div className="space-y-4">
       <Card className="animate-fade-up bg-gradient-to-r from-violet-50 via-cyan-50/70 to-white">
@@ -183,6 +195,7 @@ export default function AdvisorPage() {
             <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-violet-700">Центр советника</p>
             <h2 className="text-2xl font-extrabold tracking-tight">ИИ-советник</h2>
             <p className="text-sm text-muted">Бизнес-консультант, ИИ-бухгалтер и ИИ-финансист в одном рабочем пространстве.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
           </div>
           <div className="hidden flex-wrap gap-2 sm:flex">
             <span className="rounded-full border border-violet-200 bg-white px-3 py-1 text-xs text-violet-700">Контекст</span>
@@ -281,8 +294,18 @@ export default function AdvisorPage() {
                     ))}
                   </ul>
                   <div className="mt-3 flex gap-2">
-                    <button className="rounded-lg border border-border px-2 py-1 text-xs">Создать дашборд по теме</button>
-                    <button className="rounded-lg border border-border px-2 py-1 text-xs">Поставить задачу агенту</button>
+                    <button
+                      onClick={() => notifyAction("Черновик дашборда создан. Откройте «Дашборды» для настройки.")}
+                      className="rounded-lg border border-border px-2 py-1 text-xs"
+                    >
+                      Создать дашборд по теме
+                    </button>
+                    <button
+                      onClick={() => notifyAction("Задача отправлена агенту. Статус появится в разделе «Сценарии и агенты».")}
+                      className="rounded-lg border border-border px-2 py-1 text-xs"
+                    >
+                      Поставить задачу агенту
+                    </button>
                   </div>
                 </div>
               ) : null}
@@ -313,6 +336,7 @@ export default function AdvisorPage() {
           </button>
         </div>
         {decisionStatus ? <p className="mt-2 text-xs text-muted">{decisionStatus}</p> : null}
+        {actionStatus ? <p className="mt-2 text-xs font-semibold text-emerald-700">{actionStatus}</p> : null}
       </Card>
 
       <Card className="animate-fade-up bg-white/95">

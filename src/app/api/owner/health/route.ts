@@ -6,6 +6,7 @@ export async function GET() {
   return NextResponse.json({
     health,
     focusOfDay: "Снизить cash risk: закрыть 3 просроченные дебиторки до 18:00.",
-    problemOfWeek: "ROMI в marketplace канале ниже целевого порога."
+    problemOfWeek: "ROMI в marketplace канале ниже целевого порога.",
+    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
   });
 }

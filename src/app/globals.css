@@ -167,6 +167,11 @@ html[data-theme="dark"] .premium-header {
   position: relative;
 }
 
+.recharts-responsive-container {
+  min-height: 180px;
+  min-width: 240px;
+}
+
 html[data-theme="dark"] .chart-shell {
   border: 1px solid rgba(71, 85, 105, 0.45);
   background: linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.86));

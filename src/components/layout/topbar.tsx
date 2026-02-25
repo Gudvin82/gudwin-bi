@@ -35,7 +35,7 @@ const accentMap: Record<string, { title: string; chip: string; ring: string }> =
   watch: { title: "text-rose-900", chip: "from-rose-50 to-orange-50 text-rose-700", ring: "ring-rose-200/70" }
 };
 
-export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
+export function Topbar({ onMenuClick, showMenuButton = true }: { onMenuClick?: () => void; showMenuButton?: boolean }) {
   const pathname = usePathname();
   const [online, setOnline] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -94,14 +94,16 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
     <header className={`premium-header relative mb-3 flex flex-wrap items-center justify-between gap-2 rounded-2xl p-2 backdrop-blur-xl ring-1 ${accent.ring} sm:mb-4 sm:gap-3 sm:p-3`}>
       <div className="min-w-0">
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={onMenuClick}
-            aria-label="Открыть меню"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white/90 text-slate-700 shadow-sm md:hidden"
-          >
-            <Menu size={18} />
-          </button>
+          {showMenuButton ? (
+            <button
+              type="button"
+              onClick={onMenuClick}
+              aria-label="Открыть меню"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white/90 text-slate-700 shadow-sm md:hidden"
+            >
+              <Menu size={18} />
+            </button>
+          ) : null}
           <h1 className={`premium-title truncate text-base font-extrabold sm:text-2xl ${accent.title}`}>{header.title}</h1>
         </div>
         <p className="premium-subtitle mt-1 hidden line-clamp-2 text-sm lg:block">{header.subtitle}</p>

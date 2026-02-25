@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PIN_COOKIE_NAME, PIN_COOKIE_VALUE } from "@/lib/auth/pin";
+import { SESSION_COOKIE_NAME, verifySession } from "@/lib/auth/session-cookie";
 
 const PUBLIC_PATHS = ["/pin"];
 const PUBLIC_API_PATHS = ["/api/auth/pin", "/api/auth/pin-form", "/api/health", "/api/telegram/webhook"];
@@ -25,8 +25,8 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  const cookieValue = req.cookies.get(PIN_COOKIE_NAME)?.value;
-  if (cookieValue === PIN_COOKIE_VALUE) {
+  const cookieValue = req.cookies.get(SESSION_COOKIE_NAME)?.value;
+  if (verifySession(cookieValue)) {
     return NextResponse.next();
   }
 

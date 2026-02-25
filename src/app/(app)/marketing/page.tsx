@@ -20,12 +20,18 @@ type Overview = {
 
 export default function MarketingOverviewPage() {
   const [overview, setOverview] = useState<Overview | null>(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const load = async () => {
-      const res = await fetch("/api/marketing/overview");
-      const json = await res.json();
-      setOverview(json.overview ?? null);
+      try {
+        const res = await fetch("/api/marketing/overview");
+        if (!res.ok) throw new Error("load failed");
+        const json = await res.json();
+        setOverview(json.overview ?? null);
+      } catch {
+        setError("Не удалось обновить данные. Показаны демо-значения.");
+      }
     };
     void load();
   }, []);
@@ -45,6 +51,7 @@ export default function MarketingOverviewPage() {
             <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-700">Маркетинговый кабинет</p>
             <h2 className="text-2xl font-extrabold tracking-tight">Маркетинговый кабинет</h2>
             <p className="mt-1 text-sm text-muted">Как маркетинг влияет на деньги и прибыль: что усиливать, а что немедленно останавливать.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
             <Link href="/automation" className="mt-2 inline-flex rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700">
               Создать правило из маркетинговой метрики
             </Link>

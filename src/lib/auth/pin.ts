@@ -1,6 +1,9 @@
-export const PIN_COOKIE_NAME = "gw_portal_pin";
-export const PIN_COOKIE_VALUE = "ok";
-
 export function getPortalPin() {
-  return process.env.PORTAL_PIN ?? "0000";
+  const pin = process.env.PORTAL_PIN;
+  if (process.env.NODE_ENV === "production") {
+    if (!pin || pin.trim().length < 4 || pin.trim() === "0000") {
+      throw new Error("PORTAL_PIN не задан или слишком простой.");
+    }
+  }
+  return pin ?? "0000";
 }

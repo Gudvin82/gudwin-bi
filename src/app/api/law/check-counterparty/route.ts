@@ -13,13 +13,14 @@ export async function POST(request: Request) {
 
   return NextResponse.json({
     inn,
-    source: "API-ФНС",
+    source: "demo",
     status: risk,
     comment,
     profile: {
       company_status: risk === "red" ? "Есть признаки высокого риска" : "Действующая компания",
       risk_factors: risk === "red" ? ["массовый директор", "признаки недостоверных сведений"] : risk === "yellow" ? ["требуется доп.проверка отчетности"] : ["критичные риски не выявлены"],
       monitor_available: true
-    }
+    },
+    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
   });
 }

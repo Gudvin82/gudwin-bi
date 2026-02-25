@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { PIN_COOKIE_NAME, PIN_COOKIE_VALUE } from "@/lib/auth/pin";
+import { SESSION_COOKIE_NAME, verifySession } from "@/lib/auth/session-cookie";
 import { AuthEntry } from "@/components/auth/auth-entry";
 
 type PinPageProps = {
@@ -12,7 +12,7 @@ export default async function PinPage({ searchParams }: PinPageProps) {
   const nextPath = params.next && params.next.startsWith("/") ? params.next : "/owner";
   const isError = params.error === "invalid";
   const cookieStore = await cookies();
-  if (cookieStore.get(PIN_COOKIE_NAME)?.value === PIN_COOKIE_VALUE) {
+  if (verifySession(cookieStore.get(SESSION_COOKIE_NAME)?.value)) {
     redirect(nextPath);
   }
 

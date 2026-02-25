@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
 import { filterFields, filterOperators, metricCatalog, metricGroups } from "@/lib/metrics-catalog";
+import { uid } from "@/lib/utils/uid";
 
 type WidgetType = "kpi" | "line" | "bar" | "table";
 type WidgetSize = "half" | "full";
@@ -33,7 +34,6 @@ type DashboardTemplate = {
 };
 
 const metricOptions = metricCatalog;
-const uid = () => (typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `id-${Date.now()}-${Math.round(Math.random() * 1e6)}`);
 
 const emptyFilter = (): FilterRow => ({
   id: uid(),

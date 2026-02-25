@@ -37,11 +37,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <div className="hidden md:block">
           <Breadcrumbs />
         </div>
-        <Topbar onMenuClick={() => setMobileNavOpen(true)} />
+        <Topbar onMenuClick={() => setMobileNavOpen(true)} showMenuButton={false} />
         <div className="premium-stage">{children}</div>
       </main>
       <GlobalAssistant />
-      <MobileNav />
+      <MobileNav onMenuOpen={() => setMobileNavOpen(true)} />
     </div>
   );
 }

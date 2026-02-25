@@ -42,8 +42,7 @@ const sections: NavSection[] = [
       { href: "/finance", label: "Юнит-экономика и касса" },
       { href: "/finance/accounting", label: "Финучет и отчеты" },
       { href: "/finance/debts", label: "Долги и займы" },
-      { href: "/finance/bank", label: "Смарт Банк" },
-      { href: "/calendar", label: "Платежный календарь" }
+      { href: "/finance/bank", label: "Смарт Банк" }
     ]
   },
   {
@@ -108,7 +107,6 @@ const sections: NavSection[] = [
     matches: ["/automation"],
     children: [
       { href: "/automation", label: "Конструктор сценариев" },
-      { href: "/calendar", label: "Календарь и встречи" },
       { href: "/automation/templates", label: "Готовые шаблоны" }
     ]
   },
@@ -152,10 +150,11 @@ const sections: NavSection[] = [
     href: "/watch",
     label: "Мониторинг",
     icon: AlertTriangle,
-    matches: ["/watch", "/monitoring"],
+    matches: ["/watch", "/monitoring", "/competitor"],
     children: [
       { href: "/watch", label: "События и алерты" },
-      { href: "/watch/auto-actions", label: "Авто-реакции" }
+      { href: "/watch/auto-actions", label: "Авто-реакции" },
+      { href: "/competitor", label: "Мониторинг конкурентов" }
     ]
   },
   {
@@ -163,7 +162,7 @@ const sections: NavSection[] = [
     href: "/integrations",
     label: "Интеграции",
     icon: Link2,
-    matches: ["/integrations", "/competitor", "/agents", "/connect"],
+    matches: ["/integrations", "/agents", "/connect"],
     children: [
       { href: "/integrations", label: "Подключенные системы" },
       { href: "/connect", label: "Автоправила (если → то)" },

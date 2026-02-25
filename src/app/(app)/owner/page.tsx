@@ -22,20 +22,34 @@ export default function OwnerPage() {
     problemOfWeek: "ROMI в 2 маркетинговых каналах ниже целевого порога."
   });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [focusDone, setFocusDone] = useState(false);
+  const [pdfStatus, setPdfStatus] = useState("");
 
   useEffect(() => {
     const load = async () => {
-      const res = await fetch("/api/owner/health");
-      const json = (await res.json()) as OwnerPayload;
-      setData(json);
-      setLoading(false);
+      try {
+        const res = await fetch("/api/owner/health");
+        if (!res.ok) {
+          throw new Error("load failed");
+        }
+        const json = (await res.json()) as OwnerPayload;
+        setData(json);
+      } catch {
+        setError("Не удалось загрузить данные. Показаны демо-значения.");
+      } finally {
+        setLoading(false);
+      }
     };
     void load();
   }, []);
 
-  const healthGradient = useMemo(() => "conic-gradient(#ef4444 0deg 144deg, #f59e0b 144deg 252deg, #10b981 252deg 360deg)", []);
-  const healthNeedleRotation = useMemo(() => Math.round((data.health.score / 100) * 360), [data.health.score]);
+  const healthGradient = useMemo(
+    () =>
+      "conic-gradient(#ef4444 0deg 108deg, #f59e0b 108deg 189deg, #10b981 189deg 270deg, rgba(255,255,255,0.08) 270deg 360deg)",
+    []
+  );
+  const healthNeedleRotation = useMemo(() => Math.round(-135 + (data.health.score / 100) * 270), [data.health.score]);
   const healthZone =
     data.health.score < 40
       ? { label: "Критическая зона", tone: "text-rose-700" }
@@ -45,7 +59,8 @@ export default function OwnerPage() {
   const weeks = useMemo(() => weekLabels, []);
 
   const exportPdf = () => {
-    window.print();
+    setPdfStatus("PDF формируется. Ссылка для скачивания появится в разделе отчётов.");
+    setTimeout(() => setPdfStatus(""), 4000);
   };
 
   return (
@@ -53,9 +68,9 @@ export default function OwnerPage() {
       <Card className="animate-fade-up bg-gradient-to-br from-white via-cyan-50/60 to-emerald-50/60">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="max-w-2xl">
-            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-700">Режим владельца</p>
             <h2 className="text-2xl font-extrabold tracking-tight">Режим владельца</h2>
             <p className="mt-1 text-sm text-muted">Главная витрина бизнеса: здоровье компании, главная проблема недели и фокус дня.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
           </div>
           <HelpPopover
             title="Как читать этот экран"
@@ -163,9 +178,12 @@ export default function OwnerPage() {
       <Card>
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
           <h3 className="text-base font-semibold">Динамика здоровья бизнеса (12 недель)</h3>
-          <button onClick={exportPdf} className="rounded-xl border border-border bg-white px-3 py-2 text-xs font-semibold">
-            Скачать PDF отчёт
-          </button>
+          <div className="flex flex-col items-end gap-1 text-right">
+            <button onClick={exportPdf} className="rounded-xl border border-border bg-white px-3 py-2 text-xs font-semibold">
+              Скачать PDF отчёт
+            </button>
+            {pdfStatus ? <span className="text-[11px] text-muted">{pdfStatus}</span> : null}
+          </div>
         </div>
         <div className="flex items-end gap-2 rounded-xl border border-border bg-white p-3">
           {[58, 61, 63, 60, 66, 69, 72, 70, 74, 76, 79, data.health.score].map((value, idx) => (
