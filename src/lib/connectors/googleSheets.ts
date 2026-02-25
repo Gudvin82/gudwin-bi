@@ -5,6 +5,7 @@ const schema = z.object({
   sheetUrl: z.string().url(),
   range: z.string().default("A:Z")
 });
+type GoogleSheetsConfig = z.infer<typeof schema>;
 
 export const googleSheetsConnector: DataSourceConnector = {
   type: "google_sheets",
@@ -12,7 +13,7 @@ export const googleSheetsConnector: DataSourceConnector = {
     schema.parse(input);
   },
   async sync(config) {
-    const parsed = schema.parse(config);
+    const parsed: GoogleSheetsConfig = schema.parse(config);
     const sheetIdMatch = parsed.sheetUrl.match(/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
     if (!sheetIdMatch) {
       return {
