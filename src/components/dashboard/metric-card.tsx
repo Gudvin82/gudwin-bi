@@ -13,7 +13,7 @@ export function MetricCard({ title, value, delta }: { title: string; value: stri
           ))}
         </div>
       </div>
-      <p className="premium-title mb-2 text-3xl font-extrabold">{value}</p>
+      <p className="premium-title mb-2 text-3xl font-extrabold text-slate-900 sm:text-4xl">{value}</p>
       <Badge className="shadow-sm">{delta}</Badge>
     </Card>
   );

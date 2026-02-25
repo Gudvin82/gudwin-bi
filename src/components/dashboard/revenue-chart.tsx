@@ -23,7 +23,7 @@ export function RevenueChart() {
   return (
     <Card className="col-span-12 lg:col-span-8">
       <h3 className="mb-4 text-base font-semibold">Выручка по месяцам</h3>
-      <div className="h-72">
+      <div className="chart-shell h-72">
         {!mounted ? (
           <div className="skeleton h-full w-full" />
         ) : (

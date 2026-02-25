@@ -61,7 +61,7 @@ export function DashboardShowcase() {
           <p className="text-xs text-muted">Динамика выручки</p>
           <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">+8.5%</span>
         </div>
-        <div className="h-44">
+        <div className="chart-shell h-44">
           <ResponsiveContainer width="100%" height="100%" minWidth={240} minHeight={160}>
             <AreaChart data={revenueData}>
               <defs>
@@ -85,7 +85,7 @@ export function DashboardShowcase() {
           <p className="text-xs text-muted">Каналы продаж</p>
           <span className="rounded-full bg-cyan-100 px-2 py-0.5 text-[10px] font-semibold text-cyan-700">ТОП-4</span>
         </div>
-        <div className="h-44">
+        <div className="chart-shell h-44">
           <ResponsiveContainer width="100%" height="100%" minWidth={240} minHeight={160}>
             <BarChart data={channels}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
@@ -103,7 +103,7 @@ export function DashboardShowcase() {
           <p className="text-xs text-muted">Риск-профиль бизнеса</p>
           <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-700">Внимание</span>
         </div>
-        <div className="h-44">
+        <div className="chart-shell h-44">
           <ResponsiveContainer width="100%" height="100%" minWidth={240} minHeight={160}>
             <PieChart>
               <Pie dataKey="value" data={riskData} innerRadius={36} outerRadius={64} paddingAngle={2} fill="#f97316" />
@@ -118,7 +118,7 @@ export function DashboardShowcase() {
           <p className="text-xs text-muted">Поступления и списания</p>
           <span className="rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-semibold text-violet-700">7 дней</span>
         </div>
-        <div className="h-44">
+        <div className="chart-shell h-44">
           <ResponsiveContainer width="100%" height="100%" minWidth={240} minHeight={160}>
             <BarChart data={cashData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />

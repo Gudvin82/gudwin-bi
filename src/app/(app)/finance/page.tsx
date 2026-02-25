@@ -224,7 +224,7 @@ export default function FinancePage() {
       <div className="grid gap-4 xl:grid-cols-2">
         <Card id="finance-cash">
           <h3 className="mb-3 text-base font-semibold">Прогноз денег (30 дней)</h3>
-          <div className="mb-3 h-56 rounded-xl border border-border bg-white p-2">
+          <div className="chart-shell mb-3 h-56">
             {mounted ? (
               <ResponsiveContainer width="100%" height="100%" minWidth={260} minHeight={180}>
                 <AreaChart data={cash}>

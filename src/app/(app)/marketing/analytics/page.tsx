@@ -129,7 +129,7 @@ export default function MarketingAnalyticsPage() {
       <div className="grid gap-4 xl:grid-cols-2">
         <Card>
           <h3 className="mb-2 text-base font-semibold">Воронка по источникам</h3>
-          <div className="h-64 rounded-xl border border-border bg-white p-2">
+          <div className="chart-shell h-64">
             {mounted ? (
               <ResponsiveContainer width="100%" height="100%" minWidth={260} minHeight={180}>
                 <BarChart
@@ -164,7 +164,7 @@ export default function MarketingAnalyticsPage() {
 
       <Card>
         <h3 className="mb-3 text-base font-semibold">Сравнение расхода и выручки по каналам</h3>
-        <div className="h-72 rounded-xl border border-border bg-white p-2">
+        <div className="chart-shell h-72">
           {mounted ? (
             <ResponsiveContainer width="100%" height="100%" minWidth={260} minHeight={180}>
               <BarChart data={rows}>

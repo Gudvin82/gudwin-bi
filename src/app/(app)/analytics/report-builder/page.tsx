@@ -361,7 +361,7 @@ export default function ReportBuilderPage() {
             ) : (
               <div className="space-y-4">
                 {chartType !== "table" ? (
-                  <div className="h-64 rounded-xl border border-border bg-white p-2">
+                  <div className="chart-shell h-64">
                     {!mounted ? (
                       <div className="skeleton h-full w-full" />
                     ) : (
