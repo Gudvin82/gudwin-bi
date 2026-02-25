@@ -11,7 +11,7 @@ const schema = z.object({
 export async function GET() {
   const session = await getSessionContext();
   const data = advisorSessions.filter((item) => item.workspaceId === session.workspaceId || item.workspaceId === "demo");
-  return NextResponse.json({ sessions: data });
+  return NextResponse.json({ sessions: data, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
 }
 
 export async function POST(request: Request) {
@@ -26,5 +26,5 @@ export async function POST(request: Request) {
   };
   advisorSessions.unshift(record);
 
-  return NextResponse.json({ session: record });
+  return NextResponse.json({ session: record, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
 }

@@ -14,6 +14,7 @@ export async function GET() {
   return NextResponse.json({
     dds,
     pnl,
-    balance
+    balance,
+    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
   });
 }

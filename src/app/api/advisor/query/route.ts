@@ -97,6 +97,7 @@ export async function POST(request: Request) {
       dataSources: ["google_sheets", "bitrix24", "excel_upload"],
       warnings: ["2 источника не синхронизировались более 24 часов"]
     },
-    isFallback: plan.isFallback ?? false
+    isFallback: plan.isFallback ?? false,
+    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
   });
 }

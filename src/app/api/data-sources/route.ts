@@ -4,6 +4,7 @@ import { getSessionContext } from "@/lib/auth/session";
 import { getConnector } from "@/lib/connectors";
 import type { DataSourceType } from "@/lib/connectors/types";
 import { proposeDashboard } from "@/lib/dashboard/auto-dashboard";
+import { uid } from "@/lib/utils/uid";
 
 const createSchema = z.object({
   type: z.enum(["google_sheets", "google_drive", "excel_upload", "word_upload", "bitrix24", "moysklad", "custom_api", "webhook"]),
@@ -22,7 +23,7 @@ export async function POST(request: Request) {
   return NextResponse.json({
     workspaceId: session.workspaceId,
     syncJob: {
-      jobId: crypto.randomUUID(),
+      jobId: uid("sync"),
       status: "queued",
       note: "Источник поставлен в очередь фоновой синхронизации."
     },
@@ -31,6 +32,7 @@ export async function POST(request: Request) {
       rowCount: synced.rows,
       schema: synced.schema
     },
-    autoDashboard
+    autoDashboard,
+    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
   });
 }

@@ -28,5 +28,5 @@ export async function POST(request: Request) {
   } as const;
 
   calendarActionLogs.unshift(log);
-  return NextResponse.json({ ok: true, log });
+  return NextResponse.json({ ok: true, log, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
 }

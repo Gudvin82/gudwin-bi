@@ -4,5 +4,8 @@ import { hireRequests } from "@/lib/demo-store";
 
 export async function GET() {
   const session = await getSessionContext();
-  return NextResponse.json({ requests: hireRequests.filter((r) => r.workspaceId === session.workspaceId) });
+  return NextResponse.json({
+    requests: hireRequests.filter((r) => r.workspaceId === session.workspaceId),
+    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
+  });
 }

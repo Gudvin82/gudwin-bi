@@ -22,7 +22,7 @@ const updateSchema = z.object({
 export async function GET() {
   const session = await getSessionContext();
   const items = debts.filter((item) => item.workspaceId === session.workspaceId || item.workspaceId === "demo");
-  return NextResponse.json({ items });
+  return NextResponse.json({ items, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
 }
 
 export async function POST(request: Request) {
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     ...input
   };
   debts.unshift(item);
-  return NextResponse.json({ item });
+  return NextResponse.json({ item, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
 }
 
 export async function PATCH(request: Request) {
@@ -45,5 +45,5 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "Долг не найден" }, { status: 404 });
   }
   item.status = input.status;
-  return NextResponse.json({ item });
+  return NextResponse.json({ item, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
 }

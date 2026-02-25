@@ -13,7 +13,8 @@ const schema = z.object({
 export async function GET() {
   const session = await getSessionContext();
   return NextResponse.json({
-    items: decisionLog.filter((item) => item.workspaceId === session.workspaceId).slice(0, 100)
+    items: decisionLog.filter((item) => item.workspaceId === session.workspaceId).slice(0, 100),
+    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
   });
 }
 
@@ -29,5 +30,5 @@ export async function POST(request: Request) {
   };
 
   decisionLog.unshift(item);
-  return NextResponse.json({ item });
+  return NextResponse.json({ item, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
 }

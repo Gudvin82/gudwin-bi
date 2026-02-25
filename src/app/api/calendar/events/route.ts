@@ -22,7 +22,7 @@ const updateSchema = z.object({
 export async function GET() {
   const session = await getSessionContext();
   const events = calendarEvents.filter((item) => item.workspaceId === session.workspaceId || item.workspaceId === "demo");
-  return NextResponse.json({ events });
+  return NextResponse.json({ events, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
 }
 
 export async function POST(request: Request) {
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     ...input
   };
   calendarEvents.unshift(event);
-  return NextResponse.json({ event });
+  return NextResponse.json({ event, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
 }
 
 export async function PATCH(request: Request) {
@@ -46,5 +46,5 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "Событие не найдено" }, { status: 404 });
   }
   item.status = input.status;
-  return NextResponse.json({ event: item });
+  return NextResponse.json({ event: item, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
 }

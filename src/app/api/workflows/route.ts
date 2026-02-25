@@ -27,7 +27,8 @@ export async function GET() {
       id: item.id,
       type: item.type,
       status: item.status
-    }))
+    })),
+    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
   });
 }
 
@@ -61,5 +62,5 @@ export async function POST(request: Request) {
   };
 
   workflows.unshift(workflow);
-  return NextResponse.json({ workflow });
+  return NextResponse.json({ workflow, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
 }

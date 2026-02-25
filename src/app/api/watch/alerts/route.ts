@@ -5,6 +5,7 @@ export async function GET() {
   return NextResponse.json({
     mode: "critical_only",
     briefingTime: "08:00",
-    alerts: watchAlerts
+    alerts: watchAlerts,
+    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
   });
 }

@@ -12,7 +12,10 @@ const schema = z.object({
 
 export async function GET() {
   const session = await getSessionContext();
-  return NextResponse.json({ agents: agents.filter((a) => a.workspaceId === session.workspaceId || a.workspaceId === "demo") });
+  return NextResponse.json({
+    agents: agents.filter((a) => a.workspaceId === session.workspaceId || a.workspaceId === "demo"),
+    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
+  });
 }
 
 export async function POST(request: Request) {
@@ -28,5 +31,5 @@ export async function POST(request: Request) {
   };
   agents.unshift(agent);
 
-  return NextResponse.json({ agent });
+  return NextResponse.json({ agent, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
 }

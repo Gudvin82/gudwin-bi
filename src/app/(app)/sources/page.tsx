@@ -33,6 +33,11 @@ export default function SourcesPage() {
   const [isUploadLoading, setIsUploadLoading] = useState(false);
   const [uploadMessage, setUploadMessage] = useState<string | null>(null);
 
+  const [bitrixUrl, setBitrixUrl] = useState("");
+  const [bitrixToken, setBitrixToken] = useState("");
+  const [isBitrixLoading, setIsBitrixLoading] = useState(false);
+  const [bitrixMessage, setBitrixMessage] = useState<string | null>(null);
+
   const [sources, setSources] = useState<SourceRow[]>(initialSources);
 
   const uploadPreview = useMemo(() => {
@@ -141,11 +146,45 @@ export default function SourcesPage() {
     }
   };
 
+  const connectBitrix = async (event: FormEvent) => {
+    event.preventDefault();
+    setIsBitrixLoading(true);
+    setBitrixMessage(null);
+
+    try {
+      const res = await fetch("/api/data-sources", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "bitrix24",
+          config: { baseUrl: bitrixUrl, token: bitrixToken, entity: "deals" }
+        })
+      });
+
+      if (!res.ok) {
+        throw new Error("Не удалось подключить Bitrix24. Проверьте вебхук и токен.");
+      }
+
+      const json = (await res.json()) as { syncJob?: { note?: string } };
+      setSources((prev) => [
+        { type: "bitrix24", name: "Bitrix24 CRM", status: "queued_sync", lastSync: "только что" },
+        ...prev
+      ]);
+      setBitrixMessage(json.syncJob?.note ?? "Bitrix24 подключен. Данные будут синхронизированы в фоне.");
+      setBitrixUrl("");
+      setBitrixToken("");
+    } catch (error) {
+      setBitrixMessage(error instanceof Error ? error.message : "Ошибка подключения Bitrix24.");
+    } finally {
+      setIsBitrixLoading(false);
+    }
+  };
+
   return (
     <div className="space-y-4">
       <Card>
         <h2 className="mb-3 text-lg font-semibold">Подключить источник данных</h2>
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div className="grid gap-4 lg:grid-cols-3">
           <form onSubmit={connectGoogleSheets} className="rounded-xl border border-border p-3">
             <p className="mb-2 text-sm font-semibold">Google Таблицы</p>
             <input
@@ -155,6 +194,7 @@ export default function SourcesPage() {
               placeholder="Вставьте ссылку на Google Sheet"
               required
             />
+            <p className="mt-2 text-xs text-muted">Для первого запуска достаточно публичной ссылки. OAuth-подключение — в следующей версии.</p>
             <button disabled={isSheetLoading} className="mt-2 rounded-xl bg-accent px-3 py-2 text-sm font-semibold text-white disabled:opacity-60">
               {isSheetLoading ? "Подключаем..." : "Подключить"}
             </button>
@@ -175,6 +215,30 @@ export default function SourcesPage() {
             </button>
             {uploadMessage ? <p className="mt-2 text-xs text-muted">{uploadMessage}</p> : null}
           </div>
+
+          <form onSubmit={connectBitrix} className="rounded-xl border border-border p-3">
+            <p className="mb-2 text-sm font-semibold">Bitrix24 CRM (вебхук)</p>
+            <input
+              value={bitrixUrl}
+              onChange={(event) => setBitrixUrl(event.target.value)}
+              className="w-full rounded-xl border border-border p-2.5 text-sm"
+              placeholder="https://your-domain.bitrix24.ru/rest/1/xxx/"
+              required
+            />
+            <input
+              value={bitrixToken}
+              onChange={(event) => setBitrixToken(event.target.value)}
+              className="mt-2 w-full rounded-xl border border-border p-2.5 text-sm"
+              placeholder="Токен или ключ вебхука"
+              required
+            />
+            <p className="mt-2 text-xs text-muted">Подключим сделки, статусы и суммы. Можно ограничить сущности в настройках.</p>
+            <p className="mt-1 text-[11px] text-muted">Входящий вебхук GudWin BI: /api/bitrix/webhook</p>
+            <button disabled={isBitrixLoading} className="mt-2 rounded-xl bg-accent px-3 py-2 text-sm font-semibold text-white disabled:opacity-60">
+              {isBitrixLoading ? "Подключаем..." : "Подключить Bitrix24"}
+            </button>
+            {bitrixMessage ? <p className="mt-2 text-xs text-muted">{bitrixMessage}</p> : null}
+          </form>
         </div>
       </Card>
 
