@@ -105,6 +105,9 @@ export default function FinancePage() {
               {tab.label}
             </a>
           ))}
+          <Link href="/finance/accounting" className="rounded-full border border-cyan-200 bg-cyan-50 px-3 py-1.5 text-xs font-semibold text-cyan-800">
+            Финучет и отчеты
+          </Link>
         </div>
       </div>
 

@@ -40,8 +40,9 @@ const sections: NavSection[] = [
     matches: ["/finance"],
     children: [
       { href: "/finance", label: "Юнит-экономика и касса" },
+      { href: "/finance/accounting", label: "Финучет и отчеты" },
       { href: "/finance/bank", label: "Смарт Банк" },
-      { href: "/finance/accounting", label: "Смарт Бухгалтерия" }
+      { href: "/calendar", label: "Платежный календарь" }
     ]
   },
   {
