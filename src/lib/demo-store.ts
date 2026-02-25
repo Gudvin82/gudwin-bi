@@ -120,6 +120,29 @@ export type Goal = {
   updatedAt: string;
 };
 
+export type CalendarEvent = {
+  id: string;
+  workspaceId: string;
+  title: string;
+  date: string;
+  time: string;
+  durationMin: number;
+  assignee: string;
+  source: "manual" | "bitrix24" | "amocrm" | "google_calendar";
+  status: "planned" | "done" | "canceled";
+  notifyTelegram: boolean;
+  createCrmTask: boolean;
+  notes?: string;
+};
+
+export type CalendarActionLog = {
+  id: string;
+  eventId: string;
+  type: "telegram" | "crm_task";
+  message: string;
+  createdAt: string;
+};
+
 const now = new Date().toISOString();
 
 export const advisorSessions: AdvisorSession[] = [
@@ -284,3 +307,50 @@ export const goals: Goal[] = [
     updatedAt: now
   }
 ];
+
+export const calendarEvents: CalendarEvent[] = [
+  {
+    id: "ce1",
+    workspaceId: "demo",
+    title: "Планерка по кассовому риску",
+    date: "2026-02-26",
+    time: "10:00",
+    durationMin: 45,
+    assignee: "Владелец",
+    source: "manual",
+    status: "planned",
+    notifyTelegram: true,
+    createCrmTask: true,
+    notes: "Проверить дебиторку и платежи на неделю."
+  },
+  {
+    id: "ce2",
+    workspaceId: "demo",
+    title: "Созвон с поставщиком по скидкам",
+    date: "2026-02-26",
+    time: "14:30",
+    durationMin: 30,
+    assignee: "Финансист",
+    source: "amocrm",
+    status: "planned",
+    notifyTelegram: true,
+    createCrmTask: false,
+    notes: "Согласовать условия по SKU с низкой маржой."
+  },
+  {
+    id: "ce3",
+    workspaceId: "demo",
+    title: "Разбор ROMI каналов",
+    date: "2026-02-27",
+    time: "11:00",
+    durationMin: 60,
+    assignee: "Маркетолог",
+    source: "bitrix24",
+    status: "planned",
+    notifyTelegram: false,
+    createCrmTask: true,
+    notes: "Определить, какие кампании остановить."
+  }
+];
+
+export const calendarActionLogs: CalendarActionLog[] = [];

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AlertTriangle, BookOpen, Boxes, Building2, ChevronDown, ChevronRight, FileText, LayoutDashboard, LineChart, Link2, Settings, Sparkles, Target, UserRoundCog, Users } from "lucide-react";
+import { AlertTriangle, BookOpen, Boxes, Building2, CalendarDays, ChevronDown, ChevronRight, FileText, LayoutDashboard, LineChart, Link2, Settings, Sparkles, Target, UserRoundCog, Users } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -16,6 +16,7 @@ type NavSection = {
   href: string;
   label: string;
   icon: React.ComponentType<{ size?: number }>;
+  matches: string[];
   children: NavItem[];
 };
 
@@ -25,6 +26,7 @@ const sections: NavSection[] = [
     href: "/owner",
     label: "Главная",
     icon: UserRoundCog,
+    matches: ["/owner", "/overview"],
     children: [
       { href: "/owner", label: "Рабочий кабинет" },
       { href: "/overview", label: "Главная панель" }
@@ -35,6 +37,7 @@ const sections: NavSection[] = [
     href: "/finance",
     label: "Финансы",
     icon: Target,
+    matches: ["/finance"],
     children: [
       { href: "/finance", label: "Юнит-экономика и касса" },
       { href: "/finance/bank", label: "Смарт Банк" },
@@ -46,6 +49,7 @@ const sections: NavSection[] = [
     href: "/marketing",
     label: "Маркетинг",
     icon: LineChart,
+    matches: ["/marketing"],
     children: [
       { href: "/marketing", label: "Обзор" },
       { href: "/marketing/analytics", label: "Аналитика" },
@@ -60,6 +64,7 @@ const sections: NavSection[] = [
     href: "/analytics",
     label: "Аналитика",
     icon: LayoutDashboard,
+    matches: ["/analytics", "/dashboards", "/sources"],
     children: [
       { href: "/dashboards", label: "Мои дашборды" },
       { href: "/dashboards/builder", label: "Конструктор дашбордов" },
@@ -73,6 +78,7 @@ const sections: NavSection[] = [
     href: "/advisor",
     label: "AI-Советник",
     icon: Sparkles,
+    matches: ["/advisor"],
     children: [
       { href: "/advisor", label: "Чат-консультант" },
       { href: "/advisor/board", label: "AI-совет директоров" },
@@ -85,6 +91,7 @@ const sections: NavSection[] = [
     href: "/goals",
     label: "Цели",
     icon: Target,
+    matches: ["/goals"],
     children: [
       { href: "/goals", label: "Цели и план" },
       { href: "/goals/focus", label: "Фокус владельца" }
@@ -95,9 +102,21 @@ const sections: NavSection[] = [
     href: "/automation",
     label: "Сценарии и агенты",
     icon: Boxes,
+    matches: ["/automation", "/connect"],
     children: [
       { href: "/automation", label: "Конструктор сценариев" },
+      { href: "/calendar", label: "Календарь и встречи" },
       { href: "/automation/templates", label: "Готовые шаблоны" }
+    ]
+  },
+  {
+    key: "calendar",
+    href: "/calendar",
+    label: "Календарь",
+    icon: CalendarDays,
+    matches: ["/calendar"],
+    children: [
+      { href: "/calendar", label: "Встречи и расписания" }
     ]
   },
   {
@@ -105,6 +124,7 @@ const sections: NavSection[] = [
     href: "/team",
     label: "Команда",
     icon: Users,
+    matches: ["/team", "/hire", "/desktop-agent"],
     children: [
       { href: "/team", label: "Сотрудники и кандидаты" },
       { href: "/hire", label: "Подбор и заявки" },
@@ -117,6 +137,7 @@ const sections: NavSection[] = [
     href: "/docs",
     label: "Юридический",
     icon: FileText,
+    matches: ["/docs", "/legal"],
     children: [
       { href: "/docs", label: "Контрагенты и проверки" },
       { href: "/docs/contracts-audit", label: "Глубокий аудит договоров" }
@@ -127,6 +148,7 @@ const sections: NavSection[] = [
     href: "/watch",
     label: "Мониторинг",
     icon: AlertTriangle,
+    matches: ["/watch", "/monitoring"],
     children: [
       { href: "/watch", label: "События и алерты" },
       { href: "/watch/auto-actions", label: "Авто-реакции" }
@@ -137,11 +159,9 @@ const sections: NavSection[] = [
     href: "/integrations",
     label: "Интеграции",
     icon: Link2,
+    matches: ["/integrations", "/competitor", "/agents"],
     children: [
       { href: "/integrations", label: "Подключенные системы" },
-      { href: "/connect", label: "Сценарии если/то" },
-      { href: "/agents", label: "AI-агенты" },
-      { href: "/competitor", label: "Конкурентный мониторинг" },
       { href: "/contacts", label: "Заказать доп. интеграцию" }
     ]
   },
@@ -150,6 +170,7 @@ const sections: NavSection[] = [
     href: "/learn",
     label: "Помощь и обучение",
     icon: BookOpen,
+    matches: ["/learn", "/onboarding"],
     children: [
       { href: "/learn", label: "Обзор обучения" },
       { href: "/learn/faq", label: "FAQ" },
@@ -163,11 +184,11 @@ const sections: NavSection[] = [
     href: "/settings",
     label: "Настройки",
     icon: Settings,
+    matches: ["/settings"],
     children: [
       { href: "/settings", label: "Рабочее пространство" },
       { href: "/settings/ai-keys", label: "AI-провайдеры и ключи" },
-      { href: "/settings/simple", label: "Режим «Объяснить просто»" },
-      { href: "/contacts", label: "Контакты разработки" }
+      { href: "/settings/simple", label: "Режим «Объяснить просто»" }
     ]
   }
 ];
@@ -183,9 +204,7 @@ export function Sidebar({
 
   const defaultOpen = useMemo(() => {
     const active = sections.find((section) =>
-      pathname === section.href
-      || pathname.startsWith(`${section.href}/`)
-      || section.children.some((child) => pathname === child.href || pathname.startsWith(`${child.href}/`))
+      section.matches.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`))
     );
     return active?.key ?? "home";
   }, [pathname]);
@@ -211,9 +230,7 @@ export function Sidebar({
       <nav ref={navRef} className="max-h-[calc(100dvh-170px)] space-y-2 overflow-y-auto pr-1">
         {sections.map((section) => {
           const Icon = section.icon;
-          const active = pathname === section.href
-            || pathname.startsWith(`${section.href}/`)
-            || section.children.some((child) => pathname === child.href || pathname.startsWith(`${child.href}/`));
+          const active = section.matches.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
           const isOpen = opened === section.key;
 
           return (

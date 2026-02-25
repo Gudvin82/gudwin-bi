@@ -48,6 +48,7 @@ const labels: Record<string, string> = {
   contacts: "Контакты",
   competitor: "Конкурентный мониторинг",
   "desktop-agent": "Десктоп AI-агент",
+  calendar: "Календарь",
   "ai-keys": "AI-провайдеры и ключи",
   simple: "Объяснить просто",
   goals: "Цели",

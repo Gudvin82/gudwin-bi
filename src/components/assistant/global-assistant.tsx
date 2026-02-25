@@ -22,6 +22,7 @@ const sectionMap: Record<string, { name: string; href: string }> = {
   watch: { name: "Мониторинг", href: "/watch" },
   goals: { name: "Цели", href: "/goals" },
   automation: { name: "Сценарии и агенты", href: "/automation" },
+  calendar: { name: "Календарь", href: "/calendar" },
   sources: { name: "Источники данных", href: "/sources" },
   settings: { name: "Настройки", href: "/settings" },
   integrations: { name: "Интеграции", href: "/integrations" },
@@ -56,6 +57,7 @@ export function GlobalAssistant() {
       "Открой финансы",
       "Открой цели",
       "Открой сценарии",
+      "Открой календарь",
       "Перейди в маркетинг",
       "Собери тройной отчет",
       "Помоги по текущему разделу"
@@ -92,6 +94,11 @@ export function GlobalAssistant() {
     if (normalized.includes("сценар") || normalized.includes("автоматизац")) {
       router.push("/automation");
       return "Открываю раздел «Сценарии и агенты». Соберём правило из кубиков: когда → если → сделать.";
+    }
+
+    if (normalized.includes("календар")) {
+      router.push("/calendar");
+      return "Открываю календарь. Там можно запланировать встречи, отправить уведомление в Telegram и создать задачу в CRM.";
     }
 
     if (normalized.includes("дашборд")) {
