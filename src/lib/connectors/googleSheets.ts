@@ -13,18 +13,43 @@ export const googleSheetsConnector: DataSourceConnector = {
   },
   async sync(config) {
     const parsed = schema.parse(config);
+    const sheetIdMatch = parsed.sheetUrl.match(/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+    if (!sheetIdMatch) {
+      return {
+        rows: 0,
+        schema: [],
+        sample: [{ error: "Не удалось распознать ID таблицы. Проверьте ссылку." }]
+      };
+    }
+
+    const sheetId = sheetIdMatch[1];
+    const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
+    const res = await fetch(csvUrl);
+    if (!res.ok) {
+      return {
+        rows: 0,
+        schema: [],
+        sample: [{ error: "Таблица недоступна. Сделайте её публичной или включите доступ по ссылке." }]
+      };
+    }
+
+    const text = await res.text();
+    const lines = text.split(/\r?\n/).filter(Boolean);
+    const header = lines[0] ?? "";
+    const columns = header.split(",").map((item) => item.trim()).filter(Boolean);
+    const schema = columns.map((name) => ({ name, type: /date|дата/i.test(name) ? "date" : "string" }));
+    const sample = lines.slice(1, 4).map((line) => {
+      const values = line.split(",");
+      const row: Record<string, unknown> = {};
+      columns.forEach((col, idx) => {
+        row[col] = values[idx] ?? "";
+      });
+      return row;
+    });
     return {
-      rows: 3,
-      schema: [
-        { name: "date", type: "date" },
-        { name: "revenue", type: "number" },
-        { name: "channel", type: "string" }
-      ],
-      sample: [
-        { date: "2026-01-01", revenue: 120000, channel: "online" },
-        { date: "2026-01-02", revenue: 133000, channel: "retail" },
-        { source: parsed.sheetUrl }
-      ]
+      rows: Math.max(lines.length - 1, 0),
+      schema,
+      sample
     };
   }
 };

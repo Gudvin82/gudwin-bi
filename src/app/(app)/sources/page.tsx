@@ -90,15 +90,25 @@ export default function SourcesPage() {
       return;
     }
 
-    const text = await file.text();
-    const lines = text.split(/\r?\n/).filter(Boolean);
-    const header = lines[0] ?? "";
-    const columns = header.split(/[;,]/).map((item) => item.trim()).filter(Boolean);
-
-    setUploadFileName(file.name);
-    setUploadColumns(columns);
-    setUploadRows(Math.max(lines.length - 1, 0));
     setUploadMessage(null);
+    setIsUploadLoading(true);
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      const res = await fetch("/api/data-sources/upload", { method: "POST", body: form });
+      if (!res.ok) {
+        throw new Error("Не удалось обработать файл.");
+      }
+      const json = (await res.json()) as { fileName: string; columns: string[]; rows: Array<Record<string, string | number>>; totalRows: number };
+      setUploadFileName(json.fileName);
+      setUploadColumns(json.columns ?? []);
+      setUploadRows(json.totalRows ?? 0);
+      setUploadMessage(json.columns?.length ? null : "Не удалось распознать заголовки. Проверьте первую строку файла.");
+    } catch (error) {
+      setUploadMessage(error instanceof Error ? error.message : "Ошибка загрузки.");
+    } finally {
+      setIsUploadLoading(false);
+    }
   };
 
   const uploadCsv = async () => {
