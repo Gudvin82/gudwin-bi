@@ -38,7 +38,7 @@ export const googleSheetsConnector: DataSourceConnector = {
     const lines = text.split(/\r?\n/).filter(Boolean);
     const header = lines[0] ?? "";
     const columns = header.split(",").map((item) => item.trim()).filter(Boolean);
-    const schema = columns.map((name) => ({ name, type: /date|дата/i.test(name) ? "date" : "string" }));
+    const sheetSchema = columns.map((name) => ({ name, type: /date|дата/i.test(name) ? "date" : "string" }));
     const sample = lines.slice(1, 4).map((line) => {
       const values = line.split(",");
       const row: Record<string, unknown> = {};
@@ -49,7 +49,7 @@ export const googleSheetsConnector: DataSourceConnector = {
     });
     return {
       rows: Math.max(lines.length - 1, 0),
-      schema,
+      schema: sheetSchema,
       sample
     };
   }
