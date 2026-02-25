@@ -44,7 +44,7 @@ export default function ConnectPage() {
         </Card>
 
         <Card>
-          <h3 className="mb-3 text-base font-semibold">Webhook-конструктор (если → то)</h3>
+          <h3 className="mb-3 text-base font-semibold">Конструктор вебхуков (если → то)</h3>
           <div className="space-y-2 text-sm">
             {rules.map((rule) => (
               <div key={rule.id} className="rounded-xl border border-border p-3">

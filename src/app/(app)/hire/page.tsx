@@ -110,7 +110,7 @@ export default function HirePage() {
             value={description}
             onChange={(event) => setDescription(event.target.value)}
             className="min-h-28 w-full rounded-xl border border-border p-3 text-sm"
-            placeholder="Что нужно сделать? Можно оставить пустым — AI сам сформирует ТЗ из контекста бизнеса."
+            placeholder="Что нужно сделать? Можно оставить пустым — ИИ сам сформирует ТЗ из контекста бизнеса."
           />
           <button onClick={generate} className="mt-3 rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white">
             Сгенерировать заявку

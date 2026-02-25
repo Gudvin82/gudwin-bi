@@ -59,7 +59,7 @@ export default function ServicesPage() {
             <p className="mt-1 text-xs text-slate-500">Готов для настройки под ваш процесс</p>
           </div>
           <div className="rounded-xl border border-slate-200 bg-white p-3">
-            <p className="text-xs text-muted">Action Engine</p>
+            <p className="text-xs text-muted">Движок действий</p>
             <p className="mt-1 text-sm font-semibold">Если условие → запустить задачу</p>
             <p className="mt-1 text-xs text-slate-500">Автоматизирует рутинные действия</p>
           </div>

@@ -13,7 +13,7 @@ const availableCatalog = [
   { id: "moysklad", name: "МойСклад", note: "Товары, остатки, заказы" },
   { id: "yandex_direct", name: "Яндекс.Директ", note: "Расходы, клики, кампании" },
   { id: "vk_ads", name: "VK Реклама", note: "Охваты, лиды, ROMI" },
-  { id: "webhook", name: "Webhook/API", note: "Кастомные события из ваших систем" }
+  { id: "webhook", name: "Вебхук / API", note: "Кастомные события из ваших систем" }
 ];
 
 export default function IntegrationsHubPage() {
@@ -67,7 +67,7 @@ export default function IntegrationsHubPage() {
                 <p className="mt-1 text-xs text-muted">Последняя синхронизация: {item.lastSync}</p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   <button className="rounded-lg border border-border px-2 py-1 text-xs">Настроить</button>
-                  <button className="rounded-lg border border-border px-2 py-1 text-xs">Обновить синк</button>
+                  <button className="rounded-lg border border-border px-2 py-1 text-xs">Обновить синхронизацию</button>
                   <button className="rounded-lg border border-rose-200 px-2 py-1 text-xs text-rose-700">Отключить</button>
                 </div>
               </div>

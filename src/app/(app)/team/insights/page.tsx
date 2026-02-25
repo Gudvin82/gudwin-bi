@@ -16,7 +16,7 @@ export default function TeamInsightsPage() {
           description: "Единый индекс эффективности 0-100 по продажам, маркетингу, операциям и HR."
         },
         {
-          title: "Десктоп AI-агент",
+          title: "Десктоп ИИ-агент",
           description: "Серверная архитектура и юридические ограничения для мониторинга на служебных ПК.",
           href: "/desktop-agent",
           hrefLabel: "Открыть архитектуру"

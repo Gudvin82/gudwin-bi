@@ -18,8 +18,8 @@ export default function OverviewPage() {
   return (
     <div className="space-y-5">
       <Card className="border-cyan-200 bg-gradient-to-r from-cyan-50 to-emerald-50">
-        <p className="text-sm font-semibold">Подключите свои данные и запустите боевой контур аналитики.</p>
-        <p className="text-sm text-muted">Google Sheets/CSV/CRM webhook: после подключения система сформирует стартовый дашборд и AI-рекомендации.</p>
+        <p className="text-sm font-semibold">Подключите свои данные и получите рабочую аналитику за несколько минут.</p>
+        <p className="text-sm text-muted">Google Sheets/CSV/CRM или вебхук: после подключения система сформирует стартовый дашборд и ИИ‑рекомендации.</p>
         <div className="mt-3 flex flex-wrap gap-2">
           <Link href="/sources" className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-3 py-2 text-sm font-semibold text-white">
             Подключить источник
@@ -89,14 +89,14 @@ export default function OverviewPage() {
             items={[
               "Подключите источник данных: Google Sheets, CRM или файл.",
               "Проверьте автоматически созданный дашборд.",
-              "Задайте AI-вопрос к данным и сохраните полезный виджет."
+              "Задайте ИИ‑вопрос к данным и сохраните полезный виджет."
             ]}
           />
         </div>
         <ol className="list-decimal space-y-2 pl-5 text-sm text-muted">
-          <li>Подключите Google Sheets, CRM webhook или загрузите Excel/CSV.</li>
+          <li>Подключите Google Sheets, CRM / вебхук или загрузите Excel/CSV.</li>
           <li>Система автоматически предложит стартовый дашборд.</li>
-          <li>Сформулируйте задачу в AI-блоке и сохраните результат как виджет.</li>
+          <li>Сформулируйте задачу в ИИ‑блоке и сохраните результат как виджет.</li>
         </ol>
         <Link href="/onboarding" className="mt-4 inline-flex rounded-xl border border-border px-3 py-2 text-sm font-medium">
           Открыть пошаговый мастер
@@ -123,7 +123,7 @@ export default function OverviewPage() {
         <Link href="/advisor" className="block">
           <Card className="bg-gradient-to-br from-amber-50 to-orange-50">
             <p className="text-sm font-semibold">Стратегический ракурс</p>
-            <p className="mt-2 text-sm text-muted">AI-консультант и мониторинг подсказывают, где усилить рост и что лучше остановить.</p>
+            <p className="mt-2 text-sm text-muted">ИИ‑консультант и мониторинг подсказывают, где усилить рост и что лучше остановить.</p>
             <span className="mt-3 inline-flex rounded-lg border border-border px-3 py-2 text-sm">Перейти</span>
           </Card>
         </Link>

@@ -71,7 +71,7 @@ export default function MarketingExperimentsPage() {
               </div>
             </div>
             <p className="mt-2 text-sm text-muted">
-              AI-вывод: {item.winner === "Нет" ? "Разница статистически незначима, стоит продлить тест." : `Победитель — вариант ${item.winner}.`}
+              ИИ‑вывод: {item.winner === "Нет" ? "Разница статистически незначима, стоит продлить тест." : `Победитель — вариант ${item.winner}.`}
             </p>
           </Card>
         ))}

@@ -202,7 +202,7 @@ export default function FinancePage() {
           <table className="min-w-[760px] w-full text-sm">
             <thead className="text-left text-muted">
               <tr>
-                <th className="pb-2">Сегмент</th><th className="pb-2">CAC</th><th className="pb-2">LTV</th><th className="pb-2">LTV/CAC</th><th className="pb-2">ROMI</th><th className="pb-2">Payback</th>
+                <th className="pb-2">Сегмент</th><th className="pb-2">CAC</th><th className="pb-2">LTV</th><th className="pb-2">LTV/CAC</th><th className="pb-2">ROMI</th><th className="pb-2">Окупаемость</th>
               </tr>
             </thead>
             <tbody>

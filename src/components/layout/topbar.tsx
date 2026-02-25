@@ -8,7 +8,7 @@ import { Bell, CalendarRange, LogOut, Menu, Sparkles, UserCircle2 } from "lucide
 const headerMap: Record<string, { title: string; subtitle: string }> = {
   owner: { title: "Режим владельца", subtitle: "Ключевые метрики, риски и фокус дня для собственника." },
   overview: { title: "Главная панель", subtitle: "Быстрый обзор показателей и стартовых действий." },
-  finance: { title: "Финансы", subtitle: "Юнит-экономика, cash flow, сценарии и утечки денег." },
+  finance: { title: "Финансы", subtitle: "Юнит-экономика, денежный поток, сценарии и утечки денег." },
   marketing: { title: "Маркетинг", subtitle: "Эффективность каналов, кампании, эксперименты и креативы." },
   advisor: { title: "ИИ-советник", subtitle: "Рекомендации по бизнесу, финансам и операционке." },
   goals: { title: "Цели", subtitle: "Целевые метрики, обратный план и ИИ-рекомендации по достижению." },

@@ -4,15 +4,15 @@ import { Card } from "@/components/ui/card";
 const steps = [
   {
     title: "1. Подключите данные",
-    description: "Google Sheets, Excel/CSV или CRM webhook. Достаточно одного источника, чтобы стартовать."
+    description: "Google Sheets, Excel/CSV или CRM / вебхук. Достаточно одного источника, чтобы стартовать."
   },
   {
     title: "2. Проверьте автодашборд",
     description: "GudWin BI анализирует структуру колонок и автоматически собирает стартовые виджеты."
   },
   {
-    title: "3. Задайте вопрос AI",
-    description: "Опишите задачу обычным текстом, например: 'Покажи выручку по месяцам и средний чек по каналам'."
+    title: "3. Задайте вопрос ИИ",
+    description: "Опишите задачу обычным текстом, например: «Покажи выручку по месяцам и средний чек по каналам»."
   },
   {
     title: "4. Включите автоотчеты",
@@ -43,7 +43,7 @@ export default function OnboardingPage() {
             Перейти к источникам
           </Link>
           <Link href="/ai" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">
-            Перейти к AI-запросам
+            Перейти к ИИ‑запросам
           </Link>
           <Link href="/settings" className="rounded-xl border border-border px-4 py-2 text-sm font-semibold">
             Настроить Telegram/SMS
