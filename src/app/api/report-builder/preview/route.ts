@@ -5,7 +5,7 @@ const schema = z.object({
   dataset: z.enum(["sales", "marketing", "finance"]).default("sales"),
   period: z.enum(["7d", "30d", "90d", "365d"]).default("30d"),
   groupBy: z.enum(["day", "week", "month", "channel", "product", "manager"]).default("month"),
-  metrics: z.array(z.enum(["revenue", "spend", "profit", "leads", "deals", "avg_check", "conversion", "romi"])).min(1).max(6)
+  metrics: z.array(z.string().min(1)).min(1).max(6)
 });
 
 type RecordRow = {
@@ -93,6 +93,8 @@ export async function POST(request: Request) {
     const conversion = agg.leads > 0 ? (agg.deals / agg.leads) * 100 : 0;
     const romi = agg.spend > 0 ? ((agg.revenue - agg.spend) / agg.spend) * 100 : 0;
     const profit = agg.revenue - agg.spend;
+    const margin = agg.revenue > 0 ? (profit / agg.revenue) * 100 : 0;
+    const health_score = Math.min(100, Math.max(0, 40 + margin / 2 + romi / 4));
     return {
       dimension,
       leads: agg.leads,
@@ -102,7 +104,9 @@ export async function POST(request: Request) {
       profit: round(profit),
       avg_check: round(avgCheck),
       conversion: round(conversion),
-      romi: round(romi)
+      romi: round(romi),
+      margin: round(margin),
+      health_score: round(health_score)
     };
   });
 
@@ -125,7 +129,8 @@ export async function POST(request: Request) {
     rows: sortedRows.map((row) => {
       const result: Record<string, string | number> = { dimension: row.dimension };
       for (const metric of input.metrics) {
-        result[metric] = row[metric];
+        const value = (row as Record<string, number | string | undefined>)[metric];
+        result[metric] = typeof value === "number" ? value : 0;
       }
       return result;
     }),
@@ -145,4 +150,3 @@ export async function POST(request: Request) {
     }
   });
 }
-

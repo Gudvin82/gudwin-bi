@@ -137,7 +137,7 @@ export default function AiPage() {
         <Card>
           <h3 className="mb-2 text-base font-semibold">Результат</h3>
           <p className="mb-3 text-sm text-muted">{result.summary}</p>
-          {result.isFallback ? <p className="mb-3 text-xs text-amber-700">ИИ-провайдер не подключен. Добавьте `AITUNNEL_API_KEY` или `OPENAI_API_KEY` в переменные окружения.</p> : null}
+          {result.isFallback ? <p className="mb-3 text-xs text-amber-700">ИИ-провайдер не подключен. Подключите ключ в «Настройки → ИИ‑провайдеры и ключи».</p> : null}
           <p className="mb-1 text-xs font-semibold text-muted">SQL</p>
           <pre className="mb-4 overflow-x-auto rounded-xl border border-border bg-slate-50 p-3 text-xs">{result.sql}</pre>
           <div className="overflow-x-auto">

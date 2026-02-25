@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   return NextResponse.json({
-    status: "roadmap_v2",
+    status: "planned",
     legal: [
       "Только служебные устройства работодателя",
       "Обязательное уведомление и согласие сотрудника",

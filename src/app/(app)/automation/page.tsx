@@ -344,7 +344,7 @@ export default function AutomationPage() {
           </div>
           <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-700">
             <p className="font-semibold">Важно</p>
-            <p className="mt-1 text-xs text-muted">Для простоты в MVP доступна схема: 1 триггер → до 2 условий → до 3 действий.</p>
+            <p className="mt-1 text-xs text-muted">Доступная логика: 1 триггер → до 2 условий → до 3 действий.</p>
           </div>
         </Card>
       </div>

@@ -12,7 +12,7 @@ const links = [
   { href: "/connect", title: "Интеграции", note: "Связи с внешними сервисами и правила «если → то»" },
   { href: "/learn", title: "Обучение и FAQ", note: "Подсказки, сценарии и ИИ-справка" },
   { href: "/competitor", title: "Конкуренты", note: "Сигналы рынка и рекомендации" },
-  { href: "/desktop-agent", title: "Десктоп ИИ-агент (v2+)", note: "Архитектура и дорожная карта локального агента" },
+  { href: "/desktop-agent", title: "Десктоп ИИ-агент", note: "Концепция локального агента и обзор возможностей" },
   { href: "/settings", title: "Настройки", note: "Telegram, SMS, интеграции и режимы уведомлений" },
   { href: "/contacts", title: "Контакты разработки", note: "Связь с командой и заявки на доработки" }
 ];
@@ -24,7 +24,7 @@ export default function ServicesPage() {
         <div className="flex items-start justify-between gap-3">
           <div>
             <h2 className="text-xl font-bold">Сервисы и модули</h2>
-            <p className="text-sm text-muted">Дополнительные разделы платформы. Основной ежедневный сценарий: Режим владельца → Финансы → Мониторинг.</p>
+            <p className="text-sm text-muted">Дополнительные разделы платформы для углубления анализа и внедрения. Базовый маршрут: Режим владельца → Финансы → Мониторинг.</p>
           </div>
           <HelpPopover
             title="Что здесь"
@@ -50,30 +50,30 @@ export default function ServicesPage() {
       </div>
 
       <Card className="bg-gradient-to-r from-violet-50 via-cyan-50 to-emerald-50">
-        <h3 className="mb-2 text-lg font-extrabold">Витрина возможностей: Спринт 2</h3>
-        <p className="text-sm text-muted">Визуальный превью-набор: продвинутый ИИ-помощник, автозапуск сценариев и действия с подтверждением.</p>
+        <h3 className="mb-2 text-lg font-extrabold">Расширенные возможности</h3>
+        <p className="text-sm text-muted">Инструменты, которые усиливают ежедневную работу: ассистент, автозапуск сценариев и журнал действий.</p>
         <div className="mt-3 grid gap-3 md:grid-cols-3">
           <div className="rounded-xl border border-slate-200 bg-white p-3">
-            <p className="text-xs text-muted">ИИ-помощник v2</p>
+            <p className="text-xs text-muted">ИИ-помощник</p>
             <p className="mt-1 text-sm font-semibold">Команды + подтверждение действий</p>
-            <p className="mt-1 text-xs text-slate-500">Статус: визуальный прототип</p>
+            <p className="mt-1 text-xs text-slate-500">Готов для настройки под ваш процесс</p>
           </div>
           <div className="rounded-xl border border-slate-200 bg-white p-3">
             <p className="text-xs text-muted">Action Engine</p>
             <p className="mt-1 text-sm font-semibold">Если условие → запустить задачу</p>
-            <p className="mt-1 text-xs text-slate-500">Статус: визуальный прототип</p>
+            <p className="mt-1 text-xs text-slate-500">Автоматизирует рутинные действия</p>
           </div>
           <div className="rounded-xl border border-slate-200 bg-white p-3">
             <p className="text-xs text-muted">Журнал команд</p>
             <p className="mt-1 text-sm font-semibold">Кто и что запускал через ИИ</p>
-            <p className="mt-1 text-xs text-slate-500">Статус: визуальный прототип</p>
+            <p className="mt-1 text-xs text-slate-500">Прозрачность и контроль решений</p>
           </div>
         </div>
       </Card>
 
       <Card className="bg-gradient-to-r from-amber-50 via-orange-50 to-rose-50">
-        <h3 className="mb-2 text-lg font-extrabold">Витрина возможностей: Спринт 3</h3>
-        <p className="text-sm text-muted">Визуальный превью-набор: расширенная отчетность, сравнение периодов и автоматические рассылки.</p>
+        <h3 className="mb-2 text-lg font-extrabold">Отчетность и контроль</h3>
+        <p className="text-sm text-muted">Расширенные отчеты, сравнение периодов и автоматические рассылки для руководителя.</p>
         <div className="mt-3 grid gap-3 md:grid-cols-4">
           {[
             "Сравнение периодов (YoY/MoM)",

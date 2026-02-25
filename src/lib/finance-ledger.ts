@@ -98,7 +98,7 @@ export const manualPayments: ManualPayment[] = paymentCalendar.map((item, idx) =
   counterparty: item.counterparty,
   amount: item.amount,
   status: item.status,
-  note: "Автосоздано из демо-календаря"
+  note: "Автосоздано из календаря платежей"
 }));
 
 const monthKey = (date: string) => date.slice(0, 7);

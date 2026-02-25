@@ -132,7 +132,7 @@ const sections: NavSection[] = [
       { href: "/team", label: "Сотрудники и кандидаты" },
       { href: "/hire", label: "Подбор и заявки" },
       { href: "/team/insights", label: "Эффективность команды" },
-      { href: "/desktop-agent", label: "Десктоп ИИ-агент (v2+)" }
+      { href: "/desktop-agent", label: "Десктоп ИИ-агент" }
     ]
   },
   {

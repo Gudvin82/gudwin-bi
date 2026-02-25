@@ -6,6 +6,6 @@ export async function POST() {
   return NextResponse.json({
     ok: true,
     fileName: `gudwin-report-${session.workspaceId}.pdf`,
-    note: "PDF сформирован. Для демо используется печать браузера."
+    note: "PDF сформирован. Для базового экспорта используется печать браузера."
   });
 }

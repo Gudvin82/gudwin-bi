@@ -4,23 +4,18 @@ import { useEffect, useMemo, useState } from "react";
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Card } from "@/components/ui/card";
 import { HelpPopover } from "@/components/ui/help-popover";
+import { filterFields, filterOperators, metricCatalog, metricGroups } from "@/lib/metrics-catalog";
 
-type MetricId = "revenue" | "spend" | "profit" | "leads" | "deals" | "avg_check" | "conversion" | "romi";
+type MetricId = string;
 type DatasetId = "sales" | "marketing" | "finance";
 type GroupId = "day" | "week" | "month" | "channel" | "product" | "manager";
 type PeriodId = "7d" | "30d" | "90d" | "365d";
 type ChartId = "table" | "line" | "bar";
 
-const metricLabels: Record<MetricId, string> = {
-  revenue: "Выручка",
-  spend: "Расходы",
-  profit: "Прибыль",
-  leads: "Лиды",
-  deals: "Сделки",
-  avg_check: "Средний чек",
-  conversion: "Конверсия, %",
-  romi: "ROMI, %"
-};
+const metricLabels = metricCatalog.reduce<Record<string, string>>((acc, item) => {
+  acc[item.id] = item.label;
+  return acc;
+}, {});
 
 const datasetLabels: Record<DatasetId, string> = {
   sales: "Продажи",
@@ -51,6 +46,31 @@ type PreviewResponse = {
   meta: { dataset: string; period: string; groupBy: string; records: number };
 };
 
+type FilterRow = {
+  id: string;
+  field: string;
+  operator: string;
+  value: string;
+};
+
+type ReportTemplate = {
+  id: string;
+  name: string;
+  dataset: DatasetId;
+  period: PeriodId;
+  groupBy: GroupId;
+  metrics: MetricId[];
+  chartType: ChartId;
+  filters: FilterRow[];
+};
+
+const emptyFilter = (): FilterRow => ({
+  id: crypto.randomUUID(),
+  field: filterFields[0].id,
+  operator: filterOperators[0],
+  value: ""
+});
+
 export default function ReportBuilderPage() {
   const [name, setName] = useState("Еженедельный отчёт собственника");
   const [dataset, setDataset] = useState<DatasetId>("finance");
@@ -69,9 +89,25 @@ export default function ReportBuilderPage() {
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [filters, setFilters] = useState<FilterRow[]>([emptyFilter()]);
+  const [templates, setTemplates] = useState<ReportTemplate[]>([]);
+
+  const storeKey = "gudwin.report.templates";
+
+  function loadTemplates() {
+    const raw = localStorage.getItem(storeKey);
+    if (!raw) return;
+    try {
+      const parsed = JSON.parse(raw) as ReportTemplate[];
+      setTemplates(parsed);
+    } catch {
+      setTemplates([]);
+    }
+  }
 
   useEffect(() => {
     setMounted(true);
+    loadTemplates();
   }, []);
 
   const toggleMetric = (id: MetricId) => {
@@ -90,7 +126,7 @@ export default function ReportBuilderPage() {
     const res = await fetch("/api/report-builder/preview", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ dataset, period, groupBy, metrics })
+      body: JSON.stringify({ dataset, period, groupBy, metrics, filters })
     });
     if (!res.ok) {
       setStatus("Не удалось построить отчёт. Проверьте параметры и попробуйте снова.");
@@ -104,6 +140,19 @@ export default function ReportBuilderPage() {
 
   const saveTemplate = async () => {
     const prompt = `dataset=${dataset}; period=${period}; groupBy=${groupBy}; metrics=${metrics.join(",")}; chart=${chartType}`;
+    const localTemplate: ReportTemplate = {
+      id: crypto.randomUUID(),
+      name,
+      dataset,
+      period,
+      groupBy,
+      metrics,
+      chartType,
+      filters
+    };
+    const nextTemplates = [localTemplate, ...templates];
+    setTemplates(nextTemplates);
+    localStorage.setItem(storeKey, JSON.stringify(nextTemplates));
     const res = await fetch("/api/report-templates", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -120,7 +169,8 @@ export default function ReportBuilderPage() {
               dayOfWeek: frequency === "weekly" ? dayOfWeek : undefined,
               dayOfMonth: frequency === "monthly" ? dayOfMonth : undefined
             }
-          : undefined
+          : undefined,
+        filters
       })
     });
     setStatus(res.ok ? "Шаблон отчёта сохранён." : "Не удалось сохранить шаблон.");
@@ -135,6 +185,22 @@ export default function ReportBuilderPage() {
     const priority: MetricId[] = ["revenue", "profit", "spend", "deals", "leads", "romi", "conversion", "avg_check"];
     return priority.find((id) => metrics.includes(id)) ?? metrics[0];
   }, [metrics]);
+
+  const addFilter = () => setFilters((prev) => [...prev, emptyFilter()]);
+  const updateFilter = (id: string, next: Partial<FilterRow>) =>
+    setFilters((prev) => prev.map((row) => (row.id === id ? { ...row, ...next } : row)));
+  const removeFilter = (id: string) => setFilters((prev) => prev.filter((row) => row.id !== id));
+
+  const applyTemplate = (item: ReportTemplate) => {
+    setName(item.name);
+    setDataset(item.dataset);
+    setPeriod(item.period);
+    setGroupBy(item.groupBy);
+    setMetrics(item.metrics);
+    setChartType(item.chartType);
+    setFilters(item.filters.length ? item.filters : [emptyFilter()]);
+    setStatus("Шаблон применён.");
+  };
 
   return (
     <div className="space-y-4">
@@ -197,11 +263,18 @@ export default function ReportBuilderPage() {
             <div>
               <p className="mb-2 text-sm font-semibold">Метрики отчёта</p>
               <div className="grid gap-2 sm:grid-cols-2">
-                {(Object.keys(metricLabels) as MetricId[]).map((id) => (
-                  <label key={id} className="inline-flex items-center gap-2 rounded-xl border border-border bg-white p-2 text-sm">
-                    <input type="checkbox" checked={metrics.includes(id)} onChange={() => toggleMetric(id)} />
-                    {metricLabels[id]}
-                  </label>
+                {metricGroups.map((group) => (
+                  <div key={group} className="rounded-xl border border-border bg-white p-2">
+                    <p className="mb-2 text-xs font-semibold text-slate-500">{group}</p>
+                    <div className="grid gap-2">
+                      {metricCatalog.filter((item) => item.group === group).map((item) => (
+                        <label key={item.id} className="inline-flex items-center gap-2 text-sm">
+                          <input type="checkbox" checked={metrics.includes(item.id)} onChange={() => toggleMetric(item.id)} />
+                          {item.label}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
@@ -216,10 +289,66 @@ export default function ReportBuilderPage() {
                 {loading ? "Строим..." : "Построить отчёт"}
               </button>
             </div>
+
+            <div className="border-t border-border pt-4">
+              <div className="mb-2 flex items-center justify-between">
+                <p className="text-sm font-semibold">Фильтры отчёта</p>
+                <button onClick={addFilter} className="text-xs font-semibold text-cyan-700">+ Добавить фильтр</button>
+              </div>
+              <div className="space-y-2">
+                {filters.map((row) => (
+                  <div key={row.id} className="grid gap-2 sm:grid-cols-[1fr_80px_1fr_auto]">
+                    <select value={row.field} onChange={(e) => updateFilter(row.id, { field: e.target.value })} className="rounded-xl border border-border p-2 text-sm">
+                      {filterFields.map((field) => (
+                        <option key={field.id} value={field.id}>
+                          {field.label}
+                        </option>
+                      ))}
+                    </select>
+                    <select value={row.operator} onChange={(e) => updateFilter(row.id, { operator: e.target.value })} className="rounded-xl border border-border p-2 text-sm">
+                      {filterOperators.map((op) => (
+                        <option key={op} value={op}>
+                          {op}
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      value={row.value}
+                      onChange={(e) => updateFilter(row.id, { value: e.target.value })}
+                      className="rounded-xl border border-border p-2 text-sm"
+                      placeholder="Значение"
+                    />
+                    <button onClick={() => removeFilter(row.id)} className="rounded-xl border border-border px-2 text-xs">Удалить</button>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </Card>
 
         <div className="space-y-4">
+          <Card>
+            <div className="mb-2 flex items-center justify-between">
+              <h3 className="text-base font-semibold">Шаблоны отчётов</h3>
+              <button onClick={loadTemplates} className="text-xs font-semibold text-cyan-700">Обновить список</button>
+            </div>
+            {templates.length === 0 ? (
+              <p className="text-sm text-muted">Пока нет сохранённых шаблонов. Настройте параметры и сохраните отчёт.</p>
+            ) : (
+              <div className="space-y-2">
+                {templates.slice(0, 5).map((item) => (
+                  <div key={item.id} className="rounded-xl border border-border bg-white p-3">
+                    <p className="text-sm font-semibold">{item.name}</p>
+                    <p className="text-xs text-muted">{datasetLabels[item.dataset]} • {periodLabels[item.period]} • {groupLabels[item.groupBy]}</p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      <button onClick={() => applyTemplate(item)} className="rounded-lg bg-accent px-3 py-1.5 text-xs font-semibold text-white">Применить</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Card>
+
           <Card>
             <div className="mb-2 flex items-center justify-between">
               <h3 className="text-base font-semibold">Предпросмотр</h3>

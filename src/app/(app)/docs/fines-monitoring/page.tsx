@@ -105,7 +105,7 @@ export default function FinesMonitoringPage() {
 
       <Card>
         <h3 className="mb-3 text-base font-semibold">Подключение внешних сервисов</h3>
-        <p className="mb-3 text-sm text-muted">Для демо: витрина интеграций, показывающая, какие сервисы можно подключить для мониторинга штрафов и исков.</p>
+        <p className="mb-3 text-sm text-muted">Витрина интеграций показывает, какие сервисы можно подключить для мониторинга штрафов и исков.</p>
         <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
           {services.map((service) => (
             <div key={service} className="rounded-xl border border-border bg-white p-3 text-sm">
