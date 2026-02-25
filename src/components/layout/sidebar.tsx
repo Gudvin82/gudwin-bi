@@ -205,12 +205,14 @@ export function Sidebar({
 }) {
   const pathname = usePathname();
 
-  const defaultOpen = useMemo(() => {
+  const activeSectionKey = useMemo(() => {
     const active = sections.find((section) =>
       section.matches.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`))
     );
     return active?.key ?? "home";
   }, [pathname]);
+
+  const defaultOpen = useMemo(() => activeSectionKey, [activeSectionKey]);
 
   const [opened, setOpened] = useState<string>(defaultOpen);
   const navRef = useRef<HTMLElement | null>(null);
@@ -233,7 +235,7 @@ export function Sidebar({
       <nav ref={navRef} className="max-h-[calc(100dvh-170px)] space-y-2 overflow-y-auto pr-1">
         {sections.map((section) => {
           const Icon = section.icon;
-          const active = section.matches.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
+          const active = section.key === activeSectionKey;
           const isOpen = opened === section.key;
 
           return (
@@ -274,7 +276,7 @@ export function Sidebar({
               {isOpen ? (
                 <div className="space-y-1 p-2">
                   {section.children.map((child) => {
-                    const childActive = pathname === child.href || pathname.startsWith(`${child.href}/`);
+                    const childActive = active && (pathname === child.href || pathname.startsWith(`${child.href}/`));
                     return (
                       <Link
                         key={child.href}

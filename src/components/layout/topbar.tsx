@@ -68,6 +68,7 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
   const primarySourceActionLabel = ["owner", "overview", "sources", "onboarding"].includes(firstSegment)
     ? "Подключить данные"
     : "Управлять источниками";
+  const showOverviewButton = ["owner", "overview"].includes(firstSegment);
 
   const refreshData = () => {
     setRefreshing(true);
@@ -90,7 +91,7 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
   };
 
   return (
-    <header className={`mb-3 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-slate-200/70 bg-white/80 p-2 shadow-sm backdrop-blur-xl ring-1 ${accent.ring} sm:mb-5 sm:gap-3 sm:p-3`}>
+    <header className={`mb-3 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-slate-200/70 bg-white/85 p-2 shadow-sm backdrop-blur-xl ring-1 ${accent.ring} sm:mb-4 sm:gap-3 sm:p-3`}>
       <div className="min-w-0">
         <div className="flex items-center gap-2">
           <button
@@ -103,7 +104,7 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
           </button>
           <h1 className={`premium-title truncate text-base font-extrabold sm:text-2xl ${accent.title}`}>{header.title}</h1>
         </div>
-        <p className="premium-subtitle mt-1 hidden line-clamp-2 text-sm sm:block">{header.subtitle}</p>
+        <p className="premium-subtitle mt-1 hidden line-clamp-2 text-sm lg:block">{header.subtitle}</p>
         <div className={`premium-nav-chip mt-2 hidden items-center gap-2 rounded-full bg-gradient-to-r px-3 py-1 text-xs sm:inline-flex ${accent.chip}`}>
           <span className={`inline-flex h-2 w-2 rounded-full ${online ? "bg-emerald-500" : "bg-rose-500"}`} />
           {online ? "Сеть доступна" : "Нет подключения к сети"}
@@ -111,9 +112,11 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
       </div>
 
       <div className="flex w-full flex-wrap items-center gap-2 lg:w-auto">
-        <Link href="/overview" className="hidden min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-sm font-semibold shadow-sm md:inline-flex">
-          Открыть обзор
-        </Link>
+        {showOverviewButton ? (
+          <Link href="/overview" className="hidden min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-sm font-semibold shadow-sm lg:inline-flex">
+            Открыть обзор
+          </Link>
+        ) : null}
         <Link href="/sources" className="btn-premium-primary hidden min-h-10 items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-white shadow-sm sm:inline-flex">
           <Sparkles size={16} />
           {primarySourceActionLabel}
@@ -136,7 +139,7 @@ export function Topbar({ onMenuClick }: { onMenuClick?: () => void }) {
         <button aria-label="Открыть уведомления" className="rounded-xl border border-slate-200 bg-white/90 p-2.5 text-muted shadow-sm">
           <Bell size={16} />
         </button>
-        <button onClick={refreshData} className="rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm">
+        <button onClick={refreshData} className="rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm md:text-sm">
           {refreshing ? "Обновляем..." : "Обновить данные"}
         </button>
         <div className="relative hidden sm:block">

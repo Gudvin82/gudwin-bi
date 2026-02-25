@@ -72,6 +72,21 @@ const scenarioPresets = [
     action: "Создать задачу в CRM и уведомить менеджера"
   }
 ];
+const metricLabel: Record<string, string> = {
+  cash_guard_days: "Дни до кассового разрыва",
+  romi_total: "ROMI общий",
+  overdue_receivables: "Просроченная дебиторка",
+  health_score: "Health Score"
+};
+
+const integrationTiles = [
+  { name: "Bitrix24", state: "Подключено", tone: "text-emerald-700 bg-emerald-50 border-emerald-200" },
+  { name: "amoCRM", state: "Доступно", tone: "text-cyan-700 bg-cyan-50 border-cyan-200" },
+  { name: "Google Таблицы", state: "Подключено", tone: "text-emerald-700 bg-emerald-50 border-emerald-200" },
+  { name: "Telegram", state: "Подключено", tone: "text-emerald-700 bg-emerald-50 border-emerald-200" },
+  { name: "Webhook/API", state: "Доступно", tone: "text-cyan-700 bg-cyan-50 border-cyan-200" },
+  { name: "Яндекс.Директ", state: "Скоро", tone: "text-amber-700 bg-amber-50 border-amber-200" }
+];
 
 export default function AutomationPage() {
   const [workflows, setWorkflows] = useState<Workflow[]>([]);
@@ -183,21 +198,25 @@ export default function AutomationPage() {
                 >
                   <p className="text-sm font-semibold">{preset.name}</p>
                   <p className="text-xs text-muted">
-                    {preset.metric} {preset.operator} {preset.value}
+                    {(metricLabel[preset.metric] ?? preset.metric)} {preset.operator} {preset.value}
                   </p>
                 </button>
               ))}
             </div>
 
             <div>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Подключенные интеграции</p>
+              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Кубики интеграций</p>
               <div className="grid gap-2 sm:grid-cols-2">
-                {integrations.map((item) => (
-                  <div key={item.id} className="rounded-xl border border-indigo-200 bg-indigo-50 px-3 py-2 text-indigo-800">
-                    {item.type} • {item.status}
+                {integrationTiles.map((item) => (
+                  <div key={item.name} className={`rounded-xl border px-3 py-2 ${item.tone}`}>
+                    <p className="text-sm font-semibold">{item.name}</p>
+                    <p className="text-xs">{item.state}</p>
                   </div>
                 ))}
               </div>
+              {integrations.length ? (
+                <p className="mt-2 text-xs text-muted">Активных подключений в workspace: {integrations.length}</p>
+              ) : null}
             </div>
           </div>
         </Card>
@@ -209,7 +228,7 @@ export default function AutomationPage() {
             <div className="grid gap-3 sm:grid-cols-[1fr_auto_1fr_auto_1fr] sm:items-center">
               <div className="rounded-xl border border-cyan-300 bg-cyan-50 px-3 py-2 text-sm font-semibold text-cyan-900">{scenarioPreview}</div>
               <ArrowRight className="hidden text-slate-400 sm:block" size={16} />
-              <div className="rounded-xl border border-amber-300 bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-900">Если: health_score &lt; 70</div>
+              <div className="rounded-xl border border-amber-300 bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-900">Если: Health Score &lt; 70</div>
               <ArrowRight className="hidden text-slate-400 sm:block" size={16} />
               <div className="rounded-xl border border-emerald-300 bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-900">
                 Сделать: {actionDescription}
@@ -236,7 +255,12 @@ export default function AutomationPage() {
             </label>
             <label className="text-sm">
               <span className="mb-1 block text-xs text-muted">Метрика</span>
-              <input value={metric} onChange={(event) => setMetric(event.target.value)} className="w-full rounded-xl border border-slate-200 p-2" />
+              <select value={metric} onChange={(event) => setMetric(event.target.value)} className="w-full rounded-xl border border-slate-200 p-2">
+                <option value="health_score">Health Score</option>
+                <option value="cash_guard_days">Дни до кассового разрыва</option>
+                <option value="romi_total">ROMI общий</option>
+                <option value="overdue_receivables">Просроченная дебиторка</option>
+              </select>
             </label>
             <label className="text-sm">
               <span className="mb-1 block text-xs text-muted">Порог</span>

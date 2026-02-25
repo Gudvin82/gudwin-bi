@@ -54,14 +54,14 @@ export default function GoalsFocusPage() {
 
       <Card>
         <div className="flex flex-wrap gap-2">
-          <Link href="/owner" className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold">
-            Открыть рабочий кабинет
-          </Link>
           <Link href="/goals" className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold">
             Вернуться к целям
           </Link>
           <Link href="/automation" className="rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-3 py-2 text-sm font-semibold text-white">
             Создать сценарий из фокуса
+          </Link>
+          <Link href="/owner" className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold">
+            Открыть рабочий кабинет
           </Link>
         </div>
       </Card>
