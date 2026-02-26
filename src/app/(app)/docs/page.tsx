@@ -18,59 +18,92 @@ export default function DocsPage() {
   const [candidateInn, setCandidateInn] = useState("7701002003");
   const [candidateConsent, setCandidateConsent] = useState(true);
   const [candidateResult, setCandidateResult] = useState<string>("");
+  const [error, setError] = useState("");
 
   const generateDoc = async () => {
-    const res = await fetch("/api/docs/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ template, client, amount: 125000 })
-    });
-    const json = await res.json();
-    setResult(json.preview ?? "");
+    try {
+      const res = await fetch("/api/docs/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ template, client, amount: 125000 })
+      });
+      if (!res.ok) {
+        setError("Не удалось сформировать документ.");
+        return;
+      }
+      const json = await res.json();
+      setResult(json.preview ?? "");
+    } catch {
+      setError("Не удалось сформировать документ.");
+    }
   };
 
   const scanDoc = async () => {
-    const res = await fetch("/api/docs/scan", { method: "POST" });
-    const json = await res.json();
-    setResult(`OCR: ${json.extracted.counterparty}, ${json.extracted.amount} ₽, ${json.extracted.date}. ${json.notes?.join("; ")}`);
+    try {
+      const res = await fetch("/api/docs/scan", { method: "POST" });
+      if (!res.ok) {
+        setError("Не удалось обработать скан.");
+        return;
+      }
+      const json = await res.json();
+      setResult(`OCR: ${json.extracted.counterparty}, ${json.extracted.amount} ₽, ${json.extracted.date}. ${json.notes?.join("; ")}`);
+    } catch {
+      setError("Не удалось обработать скан.");
+    }
   };
 
   const checkCounterparty = async () => {
-    const res = await fetch("/api/law/check-counterparty", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ inn })
-    });
-    const json = await res.json();
-    setCounterpartyCheck(`${json.status.toUpperCase()}: ${json.comment}. Источник: ${json.source}.`);
+    try {
+      const res = await fetch("/api/law/check-counterparty", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ inn })
+      });
+      if (!res.ok) {
+        setError("Не удалось проверить контрагента.");
+        return;
+      }
+      const json = await res.json();
+      setCounterpartyCheck(`${json.status.toUpperCase()}: ${json.comment}. Источник: ${json.source}.`);
 
-    const summaryRes = await fetch("/api/law/risk-summary", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        counterpartyName: client,
-        counterpartyStatus: json.status,
-        riskFactors: json.profile?.risk_factors ?? [],
-        contractText: result
-      })
-    });
-    const summary = await summaryRes.json();
-    setLawSummary(`${summary.summary} Флаги: ${(summary.flags ?? []).join(", ")}. ${summary.disclaimer}`);
+      const summaryRes = await fetch("/api/law/risk-summary", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          counterpartyName: client,
+          counterpartyStatus: json.status,
+          riskFactors: json.profile?.risk_factors ?? [],
+          contractText: result
+        })
+      });
+      if (!summaryRes.ok) {
+        setError("Не удалось сформировать риск-резюме.");
+        return;
+      }
+      const summary = await summaryRes.json();
+      setLawSummary(`${summary.summary} Флаги: ${(summary.flags ?? []).join(", ")}. ${summary.disclaimer}`);
+    } catch {
+      setError("Не удалось проверить контрагента.");
+    }
   };
 
   const checkCandidate = async () => {
-    const res = await fetch("/api/law/check-candidate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        fullName: candidateName,
-        passport: candidatePassport,
-        inn: candidateInn,
-        consent: candidateConsent
-      })
-    });
-    const json = await res.json();
-    setCandidateResult(res.ok ? `${json.status}: ${json.summary}` : json.error ?? "Ошибка проверки кандидата");
+    try {
+      const res = await fetch("/api/law/check-candidate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: candidateName,
+          passport: candidatePassport,
+          inn: candidateInn,
+          consent: candidateConsent
+        })
+      });
+      const json = await res.json();
+      setCandidateResult(res.ok ? `${json.status}: ${json.summary}` : json.error ?? "Ошибка проверки кандидата");
+    } catch {
+      setCandidateResult("Ошибка проверки кандидата.");
+    }
   };
 
   return (
@@ -80,6 +113,7 @@ export default function DocsPage() {
           <div>
             <h2 className="text-xl font-bold">Юр отдел</h2>
             <p className="text-sm text-muted">Здесь вы проверяете контрагентов и кандидатов на риски, работаете с документами и мониторите штрафы.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
           </div>
           <HelpPopover
             title="Что делает раздел"
