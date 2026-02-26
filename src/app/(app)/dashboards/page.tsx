@@ -24,35 +24,55 @@ export default function DashboardsPage() {
   const [notes, setNotes] = useState<{ id: string; scope: string; title: string; note: string; createdAt: string }[]>([]);
   const [noteTitle, setNoteTitle] = useState("Запустили акцию");
   const [noteText, setNoteText] = useState("Планируем рост выручки на 8% в течение 2 недель.");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const load = async () => {
-      const res = await fetch("/api/owner/health");
-      if (!res.ok) return;
-      const json = await res.json();
-      setHealthScore(json?.health?.score ?? 42);
+      try {
+        const res = await fetch("/api/owner/health");
+        if (!res.ok) {
+          setError("Не удалось загрузить Health Score.");
+          return;
+        }
+        const json = await res.json();
+        setHealthScore(json?.health?.score ?? 42);
+      } catch {
+        setError("Не удалось загрузить Health Score.");
+      }
     };
     void load();
   }, []);
 
   useEffect(() => {
     const loadNotes = async () => {
-      const res = await fetch("/api/annotations");
-      const json = await res.json();
-      setNotes(json.items ?? []);
+      try {
+        const res = await fetch("/api/annotations");
+        if (!res.ok) {
+          setError("Не удалось загрузить комментарии.");
+          return;
+        }
+        const json = await res.json();
+        setNotes(json.items ?? []);
+      } catch {
+        setError("Не удалось загрузить комментарии.");
+      }
     };
     void loadNotes();
   }, []);
 
   const addNote = async () => {
-    await fetch("/api/annotations", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ scope: "dashboard", title: noteTitle, note: noteText })
-    });
-    const res = await fetch("/api/annotations");
-    const json = await res.json();
-    setNotes(json.items ?? []);
+    try {
+      await fetch("/api/annotations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ scope: "dashboard", title: noteTitle, note: noteText })
+      });
+      const res = await fetch("/api/annotations");
+      const json = await res.json();
+      setNotes(json.items ?? []);
+    } catch {
+      setError("Не удалось добавить комментарий.");
+    }
   };
 
   return (
@@ -63,6 +83,7 @@ export default function DashboardsPage() {
             <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-cyan-700">Галерея дашбордов</p>
             <h3 className="text-2xl font-extrabold tracking-tight">Галерея дашбордов</h3>
             <p className="text-sm text-muted">Премиальная витрина для ежедневной работы и инвесторского показа.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
           </div>
           <HelpPopover
             title="Как работать с разделом"
