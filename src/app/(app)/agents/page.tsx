@@ -33,14 +33,23 @@ export default function AgentsPage() {
   const [activeAgentId, setActiveAgentId] = useState<string | null>(null);
   const [logs, setLogs] = useState<AgentLog[]>([]);
   const [newAgentType, setNewAgentType] = useState<Agent["type"]>("support");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const load = async () => {
-      const res = await fetch("/api/agents");
-      const json = (await res.json()) as { agents: Agent[] };
-      setAgents(json.agents);
-      if (json.agents[0]) {
-        setActiveAgentId(json.agents[0].id);
+      try {
+        const res = await fetch("/api/agents");
+        if (!res.ok) {
+          setError("Не удалось загрузить список агентов.");
+          return;
+        }
+        const json = (await res.json()) as { agents: Agent[] };
+        setAgents(json.agents);
+        if (json.agents[0]) {
+          setActiveAgentId(json.agents[0].id);
+        }
+      } catch {
+        setError("Не удалось загрузить список агентов.");
       }
     };
 
@@ -52,9 +61,17 @@ export default function AgentsPage() {
       return;
     }
     const loadLogs = async () => {
-      const res = await fetch(`/api/agents/${activeAgentId}/logs`);
-      const json = (await res.json()) as { logs: AgentLog[] };
-      setLogs(json.logs);
+      try {
+        const res = await fetch(`/api/agents/${activeAgentId}/logs`);
+        if (!res.ok) {
+          setError("Не удалось загрузить логи агента.");
+          return;
+        }
+        const json = (await res.json()) as { logs: AgentLog[] };
+        setLogs(json.logs);
+      } catch {
+        setError("Не удалось загрузить логи агента.");
+      }
     };
     void loadLogs();
   }, [activeAgentId]);
@@ -65,24 +82,29 @@ export default function AgentsPage() {
       return;
     }
 
-    const res = await fetch("/api/agents", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        type: preset.type,
-        name: preset.label,
-        description: preset.description,
-        config_json: { step2_data_access: ["datasets", "crm"], step3_tasks: ["daily report"] }
-      })
-    });
+    try {
+      const res = await fetch("/api/agents", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: preset.type,
+          name: preset.label,
+          description: preset.description,
+          config_json: { step2_data_access: ["datasets", "crm"], step3_tasks: ["daily report"] }
+        })
+      });
 
-    if (!res.ok) {
-      return;
+      if (!res.ok) {
+        setError("Не удалось создать агента.");
+        return;
+      }
+
+      const json = (await res.json()) as { agent: Agent };
+      setAgents((prev) => [json.agent, ...prev]);
+      setActiveAgentId(json.agent.id);
+    } catch {
+      setError("Не удалось создать агента.");
     }
-
-    const json = (await res.json()) as { agent: Agent };
-    setAgents((prev) => [json.agent, ...prev]);
-    setActiveAgentId(json.agent.id);
   };
 
   const runTask = async () => {
@@ -90,13 +112,18 @@ export default function AgentsPage() {
       return;
     }
 
-    const res = await fetch(`/api/agents/${activeAgentId}/run-task`, { method: "POST" });
-    if (!res.ok) {
-      return;
-    }
+    try {
+      const res = await fetch(`/api/agents/${activeAgentId}/run-task`, { method: "POST" });
+      if (!res.ok) {
+        setError("Не удалось запустить задачу агента.");
+        return;
+      }
 
-    const json = (await res.json()) as { log: AgentLog };
-    setLogs((prev) => [json.log, ...prev]);
+      const json = (await res.json()) as { log: AgentLog };
+      setLogs((prev) => [json.log, ...prev]);
+    } catch {
+      setError("Не удалось запустить задачу агента.");
+    }
   };
 
   const activeAgent = agents.find((item) => item.id === activeAgentId) ?? null;
@@ -108,6 +135,7 @@ export default function AgentsPage() {
           <div>
             <h2 className="mb-2 text-xl font-bold">ИИ-агенты</h2>
             <p className="text-sm text-muted">Платформа для агентов, которые берут на себя рутинные задачи и анализ.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
           </div>
           <HelpPopover
             title="Как использовать агента"
@@ -189,6 +217,11 @@ export default function AgentsPage() {
                     <p className="text-xs text-muted">{new Date(log.timestamp).toLocaleString("ru-RU")}</p>
                   </div>
                 ))}
+                {logs.length === 0 ? (
+                  <div className="rounded-xl border border-border p-3 text-sm text-muted">
+                    Пока нет логов. Запустите задачу, чтобы увидеть историю действий.
+                  </div>
+                ) : null}
               </div>
             </>
           ) : (
