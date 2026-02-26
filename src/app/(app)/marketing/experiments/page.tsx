@@ -17,12 +17,21 @@ type Experiment = {
 
 export default function MarketingExperimentsPage() {
   const [items, setItems] = useState<Experiment[]>([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const load = async () => {
-      const res = await fetch("/api/marketing/experiments");
-      const json = await res.json();
-      setItems(json.experiments ?? []);
+      try {
+        const res = await fetch("/api/marketing/experiments");
+        if (!res.ok) {
+          setError("Не удалось загрузить эксперименты.");
+          return;
+        }
+        const json = await res.json();
+        setItems(json.experiments ?? []);
+      } catch {
+        setError("Не удалось загрузить эксперименты.");
+      }
     };
     void load();
   }, []);
@@ -34,6 +43,7 @@ export default function MarketingExperimentsPage() {
           <div>
             <h2 className="text-xl font-bold">Эксперименты</h2>
             <p className="text-sm text-muted">Системные A/B-тесты гипотез по креативам, офферам и аудиториям.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
           </div>
           <HelpPopover
             title="Как запускать тесты"

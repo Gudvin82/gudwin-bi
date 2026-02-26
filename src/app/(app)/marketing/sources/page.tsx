@@ -8,6 +8,7 @@ type Source = { id: string; name: string; status: "connected" | "needs_refresh" 
 
 export default function MarketingSourcesPage() {
   const [sources, setSources] = useState<Source[]>([]);
+  const [error, setError] = useState("");
   const [social, setSocial] = useState({
     vkGroup: "",
     telegramChannel: "",
@@ -20,9 +21,17 @@ export default function MarketingSourcesPage() {
 
   useEffect(() => {
     const load = async () => {
-      const res = await fetch("/api/marketing/sources");
-      const json = await res.json();
-      setSources(json.sources ?? []);
+      try {
+        const res = await fetch("/api/marketing/sources");
+        if (!res.ok) {
+          setError("Не удалось загрузить источники маркетинга.");
+          return;
+        }
+        const json = await res.json();
+        setSources(json.sources ?? []);
+      } catch {
+        setError("Не удалось загрузить источники маркетинга.");
+      }
     };
     void load();
   }, []);
@@ -57,6 +66,7 @@ export default function MarketingSourcesPage() {
           <div>
             <h2 className="text-xl font-bold">Источники маркетинга</h2>
             <p className="text-sm text-muted">Подключите рекламные аккаунты, чтобы видеть реальные расходы, лиды и сделки по каналам.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
           </div>
           <HelpPopover
             title="Зачем подключать источники"

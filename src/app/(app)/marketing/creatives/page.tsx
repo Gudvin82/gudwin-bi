@@ -17,12 +17,21 @@ type Creative = {
 
 export default function MarketingCreativesPage() {
   const [creatives, setCreatives] = useState<Creative[]>([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const load = async () => {
-      const res = await fetch("/api/marketing/creatives");
-      const json = await res.json();
-      setCreatives(json.creatives ?? []);
+      try {
+        const res = await fetch("/api/marketing/creatives");
+        if (!res.ok) {
+          setError("Не удалось загрузить креативы.");
+          return;
+        }
+        const json = await res.json();
+        setCreatives(json.creatives ?? []);
+      } catch {
+        setError("Не удалось загрузить креативы.");
+      }
     };
     void load();
   }, []);
@@ -34,6 +43,7 @@ export default function MarketingCreativesPage() {
           <div>
             <h2 className="text-xl font-bold">Креативы</h2>
             <p className="text-sm text-muted">Генерация и хранение рекламных креативов с привязкой к эффективности.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
           </div>
           <HelpPopover
             title="Как работать с креативами"
