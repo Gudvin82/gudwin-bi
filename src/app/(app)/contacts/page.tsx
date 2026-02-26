@@ -11,18 +11,27 @@ export default function ContactsPage() {
   const [contact, setContact] = useState("");
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState("");
+  const [error, setError] = useState("");
   const [chatInput, setChatInput] = useState("");
   const [chat, setChat] = useState<SupportMessage[]>([
     { id: "m1", from: "support", text: "Здравствуйте. Мы на связи, опишите задачу, и мы подскажем ближайший план работ." }
   ]);
 
   const submit = async () => {
-    const res = await fetch("/api/contacts/request", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, contact, message })
-    });
-    setStatus(res.ok ? "Заявка отправлена команде разработки." : "Ошибка отправки заявки.");
+    try {
+      const res = await fetch("/api/contacts/request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, contact, message })
+      });
+      setStatus(res.ok ? "Заявка отправлена команде разработки." : "Ошибка отправки заявки.");
+      if (!res.ok) {
+        setError("Не удалось отправить заявку.");
+      }
+    } catch {
+      setStatus("Ошибка отправки заявки.");
+      setError("Не удалось отправить заявку.");
+    }
   };
 
   const sendChat = () => {
@@ -46,6 +55,7 @@ export default function ContactsPage() {
           <div>
             <h2 className="text-xl font-bold">Контакты разработчиков</h2>
             <p className="text-sm text-muted">Связь с командой GudWin BI: поддержка, внедрение, кастомные модули.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
           </div>
           <HelpPopover
             title="Когда использовать"

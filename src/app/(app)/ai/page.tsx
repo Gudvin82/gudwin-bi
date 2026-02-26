@@ -54,19 +54,22 @@ export default function AiPage() {
 
   const saveTemplate = async () => {
     setTemplateMessage(null);
+    try {
+      const res = await fetch("/api/report-templates", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: query.slice(0, 60),
+          prompt: query,
+          datasetIds: selectedDatasets,
+          channels: ["telegram"]
+        })
+      });
 
-    const res = await fetch("/api/report-templates", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: query.slice(0, 60),
-        prompt: query,
-        datasetIds: selectedDatasets,
-        channels: ["telegram"]
-      })
-    });
-
-    setTemplateMessage(res.ok ? "Шаблон сохранен." : "Не удалось сохранить шаблон.");
+      setTemplateMessage(res.ok ? "Шаблон сохранен." : "Не удалось сохранить шаблон.");
+    } catch {
+      setTemplateMessage("Не удалось сохранить шаблон.");
+    }
   };
 
   const toggleDataset = (id: string) => {

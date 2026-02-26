@@ -9,19 +9,16 @@ const items = [
   { href: "/owner", label: "Главная", icon: Home },
   { href: "/finance", label: "Финансы", icon: Wallet },
   { href: "/marketing", label: "Маркетинг", icon: BarChart3 },
-  { href: "/goals", label: "Цели", icon: Target },
-  { href: "/automation", label: "Сценарии", icon: Boxes },
-  { href: "/advisor", label: "Советник", icon: Brain },
-  { href: "/watch", label: "Алерты", icon: Bell }
+  { href: "/advisor", label: "Советник", icon: Brain }
 ];
 
 export function MobileNav({ onMenuOpen }: { onMenuOpen?: () => void }) {
   const pathname = usePathname();
-  const extended = onMenuOpen ? [...items, { href: "#menu", label: "Меню", icon: Menu, action: onMenuOpen }] : items;
+  const extended = onMenuOpen ? [...items, { href: "#menu", label: "Все", icon: Menu, action: onMenuOpen }] : items;
 
   return (
     <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-2 pb-2 pt-2 shadow-[0_-8px_24px_rgba(15,23,42,0.08)] backdrop-blur-xl md:hidden">
-      <div className={`grid gap-1 ${extended.length === 8 ? "grid-cols-8" : "grid-cols-7"}`}>
+      <div className={`grid gap-1 ${extended.length === 5 ? "grid-cols-5" : "grid-cols-4"}`}>
         {extended.map((item) => {
           const Icon = item.icon;
           const active = pathname === item.href || pathname.startsWith(`${item.href}/`);

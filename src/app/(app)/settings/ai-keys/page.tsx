@@ -15,14 +15,22 @@ const providers = [
 export default function AiKeysSettingsPage() {
   const [health, setHealth] = useState<{ enabled: boolean; connected: boolean; provider: string; model: string } | null>(null);
   const [period, setPeriod] = useState<"day" | "month">("month");
+  const [error, setError] = useState("");
   const usageRows: Array<{ name: string; req: string; tok: string; cost: string }> = [];
 
   useEffect(() => {
     const load = async () => {
-      const res = await fetch("/api/health");
-      if (!res.ok) return;
-      const json = await res.json();
-      setHealth(json.ai ?? null);
+      try {
+        const res = await fetch("/api/health");
+        if (!res.ok) {
+          setError("Не удалось загрузить статус ИИ.");
+          return;
+        }
+        const json = await res.json();
+        setHealth(json.ai ?? null);
+      } catch {
+        setError("Не удалось загрузить статус ИИ.");
+      }
     };
     void load();
   }, []);
@@ -36,6 +44,7 @@ export default function AiKeysSettingsPage() {
             <p className="mt-1 text-sm text-muted">
               Подготовленный контур для подключения разных ИИ-моделей. В текущем релизе ключи задаются на сервере в `.env`.
             </p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
           </div>
           <HelpPopover
             title="Как подключать ИИ"

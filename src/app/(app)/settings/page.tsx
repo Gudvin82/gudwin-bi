@@ -41,6 +41,7 @@ export default function SettingsPage() {
   const [botToken, setBotToken] = useState("");
   const [botGroups, setBotGroups] = useState("");
   const [botStatus, setBotStatus] = useState("");
+  const [error, setError] = useState("");
 
   const roleDescription = useMemo(() => {
     if (role === "owner") return "Полный доступ ко всем разделам, ключам и правам.";
@@ -84,6 +85,7 @@ export default function SettingsPage() {
       setTelegramToken("");
       setTelegramChatId("");
     } catch {
+      setError("Не удалось подключить Telegram.");
       setTelegramStatus("Не удалось подключить Telegram. Проверьте токен и chat_id.");
     }
   };
@@ -106,6 +108,7 @@ export default function SettingsPage() {
       setBotToken("");
       setBotGroups("");
     } catch {
+      setError("Не удалось создать бота.");
       setBotStatus("Не удалось создать бота. Проверьте токен и группы.");
     }
   };
@@ -155,6 +158,7 @@ export default function SettingsPage() {
             ]}
           />
         </div>
+        {error ? <p className="mb-2 text-xs font-semibold text-amber-700">{error}</p> : null}
         <div className="grid gap-3 md:grid-cols-2">
           <div className="space-y-2">
             <label className="text-xs text-muted">ФИО аккаунта</label>

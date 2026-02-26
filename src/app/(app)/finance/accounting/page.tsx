@@ -90,6 +90,7 @@ export default function FinanceAccountingPage() {
   const [reports, setReports] = useState<Reports | null>(null);
   const [loading, setLoading] = useState(false);
   const [notice, setNotice] = useState("");
+  const [error, setError] = useState("");
 
   const [importCols, setImportCols] = useState<string[]>([]);
   const [importRows, setImportRows] = useState<string[][]>([]);
@@ -104,14 +105,25 @@ export default function FinanceAccountingPage() {
   });
 
   const load = async () => {
-    const [txRes, payRes, repRes] = await Promise.all([
-      fetch("/api/finance/transactions").then((r) => r.json()),
-      fetch("/api/finance/payment-calendar").then((r) => r.json()),
-      fetch("/api/finance/reports").then((r) => r.json())
-    ]);
-    setTransactions(txRes.items ?? []);
-    setPayments(payRes.items ?? []);
-    setReports(repRes ?? null);
+    try {
+      const [txRes, payRes, repRes] = await Promise.all([
+        fetch("/api/finance/transactions"),
+        fetch("/api/finance/payment-calendar"),
+        fetch("/api/finance/reports")
+      ]);
+      if (!txRes.ok || !payRes.ok || !repRes.ok) {
+        setError("Не удалось загрузить финансовые отчеты.");
+        return;
+      }
+      const txJson = await txRes.json();
+      const payJson = await payRes.json();
+      const repJson = await repRes.json();
+      setTransactions(txJson.items ?? []);
+      setPayments(payJson.items ?? []);
+      setReports(repJson ?? null);
+    } catch {
+      setError("Не удалось загрузить финансовые отчеты.");
+    }
   };
 
   useEffect(() => {
@@ -120,7 +132,7 @@ export default function FinanceAccountingPage() {
 
   const submitTransaction = async () => {
     setLoading(true);
-    setNotice("");
+      setNotice("");
     try {
       const res = await fetch("/api/finance/transactions", {
         method: "POST",
@@ -133,6 +145,8 @@ export default function FinanceAccountingPage() {
       }
       setNotice("Транзакция добавлена.");
       await load();
+    } catch {
+      setNotice("Не удалось сохранить транзакцию.");
     } finally {
       setLoading(false);
     }
@@ -140,7 +154,7 @@ export default function FinanceAccountingPage() {
 
   const submitPayment = async () => {
     setLoading(true);
-    setNotice("");
+      setNotice("");
     try {
       const res = await fetch("/api/finance/payment-calendar", {
         method: "POST",
@@ -153,18 +167,28 @@ export default function FinanceAccountingPage() {
       }
       setNotice("Платеж в календарь добавлен.");
       await load();
+    } catch {
+      setNotice("Не удалось добавить платеж.");
     } finally {
       setLoading(false);
     }
   };
 
   const updatePaymentStatus = async (id: string, status: Payment["status"]) => {
-    await fetch("/api/finance/payment-calendar", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, status })
-    });
-    await load();
+    try {
+      const res = await fetch("/api/finance/payment-calendar", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, status })
+      });
+      if (!res.ok) {
+        setNotice("Не удалось обновить статус платежа.");
+        return;
+      }
+      await load();
+    } catch {
+      setNotice("Не удалось обновить статус платежа.");
+    }
   };
 
   const onImportFile = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -240,6 +264,8 @@ export default function FinanceAccountingPage() {
       }
       setNotice(`Импорт завершен: ${imported} строк.`);
       await load();
+    } catch {
+      setNotice("Не удалось импортировать строки. Проверьте файл и повторите попытку.");
     } finally {
       setLoading(false);
     }
@@ -252,6 +278,7 @@ export default function FinanceAccountingPage() {
           <div>
             <h2 className="text-2xl font-extrabold tracking-tight">Финучет и отчетность</h2>
             <p className="mt-1 text-sm text-muted">Ручной ввод транзакций, платежный календарь и стандартные отчеты: ДДС, P&L, баланс.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
           </div>
           <HelpPopover
             title="Что можно сделать"
