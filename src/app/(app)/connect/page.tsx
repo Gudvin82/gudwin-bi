@@ -10,15 +10,26 @@ type Rule = { id: string; when: string; then: string; enabled: boolean };
 export default function ConnectPage() {
   const [integrations, setIntegrations] = useState<Integration[]>([]);
   const [rules, setRules] = useState<Rule[]>([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const load = async () => {
-      const [i, r] = await Promise.all([
-        fetch("/api/connect/integrations").then((x) => x.json()),
-        fetch("/api/connect/rules").then((x) => x.json())
-      ]);
-      setIntegrations(i.integrations ?? []);
-      setRules(r.rules ?? []);
+      try {
+        const [i, r] = await Promise.all([
+          fetch("/api/connect/integrations"),
+          fetch("/api/connect/rules")
+        ]);
+        if (!i.ok || !r.ok) {
+          setError("Не удалось загрузить интеграции или правила.");
+          return;
+        }
+        const iJson = await i.json();
+        const rJson = await r.json();
+        setIntegrations(iJson.integrations ?? []);
+        setRules(rJson.rules ?? []);
+      } catch {
+        setError("Не удалось загрузить интеграции или правила.");
+      }
     };
 
     void load();
@@ -31,6 +42,7 @@ export default function ConnectPage() {
           <div>
             <h2 className="text-xl font-bold">Интеграции</h2>
             <p className="text-sm text-muted">Единая интеграционная шина: CRM, банки, реклама, маркетплейсы и вебхуки.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
           </div>
           <HelpPopover
             title="Что можно делать здесь"
