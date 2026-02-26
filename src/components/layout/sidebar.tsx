@@ -36,7 +36,7 @@ const sections: NavSection[] = [
     key: "finance",
     href: "/finance",
     label: "Финансы",
-    icon: Target,
+    icon: Building2,
     matches: ["/finance"],
     children: [
       { href: "/finance", label: "Юнит-экономика и касса" },
