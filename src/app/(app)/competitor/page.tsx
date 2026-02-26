@@ -8,12 +8,21 @@ type Signal = { competitor: string; signal: string; action: string };
 
 export default function CompetitorPage() {
   const [signals, setSignals] = useState<Signal[]>([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const load = async () => {
-      const res = await fetch("/api/competitor/watch");
-      const json = await res.json();
-      setSignals(json.signals ?? []);
+      try {
+        const res = await fetch("/api/competitor/watch");
+        if (!res.ok) {
+          setError("Не удалось загрузить сигналы конкурентов.");
+          return;
+        }
+        const json = await res.json();
+        setSignals(json.signals ?? []);
+      } catch {
+        setError("Не удалось загрузить сигналы конкурентов.");
+      }
     };
 
     void load();
@@ -26,6 +35,7 @@ export default function CompetitorPage() {
           <div>
             <h2 className="text-xl font-bold">Конкурентный мониторинг</h2>
             <p className="text-sm text-muted">Мониторинг цен, акций и сигналов конкурентов с рекомендациями действий.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
           </div>
           <HelpPopover
             title="Как читать сигналы"

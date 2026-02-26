@@ -26,13 +26,22 @@ const levelLabels: Record<string, string> = {
 export default function WatchPage() {
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [mode, setMode] = useState("critical_only");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const load = async () => {
-      const res = await fetch("/api/watch/alerts");
-      const json = await res.json();
-      setAlerts(json.alerts ?? []);
-      setMode(json.mode ?? "critical_only");
+      try {
+        const res = await fetch("/api/watch/alerts");
+        if (!res.ok) {
+          setError("Не удалось загрузить алерты.");
+          return;
+        }
+        const json = await res.json();
+        setAlerts(json.alerts ?? []);
+        setMode(json.mode ?? "critical_only");
+      } catch {
+        setError("Не удалось загрузить алерты.");
+      }
     };
     void load();
   }, []);
@@ -44,6 +53,7 @@ export default function WatchPage() {
           <div>
             <h2 className="text-xl font-bold">Мониторинг</h2>
             <p className="text-sm text-muted">Здесь настраиваются уведомления и утренние отчеты о важных событиях в бизнесе.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
             <Link href="/automation" className="mt-2 inline-flex rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700">
               Создать авто-реакцию из алерта
             </Link>

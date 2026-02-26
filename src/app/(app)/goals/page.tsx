@@ -40,11 +40,20 @@ export default function GoalsPage() {
   const [unit, setUnit] = useState<"%" | "₽" | "шт" | "дн">("%");
   const [deadline, setDeadline] = useState("2026-05-01");
   const [creating, setCreating] = useState(false);
+  const [error, setError] = useState("");
 
   const load = async () => {
-    const res = await fetch("/api/goals");
-    const json = (await res.json()) as { goals: Goal[] };
-    setGoals(json.goals ?? []);
+    try {
+      const res = await fetch("/api/goals");
+      if (!res.ok) {
+        setError("Не удалось загрузить цели.");
+        return;
+      }
+      const json = (await res.json()) as { goals: Goal[] };
+      setGoals(json.goals ?? []);
+    } catch {
+      setError("Не удалось загрузить цели.");
+    }
   };
 
   useEffect(() => {
@@ -60,18 +69,24 @@ export default function GoalsPage() {
         body: JSON.stringify({ title, targetMetric, targetValue, currentValue, unit, deadline })
       });
       await load();
+    } catch {
+      setError("Не удалось создать цель.");
     } finally {
       setCreating(false);
     }
   };
 
   const updateTaskStatus = async (goalId: string, taskId: string, status: "todo" | "in_progress" | "done") => {
-    await fetch("/api/goals", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ goalId, taskId, status })
-    });
-    await load();
+    try {
+      await fetch("/api/goals", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ goalId, taskId, status })
+      });
+      await load();
+    } catch {
+      setError("Не удалось обновить задачу по цели.");
+    }
   };
 
   const activeGoals = useMemo(() => goals.filter((goal) => goal.status === "active"), [goals]);
@@ -83,6 +98,7 @@ export default function GoalsPage() {
           <div>
             <h2 className="text-2xl font-extrabold tracking-tight">Цели и план достижения</h2>
             <p className="mt-1 text-sm text-muted">Метод от обратного: задайте целевые метрики, а система подскажет чего не хватает и построит ИИ-план.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
           </div>
           <HelpPopover
             title="Как работает раздел целей"

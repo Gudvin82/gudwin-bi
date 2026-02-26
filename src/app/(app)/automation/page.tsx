@@ -82,17 +82,26 @@ export default function AutomationPage() {
   const [actionDescription, setActionDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [selectedPreset, setSelectedPreset] = useState("");
+  const [error, setError] = useState("");
 
   const load = async () => {
-    const res = await fetch("/api/workflows");
-    const json = (await res.json()) as {
-      workflows: Workflow[];
-      logs: WorkflowLog[];
-      integrations: IntegrationRef[];
-    };
-    setWorkflows(json.workflows ?? []);
-    setLogs(json.logs ?? []);
-    setIntegrations(json.integrations ?? []);
+    try {
+      const res = await fetch("/api/workflows");
+      if (!res.ok) {
+        setError("Не удалось загрузить сценарии.");
+        return;
+      }
+      const json = (await res.json()) as {
+        workflows: Workflow[];
+        logs: WorkflowLog[];
+        integrations: IntegrationRef[];
+      };
+      setWorkflows(json.workflows ?? []);
+      setLogs(json.logs ?? []);
+      setIntegrations(json.integrations ?? []);
+    } catch {
+      setError("Не удалось загрузить сценарии.");
+    }
   };
 
   useEffect(() => {
@@ -116,14 +125,20 @@ export default function AutomationPage() {
         })
       });
       await load();
+    } catch {
+      setError("Не удалось создать сценарий.");
     } finally {
       setLoading(false);
     }
   };
 
   const toggleWorkflow = async (id: string) => {
-    await fetch(`/api/workflows/${id}/toggle`, { method: "POST" });
-    await load();
+    try {
+      await fetch(`/api/workflows/${id}/toggle`, { method: "POST" });
+      await load();
+    } catch {
+      setError("Не удалось изменить статус сценария.");
+    }
   };
 
   const applyPreset = (presetName: string) => {
@@ -151,6 +166,7 @@ export default function AutomationPage() {
           <div>
             <h2 className="text-2xl font-extrabold tracking-tight">Сценарии и агенты</h2>
             <p className="mt-1 text-sm text-muted">Собирайте автоматизации кубиками: «Когда → Если → Сделать» и запускайте ИИ-агентов.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
           </div>
           <HelpPopover
             title="Как работает конструктор"
