@@ -8,16 +8,23 @@ const FORBIDDEN_TOKENS = [
   "update ",
   "create ",
   "grant ",
-  "revoke "
+  "revoke ",
+  "copy ",
+  "vacuum ",
+  "analyze ",
+  "set ",
+  "show "
 ];
 const FORBIDDEN_PATTERNS = [
   /\bwith\b/i,
   /\bunion\b/i,
   /\binto\b/i,
   /\binformation_schema\b/i,
+  /\bpg_catalog\b/i,
   /\bpg_/i,
   /--/,
-  /\/\*/
+  /\/\*/,
+  /\*\//
 ];
 
 export function enforceSqlSafety(rawSql: string) {
@@ -36,11 +43,19 @@ export function enforceSqlSafety(rawSql: string) {
   }
 
   const semicolons = (rawSql.match(/;/g) ?? []).length;
-  if (semicolons > 1 || (semicolons === 1 && !rawSql.trim().endsWith(";"))) {
+  if (semicolons > 0 && !rawSql.trim().endsWith(";")) {
     return { safe: false, reason: "Разрешён только один SQL-запрос без цепочек." };
   }
 
+  const selectCount = (sql.match(/\bselect\b/g) ?? []).length;
+  if (selectCount > 1) {
+    return { safe: false, reason: "Подзапросы отключены для безопасности. Упростите запрос." };
+  }
+
   const referenced = Array.from(sql.matchAll(/(?:from|join)\s+([a-z_]+)/g)).map((m) => m[1]);
+  if (!referenced.length) {
+    return { safe: false, reason: "Не удалось определить таблицы запроса." };
+  }
   const disallowed = referenced.filter((table) => !ALLOWED_TABLES.includes(table));
   if (disallowed.length) {
     return { safe: false, reason: `Запрос использует запрещенные таблицы: ${disallowed.join(", ")}.` };

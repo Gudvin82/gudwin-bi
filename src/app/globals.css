@@ -171,6 +171,8 @@ html[data-theme="dark"] .premium-header {
 .recharts-responsive-container {
   min-height: 180px;
   min-width: 240px;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 html[data-theme="dark"] .chart-shell {

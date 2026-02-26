@@ -10,7 +10,7 @@ const bodySchema = z.object({
 
 export async function POST(req: Request) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-  const limit = checkRateLimit(`pin:${ip}`, 6, 10 * 60_000);
+  const limit = await checkRateLimit(`pin:${ip}`, 6, 10 * 60_000);
   if (!limit.allowed) {
     return NextResponse.json(
       { ok: false, error: "Слишком много попыток. Попробуйте позже." },

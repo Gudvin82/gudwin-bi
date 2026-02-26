@@ -24,12 +24,21 @@ type Row = {
 export default function MarketingAnalyticsPage() {
   const [rows, setRows] = useState<Row[]>([]);
   const [mounted, setMounted] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const load = async () => {
-      const res = await fetch("/api/marketing/analytics");
-      const json = await res.json();
-      setRows(json.rows ?? []);
+      try {
+        const res = await fetch("/api/marketing/analytics");
+        if (!res.ok) {
+          setError("Не удалось загрузить маркетинговые данные.");
+          return;
+        }
+        const json = await res.json();
+        setRows(json.rows ?? []);
+      } catch {
+        setError("Не удалось загрузить маркетинговые данные.");
+      }
     };
     void load();
     setMounted(true);
@@ -60,6 +69,7 @@ export default function MarketingAnalyticsPage() {
           <div>
             <h2 className="text-xl font-bold">Маркетинговая аналитика</h2>
             <p className="text-sm text-muted">Сквозная аналитика каналов, воронка и ключевая юнит-экономика маркетинга.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
           </div>
           <HelpPopover
             title="Подсказка"

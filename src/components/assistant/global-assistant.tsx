@@ -172,7 +172,7 @@ export function GlobalAssistant() {
   };
 
   return (
-    <div className="fixed bottom-24 right-3 z-[80] pointer-events-auto md:bottom-6 md:right-6">
+    <div className="fixed bottom-24 right-3 z-[120] pointer-events-auto md:bottom-6 md:right-6">
       {isOpen ? (
         <div className="w-[min(92vw,390px)] rounded-3xl border border-cyan-100/80 bg-[linear-gradient(145deg,_rgba(255,255,255,0.97),_rgba(240,249,255,0.94))] p-3 shadow-[0_18px_50px_rgba(8,145,178,0.25)] backdrop-blur-xl">
           <div className="mb-2 flex items-center justify-between gap-2">

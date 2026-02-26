@@ -30,7 +30,7 @@ export async function POST(request: Request) {
   const session = await getSessionContext();
   const input = schema.parse(await request.json());
 
-  const rate = checkRateLimit(`${session.workspaceId}:${session.userId}:advisor`, 30, 60_000);
+  const rate = await checkRateLimit(`${session.workspaceId}:${session.userId}:advisor`, 30, 60_000);
   if (!rate.allowed) {
     return NextResponse.json({ error: "Слишком много запросов к консультанту. Повторите через минуту." }, { status: 429 });
   }

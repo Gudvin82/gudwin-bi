@@ -1,15 +1,21 @@
 export function uid(prefix = "id") {
+  const fallback = () => `${prefix}-${Date.now()}-${Math.round(Math.random() * 1e6)}`;
+
+  // В браузере используем безопасный детерминированный fallback,
+  // чтобы не зависеть от доступности crypto.randomUUID в http/legacy окружении.
+  if (typeof window !== "undefined") {
+    return fallback();
+  }
+
   const canUseCrypto =
-    typeof crypto !== "undefined"
-    && typeof crypto.randomUUID === "function"
-    && (typeof window === "undefined" || window.isSecureContext);
+    typeof crypto !== "undefined" && typeof crypto.randomUUID === "function";
 
   if (canUseCrypto) {
     try {
       return crypto.randomUUID();
     } catch {
-      // Fallback to deterministic uid below.
+      // ignore and fallback
     }
   }
-  return `${prefix}-${Date.now()}-${Math.round(Math.random() * 1e6)}`;
+  return fallback();
 }

@@ -5,7 +5,7 @@ import { SESSION_COOKIE_NAME, getSessionCookieOptions, signSession } from "@/lib
 
 export async function POST(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-  const limit = checkRateLimit(`pin:${ip}`, 6, 10 * 60_000);
+  const limit = await checkRateLimit(`pin:${ip}`, 6, 10 * 60_000);
   if (!limit.allowed) {
     const errorUrl = req.nextUrl.clone();
     errorUrl.pathname = "/pin";

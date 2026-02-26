@@ -13,7 +13,7 @@ const schema = z.object({
 export async function POST(request: Request) {
   const input = schema.parse(await request.json());
   const session = await getSessionContext();
-  const rate = checkRateLimit(`${session.workspaceId}:${session.userId}`, 25, 60_000);
+  const rate = await checkRateLimit(`${session.workspaceId}:${session.userId}`, 25, 60_000);
   if (!rate.allowed) {
     return NextResponse.json({ error: "Слишком много AI-запросов. Повторите через минуту." }, { status: 429 });
   }
