@@ -21,12 +21,21 @@ type Campaign = {
 export default function MarketingCampaignsPage() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [filter, setFilter] = useState<"all" | "active" | "paused" | "archived">("all");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const load = async () => {
-      const res = await fetch("/api/marketing/campaigns");
-      const json = await res.json();
-      setCampaigns(json.campaigns ?? []);
+      try {
+        const res = await fetch("/api/marketing/campaigns");
+        if (!res.ok) {
+          setError("Не удалось загрузить кампании.");
+          return;
+        }
+        const json = await res.json();
+        setCampaigns(json.campaigns ?? []);
+      } catch {
+        setError("Не удалось загрузить кампании.");
+      }
     };
     void load();
   }, []);
@@ -40,6 +49,7 @@ export default function MarketingCampaignsPage() {
           <div>
             <h2 className="text-xl font-bold">Кампании</h2>
             <p className="text-sm text-muted">Смотрите, какие кампании работают, а какие сжигают бюджет.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
           </div>
           <HelpPopover
             title="Как читать рекомендации"
