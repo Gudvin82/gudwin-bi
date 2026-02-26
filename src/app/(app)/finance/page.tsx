@@ -33,12 +33,22 @@ export default function FinancePage() {
   useEffect(() => {
     const load = async () => {
       try {
+        const [mRes, cRes, lRes, pRes, moRes] = await Promise.all([
+          fetch("/api/finance/unit-metrics"),
+          fetch("/api/finance/cash-guard"),
+          fetch("/api/finance/money-leaks"),
+          fetch("/api/finance/payment-calendar"),
+          fetch("/api/marketing/overview")
+        ]);
+        if (!mRes.ok || !cRes.ok || !lRes.ok || !pRes.ok || !moRes.ok) {
+          throw new Error("load failed");
+        }
         const [m, c, l, p, mo] = await Promise.all([
-          fetch("/api/finance/unit-metrics").then((r) => r.json()),
-          fetch("/api/finance/cash-guard").then((r) => r.json()),
-          fetch("/api/finance/money-leaks").then((r) => r.json()),
-          fetch("/api/finance/payment-calendar").then((r) => r.json()),
-          fetch("/api/marketing/overview").then((r) => r.json())
+          mRes.json(),
+          cRes.json(),
+          lRes.json(),
+          pRes.json(),
+          moRes.json()
         ]);
 
         setMetrics(m.metrics ?? []);

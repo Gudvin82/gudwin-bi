@@ -109,20 +109,25 @@ export default function AdvisorPage() {
 
   const createSession = async () => {
     const title = `Новая тема: ${roleMeta[role].label}`;
-    const res = await fetch("/api/advisor/sessions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ role, title })
-    });
+    try {
+      const res = await fetch("/api/advisor/sessions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ role, title })
+      });
 
-    if (!res.ok) {
-      return;
+      if (!res.ok) {
+        setError("Не удалось создать новую сессию.");
+        return;
+      }
+
+      const json = (await res.json()) as { session: SessionItem };
+      setSessions((prev) => [json.session, ...prev]);
+      setActiveSessionId(json.session.id);
+      setMessages([]);
+    } catch {
+      setError("Не удалось создать новую сессию.");
     }
-
-    const json = (await res.json()) as { session: SessionItem };
-    setSessions((prev) => [json.session, ...prev]);
-    setActiveSessionId(json.session.id);
-    setMessages([]);
   };
 
   const askAdvisor = async () => {
@@ -133,53 +138,61 @@ export default function AdvisorPage() {
     setLoading(true);
     const userMessage: ChatMessage = { id: uid("chat"), role: "user", text: input };
     appendMessages([userMessage]);
+    try {
+      const res = await fetch("/api/advisor/query", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ role, message: input, sessionId: activeSessionId ?? undefined })
+      });
 
-    const res = await fetch("/api/advisor/query", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ role, message: input, sessionId: activeSessionId ?? undefined })
-    });
-
-    if (!res.ok) {
-      appendMessages([{ id: uid("chat"), role: "assistant", text: "Ошибка запроса к консультанту. Попробуйте снова." }]);
-      setLoading(false);
-      return;
-    }
-
-    const json = (await res.json()) as AssistantBlock & {
-      explain?: ExplainBlock;
-      context?: { kpi?: Record<string, number>; dataSources?: string[]; warnings?: string[] };
-    };
-    appendMessages([
-      {
-        id: uid("chat"),
-        role: "assistant",
-        text: json.summary,
-        structured: {
-          summary: json.summary,
-          insights: json.insights,
-          recommendations: json.recommendations,
-          risk_flags: json.risk_flags
-        },
-        explain: json.explain
+      if (!res.ok) {
+        appendMessages([{ id: uid("chat"), role: "assistant", text: "Ошибка запроса к консультанту. Попробуйте снова." }]);
+        setLoading(false);
+        return;
       }
-    ]);
-    setContext(json.context ?? {});
-    setInput("");
-    setLoading(false);
+
+      const json = (await res.json()) as AssistantBlock & {
+        explain?: ExplainBlock;
+        context?: { kpi?: Record<string, number>; dataSources?: string[]; warnings?: string[] };
+      };
+      appendMessages([
+        {
+          id: uid("chat"),
+          role: "assistant",
+          text: json.summary,
+          structured: {
+            summary: json.summary,
+            insights: json.insights,
+            recommendations: json.recommendations,
+            risk_flags: json.risk_flags
+          },
+          explain: json.explain
+        }
+      ]);
+      setContext(json.context ?? {});
+      setInput("");
+    } catch {
+      appendMessages([{ id: uid("chat"), role: "assistant", text: "Ошибка запроса к консультанту. Попробуйте снова." }]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const saveDecision = async (sessionId: string, recommendation: string, status: "accepted" | "rejected" | "in_progress") => {
-    const res = await fetch("/api/advisor/decision-log", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ sessionId, recommendation, status })
-    });
-    setDecisionStatus(res.ok ? "Решение сохранено в журнал решений." : "Не удалось сохранить решение.");
-    if (res.ok) {
-      const dRes = await fetch("/api/advisor/decision-log");
-      const dJson = (await dRes.json()) as { items: Array<{ id: string; recommendation: string; status: string }> };
-      setDecisions(dJson.items ?? []);
+    try {
+      const res = await fetch("/api/advisor/decision-log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId, recommendation, status })
+      });
+      setDecisionStatus(res.ok ? "Решение сохранено в журнал решений." : "Не удалось сохранить решение.");
+      if (res.ok) {
+        const dRes = await fetch("/api/advisor/decision-log");
+        const dJson = (await dRes.json()) as { items: Array<{ id: string; recommendation: string; status: string }> };
+        setDecisions(dJson.items ?? []);
+      }
+    } catch {
+      setDecisionStatus("Не удалось сохранить решение.");
     }
   };
 

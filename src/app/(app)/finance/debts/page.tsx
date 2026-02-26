@@ -24,6 +24,7 @@ const statusLabel: Record<DebtItem["status"], string> = {
 
 export default function FinanceDebtsPage() {
   const [items, setItems] = useState<DebtItem[]>([]);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
     title: "Кредит на оборотку",
     lender: "Банк",
@@ -36,9 +37,17 @@ export default function FinanceDebtsPage() {
   });
 
   const load = async () => {
-    const res = await fetch("/api/finance/debts");
-    const json = await res.json();
-    setItems(json.items ?? []);
+    try {
+      const res = await fetch("/api/finance/debts");
+      if (!res.ok) {
+        setError("Не удалось загрузить список долгов.");
+        return;
+      }
+      const json = await res.json();
+      setItems(json.items ?? []);
+    } catch {
+      setError("Не удалось загрузить список долгов.");
+    }
   };
 
   useEffect(() => {
@@ -46,26 +55,42 @@ export default function FinanceDebtsPage() {
   }, []);
 
   const create = async () => {
-    await fetch("/api/finance/debts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...form,
-        amount: Number(form.amount),
-        balance: Number(form.balance),
-        rate: Number(form.rate)
-      })
-    });
-    await load();
+    try {
+      const res = await fetch("/api/finance/debts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          amount: Number(form.amount),
+          balance: Number(form.balance),
+          rate: Number(form.rate)
+        })
+      });
+      if (!res.ok) {
+        setError("Не удалось добавить долг.");
+        return;
+      }
+      await load();
+    } catch {
+      setError("Не удалось добавить долг.");
+    }
   };
 
   const updateStatus = async (id: string, status: DebtItem["status"]) => {
-    await fetch("/api/finance/debts", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, status })
-    });
-    await load();
+    try {
+      const res = await fetch("/api/finance/debts", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, status })
+      });
+      if (!res.ok) {
+        setError("Не удалось обновить статус долга.");
+        return;
+      }
+      await load();
+    } catch {
+      setError("Не удалось обновить статус долга.");
+    }
   };
 
   const totalBalance = useMemo(() => items.reduce((acc, row) => acc + row.balance, 0), [items]);
@@ -77,6 +102,7 @@ export default function FinanceDebtsPage() {
           <div>
             <h2 className="text-2xl font-extrabold">Долги и займы</h2>
             <p className="mt-1 text-sm text-muted">Учёт кредитов, рассрочек и займов владельца с остатками и сроками.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
           </div>
           <HelpPopover
             title="Что здесь важно"
