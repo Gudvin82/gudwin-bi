@@ -13,5 +13,5 @@ export async function POST(_request: Request, { params }: { params: Promise<{ id
   };
 
   agentLogs.unshift(log);
-  return NextResponse.json({ ok: true, log, _meta: { mode: "prod", generatedAt: new Date().toISOString() } });
+  return NextResponse.json({ ok: true, log, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
 }

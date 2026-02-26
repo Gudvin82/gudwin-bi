@@ -25,5 +25,5 @@ export async function POST(request: Request) {
   };
   hireRequests.unshift(record);
 
-  return NextResponse.json({ request: record, _meta: { mode: "prod", generatedAt: new Date().toISOString() } });
+  return NextResponse.json({ request: record, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
 }

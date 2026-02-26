@@ -62,7 +62,7 @@ export async function POST(request: Request) {
       fileName,
       format: "csv",
       ...preview,
-      _meta: { mode: "prod", generatedAt: new Date().toISOString() }
+      _meta: { mode: "demo", generatedAt: new Date().toISOString() }
     });
   }
 
@@ -72,7 +72,7 @@ export async function POST(request: Request) {
       fileName,
       format: "xlsx",
       ...preview,
-      _meta: { mode: "prod", generatedAt: new Date().toISOString() }
+      _meta: { mode: "demo", generatedAt: new Date().toISOString() }
     });
   }
 

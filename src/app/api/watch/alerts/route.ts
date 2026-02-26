@@ -6,6 +6,6 @@ export async function GET() {
     mode: "critical_only",
     briefingTime: "08:00",
     alerts: watchAlerts,
-    _meta: { mode: "prod", generatedAt: new Date().toISOString() }
+    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
   });
 }

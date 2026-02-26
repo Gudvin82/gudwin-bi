@@ -22,15 +22,27 @@ export default function IntegrationsHubPage() {
 
   useEffect(() => {
     const load = async () => {
-      const res = await fetch("/api/connect/integrations");
-      const json = await res.json();
-      setConnected(json.integrations ?? []);
+      try {
+        const res = await fetch("/api/connect/integrations");
+        if (!res.ok) {
+          setMessage("Не удалось загрузить интеграции. Попробуйте обновить страницу.");
+          return;
+        }
+        const json = await res.json();
+        setConnected(json.integrations ?? []);
+      } catch {
+        setMessage("Не удалось загрузить интеграции. Попробуйте обновить страницу.");
+      }
     };
     void load();
   }, []);
 
   const onConnect = (id: string) => {
     setMessage(`Интеграция ${id} добавлена в очередь подключения.`);
+  };
+
+  const onAction = (label: string) => {
+    setMessage(`Действие «${label}» выполнено в демо-режиме. Функция будет активна после подключения.`);
   };
 
   return (
@@ -66,9 +78,9 @@ export default function IntegrationsHubPage() {
                 </div>
                 <p className="mt-1 text-xs text-muted">Последняя синхронизация: {item.lastSync}</p>
                 <div className="mt-2 flex flex-wrap gap-2">
-                  <button className="rounded-lg border border-border px-2 py-1 text-xs">Настроить</button>
-                  <button className="rounded-lg border border-border px-2 py-1 text-xs">Обновить синхронизацию</button>
-                  <button className="rounded-lg border border-rose-200 px-2 py-1 text-xs text-rose-700">Отключить</button>
+                  <button onClick={() => onAction("Настроить")} className="rounded-lg border border-border px-2 py-1 text-xs">Настроить</button>
+                  <button onClick={() => onAction("Обновить синхронизацию")} className="rounded-lg border border-border px-2 py-1 text-xs">Обновить синхронизацию</button>
+                  <button onClick={() => onAction("Отключить")} className="rounded-lg border border-rose-200 px-2 py-1 text-xs text-rose-700">Отключить</button>
                 </div>
               </div>
             ))}

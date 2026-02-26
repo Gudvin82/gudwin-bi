@@ -29,6 +29,6 @@ export async function POST(request: Request) {
   return NextResponse.json({
     config: record,
     note: "Бот подключен. Сообщения будут отправляться после включения интеграции.",
-    _meta: { mode: "prod", generatedAt: new Date().toISOString() }
+    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
   });
 }

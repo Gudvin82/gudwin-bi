@@ -40,6 +40,6 @@ export async function POST(request: Request) {
       schema: synced.schema
     },
     autoDashboard,
-    _meta: { mode: "prod", generatedAt: new Date().toISOString() }
+    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
   });
 }

@@ -14,5 +14,5 @@ export async function POST(_request: Request, { params }: { params: Promise<{ id
   item.status = item.status === "active" ? "inactive" : "active";
   item.lastRunAt = new Date().toISOString();
 
-  return NextResponse.json({ workflow: item, _meta: { mode: "prod", generatedAt: new Date().toISOString() } });
+  return NextResponse.json({ workflow: item, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
 }

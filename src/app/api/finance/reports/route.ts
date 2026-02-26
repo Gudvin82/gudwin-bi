@@ -15,6 +15,6 @@ export async function GET() {
     dds,
     pnl,
     balance,
-    _meta: { mode: "prod", generatedAt: new Date().toISOString() }
+    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
   });
 }

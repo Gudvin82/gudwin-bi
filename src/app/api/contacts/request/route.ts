@@ -12,5 +12,5 @@ export async function POST(request: Request) {
   const input = schema.parse(await request.json());
   const record = { id: crypto.randomUUID(), createdAt: new Date().toISOString(), ...input };
   devRequests.unshift(record);
-  return NextResponse.json({ ok: true, request: record, _meta: { mode: "prod", generatedAt: new Date().toISOString() } });
+  return NextResponse.json({ ok: true, request: record, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
 }

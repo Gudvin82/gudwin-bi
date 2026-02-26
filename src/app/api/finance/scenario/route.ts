@@ -11,5 +11,5 @@ const schema = z.object({
 
 export async function POST(request: Request) {
   const input = schema.parse(await request.json());
-  return NextResponse.json({ scenario: simulateScenario(input), _meta: { mode: "prod", generatedAt: new Date().toISOString() } });
+  return NextResponse.json({ scenario: simulateScenario(input), _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
 }

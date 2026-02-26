@@ -23,5 +23,5 @@ export async function POST(request: Request) {
   };
 
   telegramConfigs.unshift(record);
-  return NextResponse.json({ config: record, _meta: { mode: "prod", generatedAt: new Date().toISOString() } });
+  return NextResponse.json({ config: record, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
 }

@@ -6,6 +6,6 @@ export async function GET() {
     model: "simple_trend_v1",
     forecast: buildRevenueForecast(6),
     notes: ["Базовый прогноз на текущих данных", "Для прод-режима подключите Prophet/ARIMA и кэш в БД"],
-    _meta: { mode: "prod", generatedAt: new Date().toISOString() }
+    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
   });
 }

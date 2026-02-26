@@ -7,6 +7,6 @@ export async function GET() {
     health,
     focusOfDay: "",
     problemOfWeek: "",
-    _meta: { mode: "prod", generatedAt: new Date().toISOString() }
+    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
   });
 }

@@ -23,7 +23,7 @@ export async function GET(request: Request) {
     .slice()
     .sort((a, b) => b.date.localeCompare(a.date))
     .slice(0, Math.max(1, Math.min(limit, 500)));
-  return NextResponse.json({ items: rows, _meta: { mode: "prod", generatedAt: new Date().toISOString() } });
+  return NextResponse.json({ items: rows, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
 }
 
 export async function POST(request: Request) {
@@ -36,5 +36,5 @@ export async function POST(request: Request) {
     ...input
   };
   ledgerTransactions.unshift(tx);
-  return NextResponse.json({ item: tx, _meta: { mode: "prod", generatedAt: new Date().toISOString() } });
+  return NextResponse.json({ item: tx, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
 }

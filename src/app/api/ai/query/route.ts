@@ -38,6 +38,6 @@ export async function POST(request: Request) {
       { month: "2026-01", revenue: 1200000, avg_check: 3100 },
       { month: "2026-02", revenue: 1370000, avg_check: 3290 }
     ],
-    _meta: { mode: "prod", generatedAt: new Date().toISOString() }
+    _meta: { mode: "demo", generatedAt: new Date().toISOString() }
   });
 }
