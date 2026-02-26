@@ -53,7 +53,32 @@ const scenarioPresets: Array<{
   operator: ">" | "<" | "=";
   value: number;
   action: string;
-}> = [];
+}> = [
+  {
+    name: "Кассовый разрыв через 7 дней",
+    triggerType: "metric_threshold",
+    metric: "cash_guard_days",
+    operator: "<",
+    value: 7,
+    action: "Отправить тревогу владельцу в Telegram"
+  },
+  {
+    name: "ROMI ниже 20%",
+    triggerType: "metric_threshold",
+    metric: "romi_total",
+    operator: "<",
+    value: 20,
+    action: "Создать задачу маркетологу на оптимизацию"
+  },
+  {
+    name: "Health Score ниже 60",
+    triggerType: "metric_threshold",
+    metric: "health_score",
+    operator: "<",
+    value: 60,
+    action: "Сформировать отчет собственнику и план действий"
+  }
+];
 const metricLabel: Record<string, string> = {
   cash_guard_days: "Дни до кассового разрыва",
   romi_total: "ROMI общий",
@@ -79,7 +104,7 @@ export default function AutomationPage() {
   const [metric, setMetric] = useState("health_score");
   const [operator, setOperator] = useState<">" | "<" | "=">("<");
   const [value, setValue] = useState(0);
-  const [actionDescription, setActionDescription] = useState("");
+  const [actionDescription, setActionDescription] = useState("Отправить уведомление в Telegram");
   const [loading, setLoading] = useState(false);
   const [selectedPreset, setSelectedPreset] = useState("");
   const [error, setError] = useState("");
@@ -156,7 +181,7 @@ export default function AutomationPage() {
   const scenarioPreview = useMemo(() => {
     if (triggerType === "schedule") return "Когда: по расписанию";
     if (triggerType === "event") return "Когда: при событии";
-    return `Когда: ${metric} ${operator} ${value}`;
+    return `Когда: ${metricLabel[metric] ?? metric} ${operator} ${value}`;
   }, [metric, operator, triggerType, value]);
 
   return (
@@ -237,7 +262,7 @@ export default function AutomationPage() {
           <div className="mt-4 grid gap-2 sm:grid-cols-2">
             <label className="text-sm">
               <span className="mb-1 block text-xs text-muted">Название сценария</span>
-              <input value={name} onChange={(event) => setName(event.target.value)} className="w-full rounded-xl border border-slate-200 p-2" />
+              <input value={name} onChange={(event) => setName(event.target.value)} placeholder="Например: Кассовый разрыв" className="w-full rounded-xl border border-slate-200 p-2" />
             </label>
             <label className="text-sm">
               <span className="mb-1 block text-xs text-muted">Триггер</span>
@@ -278,7 +303,7 @@ export default function AutomationPage() {
             </label>
             <label className="text-sm sm:col-span-2">
               <span className="mb-1 block text-xs text-muted">Действие</span>
-              <input value={actionDescription} onChange={(event) => setActionDescription(event.target.value)} className="w-full rounded-xl border border-slate-200 p-2" />
+              <input value={actionDescription} onChange={(event) => setActionDescription(event.target.value)} placeholder="Например: уведомить в Telegram" className="w-full rounded-xl border border-slate-200 p-2" />
             </label>
           </div>
 
