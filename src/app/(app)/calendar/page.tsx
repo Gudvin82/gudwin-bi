@@ -52,11 +52,20 @@ export default function CalendarPage() {
   const [createCrmTask, setCreateCrmTask] = useState(true);
   const [notes, setNotes] = useState("Проверить воронку и план на неделю.");
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
   const load = async () => {
-    const res = await fetch("/api/calendar/events");
-    const json = (await res.json()) as { events: CalendarEvent[] };
-    setEvents(json.events ?? []);
+    try {
+      const res = await fetch("/api/calendar/events");
+      if (!res.ok) {
+        setError("Не удалось загрузить события календаря.");
+        return;
+      }
+      const json = (await res.json()) as { events: CalendarEvent[] };
+      setEvents(json.events ?? []);
+    } catch {
+      setError("Не удалось загрузить события календаря.");
+    }
   };
 
   useEffect(() => {
@@ -80,6 +89,10 @@ export default function CalendarPage() {
           notes
         })
       });
+      if (!res.ok) {
+        setError("Не удалось создать событие.");
+        return;
+      }
       const json = (await res.json()) as { event?: CalendarEvent };
       if (json.event && notifyTelegram) {
         await runAction(json.event.id, "telegram");
@@ -88,30 +101,48 @@ export default function CalendarPage() {
         await runAction(json.event.id, "crm_task");
       }
       await load();
+    } catch {
+      setError("Не удалось создать событие.");
     } finally {
       setSaving(false);
     }
   };
 
   const runAction = async (eventId: string, action: "telegram" | "crm_task") => {
-    const res = await fetch("/api/calendar/actions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ eventId, action })
-    });
-    const json = (await res.json()) as { log?: CalendarActionLog };
-    const log = json.log;
-    if (!log) return;
-    setLogs((prev) => [log, ...prev]);
+    try {
+      const res = await fetch("/api/calendar/actions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ eventId, action })
+      });
+      if (!res.ok) {
+        setError("Не удалось выполнить действие по событию.");
+        return;
+      }
+      const json = (await res.json()) as { log?: CalendarActionLog };
+      const log = json.log;
+      if (!log) return;
+      setLogs((prev) => [log, ...prev]);
+    } catch {
+      setError("Не удалось выполнить действие по событию.");
+    }
   };
 
   const updateStatus = async (id: string, status: CalendarEvent["status"]) => {
-    await fetch("/api/calendar/events", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, status })
-    });
-    await load();
+    try {
+      const res = await fetch("/api/calendar/events", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, status })
+      });
+      if (!res.ok) {
+        setError("Не удалось обновить статус события.");
+        return;
+      }
+      await load();
+    } catch {
+      setError("Не удалось обновить статус события.");
+    }
   };
 
   const grouped = useMemo(() => {
@@ -130,6 +161,7 @@ export default function CalendarPage() {
           <div>
             <h2 className="text-2xl font-extrabold tracking-tight">Календарь</h2>
             <p className="mt-1 text-sm text-muted">Планирование встреч и расписаний с уведомлениями в Telegram и запуском задач в CRM.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
           </div>
           <HelpPopover
             title="Как использовать"
