@@ -10,8 +10,11 @@ export async function POST(request: Request, { params }: { params: Promise<{ wor
   }
 
   const { workspaceId } = await params;
+  if (!/^[0-9a-fA-F-]{36}$/.test(workspaceId)) {
+    return NextResponse.json({ ok: false, error: "Некорректный workspaceId." }, { status: 400 });
+  }
   const message = data?.message?.text ?? "";
   const plan = await buildAnalyticPlan(message || "Сделай сводку за сегодня", `workspace=${workspaceId}; sales(date,revenue,channel)`);
 
-  return NextResponse.json({ ok: true, reply: plan.summary, sql: plan.sql });
+  return NextResponse.json({ ok: true, reply: plan.summary, sql: plan.sql, _meta: { mode: "demo", generatedAt: new Date().toISOString() } });
 }
