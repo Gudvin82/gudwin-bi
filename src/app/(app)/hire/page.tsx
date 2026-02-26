@@ -31,39 +31,53 @@ export default function HirePage() {
   const [description, setDescription] = useState("");
   const [brief, setBrief] = useState("");
   const [history, setHistory] = useState<HireList["requests"]>([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const load = async () => {
-      const res = await fetch("/api/hire/requests");
-      const json = (await res.json()) as HireList;
-      setHistory(json.requests);
+      try {
+        const res = await fetch("/api/hire/requests");
+        if (!res.ok) {
+          setError("Не удалось загрузить историю заявок.");
+          return;
+        }
+        const json = (await res.json()) as HireList;
+        setHistory(json.requests);
+      } catch {
+        setError("Не удалось загрузить историю заявок.");
+      }
     };
 
     void load();
   }, []);
 
   const generate = async () => {
-    const res = await fetch("/api/hire/request", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ roleType, rawDescription: description })
-    });
+    try {
+      const res = await fetch("/api/hire/request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ roleType, rawDescription: description })
+      });
 
-    if (!res.ok) {
-      return;
+      if (!res.ok) {
+        setError("Не удалось сформировать заявку.");
+        return;
+      }
+
+      const json = (await res.json()) as HireResponse;
+      setBrief(json.request.ai_generated_brief);
+      setHistory((prev) => [
+        {
+          id: json.request.id,
+          role_type: json.request.role_type,
+          ai_generated_brief: json.request.ai_generated_brief,
+          createdAt: json.request.createdAt
+        },
+        ...prev
+      ]);
+    } catch {
+      setError("Не удалось сформировать заявку.");
     }
-
-    const json = (await res.json()) as HireResponse;
-    setBrief(json.request.ai_generated_brief);
-    setHistory((prev) => [
-      {
-        id: json.request.id,
-        role_type: json.request.role_type,
-        ai_generated_brief: json.request.ai_generated_brief,
-        createdAt: json.request.createdAt
-      },
-      ...prev
-    ]);
   };
 
   const copyBrief = async () => {
@@ -80,6 +94,7 @@ export default function HirePage() {
           <div>
             <h2 className="mb-2 text-xl font-bold">Найм</h2>
             <p className="text-sm text-muted">Здесь можно быстро сформировать понятную заявку на поиск специалиста.</p>
+            {error ? <p className="mt-2 text-xs font-semibold text-amber-700">{error}</p> : null}
           </div>
           <HelpPopover
             title="Как работать с наймом"
