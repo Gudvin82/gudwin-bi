@@ -68,6 +68,7 @@ export function Topbar({ onMenuClick, showMenuButton = true }: { onMenuClick?: (
   const primarySourceActionLabel = ["owner", "overview", "sources", "onboarding"].includes(firstSegment)
     ? "Подключить данные"
     : "Управлять источниками";
+  const showSourceAction = ["owner", "overview", "finance", "marketing", "analytics", "sources", "onboarding"].includes(firstSegment);
   const showOverviewButton = ["owner", "overview"].includes(firstSegment);
 
   const refreshData = () => {
@@ -119,14 +120,18 @@ export function Topbar({ onMenuClick, showMenuButton = true }: { onMenuClick?: (
             Открыть обзор
           </Link>
         ) : null}
-        <Link href="/sources" className="btn-premium-primary hidden min-h-10 items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-white shadow-sm sm:inline-flex">
-          <Sparkles size={16} />
-          {primarySourceActionLabel}
-        </Link>
-        <Link href="/sources" className="btn-premium-primary inline-flex min-h-10 items-center justify-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-white shadow-sm sm:hidden">
-          <Sparkles size={14} />
-          Источники
-        </Link>
+        {showSourceAction ? (
+          <>
+            <Link href="/sources" className="btn-premium-primary hidden min-h-10 items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-white shadow-sm sm:inline-flex">
+              <Sparkles size={16} />
+              {primarySourceActionLabel}
+            </Link>
+            <Link href="/sources" className="btn-premium-primary inline-flex min-h-10 items-center justify-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-white shadow-sm sm:hidden">
+              <Sparkles size={14} />
+              Источники
+            </Link>
+          </>
+        ) : null}
         <div className="hidden min-h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-3 py-2 text-sm text-muted shadow-sm md:inline-flex">
           <CalendarRange size={16} />
           <select value={periodPreset} onChange={(event) => setPeriodPreset(event.target.value)} className="bg-transparent text-sm outline-none">
